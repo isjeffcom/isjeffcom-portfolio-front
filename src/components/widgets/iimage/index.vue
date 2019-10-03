@@ -1,0 +1,90 @@
+<template>
+    <div id="iimage" ref="iimage" :style="'width:' + width + ';' + 'height:' + height + ';'">
+
+        <div id="real" ref="real" :style="'width:' + width + ';' + 'height:' + height + ';'" v-if="loaded">
+            <transition>
+                <img id="realimg" :src="isrc" :alt="ialt" @load="imgLoaded" :style="'width:' + width + ';' + 'height:' + height + ';'">
+            </transition>
+        </div>
+
+        <div id="placeholder" ref="placeholder" v-if="!loaded">
+            <img src="../../../assets/image.svg" alt="Image placeholder"  id="phimg" @load="imgLoaded">
+        </div>
+
+    </div>
+</template>
+
+<script>
+export default {
+    name: "iimage",
+    props:{
+        isrc: {
+            type: String,
+            default: ""
+        },
+        ialt: {
+            type: String,
+            default: ""
+        },
+        width: {
+            type: String,
+            default: "100px"
+        },
+        height: {
+            type: String,
+            default: "100px"
+        }
+    },
+    data(){
+        return{
+            loaded: false,
+        }
+    },
+    created(){
+        //console.log(this.isrc)
+    },
+
+    methods:{
+        imgLoaded () {
+            //this.$refs.placeholder.style.opacity = 0
+            //this.$refs.real.style.opacity = 1
+            setTimeout(()=>{
+                this.loaded = true
+            }, 1000)
+        }
+    }
+}
+</script>
+
+<style scoped>
+#real{
+    position:relative;
+    margin-top:0px;
+    margin-left:0px;
+    opacity: 1;
+    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
+}
+
+#placeholder{
+    position: absolute;
+    margin-top:0px;
+    margin-left:0px;
+    width:100%;
+    height:100%;
+    background-color: #F9F9F9;
+    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
+}
+
+#realimg{
+    object-fit: cover;
+}
+
+#phimg{
+    width:30px;
+    margin-top:auto;
+    margin-bottom:auto;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+</style>
