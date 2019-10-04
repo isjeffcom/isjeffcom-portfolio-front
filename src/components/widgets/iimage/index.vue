@@ -1,7 +1,7 @@
 <template>
     <div id="iimage" ref="iimage" :style="'width:' + width + ';' + 'height:' + height + ';'">
 
-        <div id="real" ref="real" :style="'width:' + width + ';' + 'height:' + height + ';'" v-if="loaded">
+        <div id="real" ref="real" :style="'width:' + width + ';' + 'height:' + height + ';'" v-if="loaded" :class="tclass">
             <transition>
                 <img id="realimg" :src="isrc" :alt="ialt" @load="imgLoaded" :style="'width:' + width + ';' + 'height:' + height + ';'">
             </transition>
@@ -33,14 +33,20 @@ export default {
         height: {
             type: String,
             default: "100px"
+        },
+        mode: {
+            type: String,
+            default: "normal"
         }
     },
     data(){
         return{
             loaded: false,
+            tclass: "normal",
         }
     },
     created(){
+        this.tclass = this.mode
         //console.log(this.isrc)
     },
 
@@ -77,6 +83,20 @@ export default {
 
 #realimg{
     object-fit: cover;
+}
+
+.normal{
+
+}
+
+.grey {
+    background-color: #000000;
+}
+
+.grey img{
+    opacity: 0.8;
+    filter: grayscale(100%) contrast(50%);
+    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
 #phimg{

@@ -21,6 +21,10 @@ export default {
 
 <style scoped>
 
+#topping{
+    user-select: none;
+}
+
 #topping-inner{
     padding-top:140px;
 }

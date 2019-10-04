@@ -8,6 +8,7 @@ import post from './components/post'
 
 
 export default new VueRouter({
+  mode: 'history',
   routes: [
       { path:'/', name:'Home', redirect: '/home' },
       { path: '/home', name: 'home', component: home },

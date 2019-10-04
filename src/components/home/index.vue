@@ -10,10 +10,12 @@
 
         <div id="posts">
             <div id="posts-inner">
-                <div class="post-single" v-for="item in postsList" :key="item.id"  v-on:click="toSingle(item.id)">
-                    <div class="post-single-filter"></div>
-                    <!--iimage :isrc="base + item.title_img" :ialt="item.title" :width="'360px'" :height="'260px'"></iimage-->
-                    <img :src="base + item.title_img" :alt="item.title">
+                <div class="post-single" v-for="item in postsList" :key="item.id">
+                    <router-link :to="{ path:'/post', query: { pid: item.id} }">
+                        <div class="post-single-filter"></div>
+                        <!--iimage :isrc="base + item.title_img" :ialt="item.title" :width="'360px'" :height="'260px'"></iimage-->
+                        <img :src="base + item.title_img" :alt="item.title">
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -53,7 +55,6 @@ export default {
     },
     created(){
         this.getPosts(this.page)
-        
     },
     methods:{
         getPosts(page){
@@ -69,8 +70,12 @@ export default {
                     val: this.pageSize
                 } 
             ] : []
+            if(this.$route.query.cate){
+                param.push({name: "cate", val: this.$route.query.cate})
+            }
 
             genGet(this.api, param, (res)=>{
+                console.log(res)
                 if(res.status){
                     that.postsTotal = res.data.total
                     that.postsList = res.data.data
@@ -96,11 +101,6 @@ export default {
 
         pageToLimit ( val ) {
             return (val - 1) * this.pageSize
-        },
-
-        toSingle(pid){
-            EventBus.$emit('toPost', pid)
-            //this.$router.push( { path: '/post' } )
         }
 
         
@@ -131,6 +131,9 @@ export default {
   border-right: 18px solid #333333; 
 }
 
+#all{
+  user-select: none;
+}
 
 #nav{
     width:100%;
@@ -182,9 +185,7 @@ export default {
     cursor: pointer;
 }
 
-.post-single:hover img{
-    filter: grayscale(0%);
-}
+
 
 .post-single-filter{
     position:absolute;
@@ -202,6 +203,10 @@ export default {
     filter: grayscale(100%);
     z-index:1;
     transition: all 0.42s cubic-bezier(.25,.8,.25,1);
+}
+
+.post-single:hover img{
+    filter: grayscale(0%);
 }
 
 #pagination{

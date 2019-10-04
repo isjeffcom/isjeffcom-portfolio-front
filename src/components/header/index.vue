@@ -2,18 +2,29 @@
 
     <div id="hheader">
         <div id="hheader-inner">
-            <div id="hheader-left" v-on:click="toHome">
-                <img :src="base_url + leftLogo" alt="Logo">
+            <router-link :to="{ path:'/home'}">
+            <div id="hheader-left">
+                <img :src="base + leftLogo" alt="Logo">
             </div>
+            </router-link>
 
-            <div id="hheader-center" v-on:click="toTopping" ref="cl" @mouseenter="showCNName()" @mouseleave="showCNName()">
-                <img id="hheader-center-logo" :src="base_url + centerLogo" alt="Name" v-show="nameLogoShown">
+            <div id="hheader-center" ref="cl" @mouseenter="showCNName()" @mouseleave="showCNName()">
+                <img id="hheader-center-logo" :src="base + centerLogo" alt="Name" v-show="nameLogoShown">
                 <img id="hheader-center-upbtn" src="../../assets/sup.png" alt="Name" v-show="!nameLogoShown">
             </div>
 
             <div id="hheader-right">
-                <div class="hheader-sm-single" v-for="item in socialMedia" :key="item.id">
-                    <a :href="item.url"><img :src="base_url + item.icon" :alt="item.name" class="hheader-sm-single-img"></a>
+                <div class="hheader-sm" v-if="mode != 'post'">
+                    <div class="hheader-sm-single" v-for="item in socialMedia" :key="item.id">
+                        <a :href="item.url"><img :src="base + item.icon" :alt="item.name" class="hheader-sm-single-img"></a>
+                    </div>
+                </div>
+                
+
+                <div class="hheader-switcher" v-if="mode == 'post'">
+                    <span class="hheader-switcher-single" v-on:click="switchLang(0)" :style="lang == 0 ? 'font-weight: bold' : 'font-weight: normal'">ENG</span> 
+                    <span> / </span> 
+                    <span class="hheader-switcher-single" v-on:click="switchLang(1)" :style="lang == 1 ? 'font-weight: bold' : 'font-weight: normal'">中文</span>
                 </div>
             </div>
         </div>
@@ -28,6 +39,7 @@ import { EventBus } from '../../bus'
 export default {
     name:"hheader",
     props:{
+        base: String,
         leftLogo: String,
         centerLogo: String,
         socialMedia: Array
@@ -37,22 +49,26 @@ export default {
     },
     data(){
         return{
-            base_url:"https://api.isjeff.com/pot",
             nameLogoShown: true,
             animating: false,
+            lang: 0,
+            mode: "home"
         }
     },
+    watch:{
+        '$route': 'initial'
+    },
     created(){
-        
+        this.initial()
     },
     methods:{
-        toHome(){
-            EventBus.$emit("toPage", '/home')
+        initial () {
+            this.lang = 0
+            this.mode = this.$route.name
         },
-
-        toTopping(){
-            this.showCNName(false)
-            EventBus.$emit("toTopping", true)
+        switchLang(data) {
+            this.lang = data
+            EventBus.$emit('switchLang', data)
         },
 
         showCNName(bol){
@@ -103,6 +119,7 @@ export default {
     height: 100px;
     width: 100%;
     background: rgba(255,255,255,1);
+    user-select: none;
 }
 
 #hheader-inner{
@@ -140,6 +157,9 @@ export default {
     position: absolute;
     top:20px;
     right:50px;
+}
+
+.hheader-sm{
     display:flex;
     text-align: right;
     margin-top:35px;
@@ -160,8 +180,15 @@ export default {
 }
 
 #hheader-center-upbtn{
-    padding-top: 30px;
-    width:50px !important;
+    width:300px !important;
     transition: all 0.2s cubic-bezier(.25,.8,.25,1);
+}
+
+.hheader-switcher{
+    margin-top: 32px;
+}
+
+.hheader-switcher-single{
+    cursor: pointer;
 }
 </style>

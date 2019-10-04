@@ -1,3 +1,4 @@
+var qs = require('qs')
 var axios = require('axios')
 
 // General get data
@@ -16,6 +17,27 @@ export function genGet (api, param, callback) {
     }).catch((err) => {
 
         callback({status: false, error: err})
+
+    })
+}
+
+export function genUpdate (api, data, callback) {
+
+
+    var postData = qs.stringify(data)
+
+    axios.post(api, postData)
+    .then(function (response) {
+
+        if(response.data.indexOf("success") != -1){
+            callback({status: true, data: response.data})
+        } else {
+            callback({status: false, data: response.data})
+        }
+
+    }).catch(function(err){
+
+        callback({status: false, data: err})
 
     })
 }

@@ -1,24 +1,20 @@
 <template>
   <div id="app" v-if="loaded">
 
-    <div id="sup">
-      <img id="sup_img" src="./assets/sup.png" alt="">
-    </div>
-
-      <topping
-        v-show="showTopping"
-        :base="site.baseUrl"
-        :toppingLogo="theme['Topping-Logo'].val">
-      </topping>
+    <topping
+      v-show="showTopping"
+      :base="site.baseUrl"
+      :toppingLogo="theme['Topping-Logo'].val">
+    </topping>
     
 
     <hheader
       id="hheader"
       ref="headerRef"
+      :base="site.baseUrl"
       :leftLogo="theme['Side-Logo'].val"
       :centerLogo="theme['Center-Logo'].val"
-      :socialMedia="social_media"
-      :mode.sync="mode">
+      :socialMedia="social_media">
     </hheader>
 
     <div id="contents"
@@ -26,15 +22,22 @@
 
       <router-view 
         :base="site.baseUrl"
-        :navs="nav"
-        :pid.sync="pid">
+        :navs="nav">
       </router-view>
 
     </div>
 
+
+    <ffooter
+      id="ffooter"
+      :base="site.baseUrl"
+      :bottomLogo="theme['Footer-Logo'].val"
+      :icpNum="theme['China-ICP-License'].val">
+    </ffooter>
     
     
   </div>
+  
 </template>
 
 <script>
@@ -44,12 +47,14 @@ import { decodeRichText, setCookie, getCookie } from './utils'
 import scrollTo from 'scroll-to'
 import hheader from './components/header'
 import topping from './components/topping'
+import ffooter from './components/ffooter'
 
 export default {
   name: 'app',
   components: {
     topping,
-    hheader
+    hheader,
+    ffooter
   },
   data(){
     return{
@@ -62,80 +67,25 @@ export default {
       nav: [],
       social_media: [],
       headerY: 0,
-      supRef: {},
       showTopping: true,
       animating: false,
       currentPosi: 0,
       damping: 20,
+      dontDisplayAni: false,
 
     }
   },
+
   created(){
-
-    var that = this
-
-    // Get Data
+    this.dontDisplayAni = getCookie('topping') == "true" ? true : false
     this.getSiteData()
-
-    // Receiving to post
-    // Goint to throw an error if use directly in created
-    EventBus.$on('toPost', function(pid){
-      that.pid = pid
-      that.toPage('/post')
-    })
-
-    EventBus.$on("toPage", function(data){
-      that.toPage(data)
-    })
-
-    EventBus.$on("toTopping", function(data){
-      that.scrollToTopping()
-    })
     
-  },
-  mounted(){
-    var that = this
-    if(getCookie("topping").length < 1){
-      this.scrollToMain("first")
-    }
-    
-    window.addEventListener('wheel', function(e) {
-
-      /*if(that.currentPosi === 1 && window.scrollY < that.headerY - that.damping && !that.animating){
-        that.scrollToTopping()
-        document.getElementById('sup').style.opacity = 1
-        document.getElementById('hheader').style.opacity = 0
-        document.getElementById('contents').style.opacity = 0
-        
-      } 
-
-      else*/ 
-      if(that.currentPosi === 0 && window.scrollY > that.headerY - 400 && !that.animating){
-        that.scrollToMain("o")
-        document.getElementById('sup').style.opacity = 0
-      }
-    })
-  },
-
-  watch:{
-    loaded: function () {
-      if(this.loaded && getCookie("topping") === "true"){
-        this.showTopping = false
-        setTimeout(()=>{
-          this.displayContent()
-        }, 400)
-        
-      }
-    }
   },
   methods:{
 
-    displayContent () {
-      this.$refs.headerRef.$el.style.opacity = 1
-      this.$refs.contentsRef.style.opacity = 1
-    },
 
     scrollToMain (mode) {
+      console.log('c')
       this.animating = true
       var that = this
       var time
@@ -146,8 +96,6 @@ export default {
       }
       setTimeout(()=>{
           if(that.loaded){
-            that.$refs.headerRef.$el.style.opacity = 1
-            that.$refs.contentsRef.style.opacity = 1
             scrollTo(0, that.headerY, {
               ease: 'inOutQuart',
               duration: 500
@@ -169,12 +117,9 @@ export default {
     },
 
     scrollToTopping () {
+
       var that = this
       this.animating = true
-
-      // Set other content transparent
-      that.$refs.headerRef.$el.style.opacity = 0
-      that.$refs.contentsRef.style.opacity = 0
 
       scrollTo(0, 30, {
         ease: 'inOutQuart',
@@ -183,8 +128,8 @@ export default {
       
       
       setTimeout(()=>{
-        this.showTopping = true
-        this.$nextTick(()=>{
+        that.showTopping = true
+        that.$nextTick(()=>{
           scrollTo(0, 0, {
             ease: 'inOutQuart',
             duration: 600
@@ -204,7 +149,7 @@ export default {
       var that = this
 
       genGet(this.api_site, [], (res)=>{
-
+        
         if(res.status){
 
           var finalRes = res.data
@@ -223,7 +168,6 @@ export default {
 
           // Merge theme data into site data
           siteData.data_struct = ""
-
           // Put in datas
           that.site = siteData
           that.social_media = socialMedia
@@ -232,26 +176,23 @@ export default {
           // Loaded
           that.loaded = true
 
+          if(this.dontDisplayAni){
+            //console.log(this.dontDisplayAni)
+            this.showTopping = false
+          } else {
+            this.scrollToMain("first")
+          }
+          
+
           // Get header render X value
           that.$nextTick(()=>{
             that.headerY = that.$refs.headerRef.$el.offsetTop
-            that.supRef = that.$refs.sup
           })
           
         }
 
       })
 
-    },
-    toPage(path){
-      this.$router.push({ path: path })
-    },
-    inGap (val, gap) {
-      if(val > gap.high && val< gap.low){
-        return true
-      } else {
-        return false
-      }
     }
   }
 }
@@ -274,36 +215,24 @@ export default {
   color:#333;
 }
 
-#sup{
-  position:absolute;
-  top:-50px;
-  left: 50%;
-  right: 50%;
-  z-index:999;
-  transition: all 0.42s cubic-bezier(.25,.8,.25,1);
-}
-
-#sup img{
-  width:40px;
-}
-
 #topping{
   height: 590px;
 }
 
 #hheader{
-  opacity: 0;
   height:100px;
   transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
 #contents{
-  opacity: 0;
-  height:1000px;
-  width: 1224px;
+  width: 1000px;
   overflow: hidden;
   margin-top:30px;
   margin-left:auto;
   margin-right:auto;
+}
+
+#ffooter{
+  margin-top: 50px;
 }
 </style>
