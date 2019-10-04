@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import { EventBus } from './bus'
 import { genGet } from './request'
 import { decodeRichText, setCookie, getCookie } from './utils'
 import scrollTo from 'scroll-to'
@@ -70,6 +69,7 @@ export default {
       showTopping: true,
       animating: false,
       currentPosi: 0,
+      delay: 3000,
       damping: 20,
       dontDisplayAni: false,
 
@@ -79,21 +79,13 @@ export default {
   created(){
     this.dontDisplayAni = getCookie('topping') == "true" ? true : false
     this.getSiteData()
-    
   },
   methods:{
 
-
-    scrollToMain (mode) {
-      console.log('c')
+    scrollToMain () {
       this.animating = true
       var that = this
-      var time
-      if(mode === "first"){
-        time = 3000
-      } else {
-        time = 60
-      }
+      var time = this.delay
       setTimeout(()=>{
           if(that.loaded){
             scrollTo(0, that.headerY, {
@@ -180,7 +172,7 @@ export default {
             //console.log(this.dontDisplayAni)
             this.showTopping = false
           } else {
-            this.scrollToMain("first")
+            this.scrollToMain()
           }
           
 
@@ -200,6 +192,16 @@ export default {
 
 <style>
 
+@font-face{
+  font-family: fblack;
+  src: url('./assets/black.otf');
+}
+
+@font-face{
+  font-family: fregular;
+  src: url('./assets/regular.otf');
+}
+
 *{
   margin:0;
   padding:0;
@@ -208,7 +210,7 @@ export default {
 #app {
   height:auto;
   width:100%;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: fregular, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

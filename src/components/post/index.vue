@@ -137,6 +137,7 @@ export default {
 }
 
 #post-title-inner { 
+    font-family: fblack;
     margin-left: auto;
     margin-right: auto;
     width: 1000px;
@@ -207,13 +208,13 @@ export default {
 }
 
 #post-like-icon:hover img{
-    margin-top: -53px;
+    margin-top: -51px;
     margin-left: -19px;
     width: 38px;
 }
 
 #post-like-icon:active img{
-    margin-top: -53px;
+    margin-top: -51px;
     margin-left: -19px;
     width: 65px;
 }
@@ -223,11 +224,9 @@ export default {
 }
 
 
-
-
 #post-like-icon img{
     position: absolute;
-    margin-top: -55px;
+    margin-top: -53px;
     margin-left: -23px;
     width: 45px;
     transition: all 0.22s cubic-bezier(.25,.8,.25,1);
