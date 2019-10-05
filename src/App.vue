@@ -22,6 +22,7 @@
 
       <router-view 
         :base="site.baseUrl"
+        :files="files"
         :navs="nav">
       </router-view>
 
@@ -41,7 +42,7 @@
 </template>
 
 <script>
-import { genGet } from './request'
+import { genGet, logVisit } from './request'
 import { decodeRichText, setCookie, getCookie } from './utils'
 import scrollTo from 'scroll-to'
 import hheader from './components/header'
@@ -57,7 +58,9 @@ export default {
   },
   data(){
     return{
-      api_site: "https://api.isjeff.com/pot/front/home/",
+      api_base: "https://api.isjeff.com/pot",
+      api_site: "/front/home/",
+      api_track: "/updater/visit/",
       mode: "home",
       pid: "1",
       loaded: false,
@@ -65,6 +68,7 @@ export default {
       theme: {},
       nav: [],
       social_media: [],
+      files: [],
       headerY: 0,
       showTopping: true,
       animating: false,
@@ -79,6 +83,9 @@ export default {
   created(){
     this.dontDisplayAni = getCookie('topping') == "true" ? true : false
     this.getSiteData()
+    setTimeout(()=>{
+      logVisit(this.api_base + this.api_track, 1)
+    }, 1000)
   },
   methods:{
 
@@ -140,7 +147,7 @@ export default {
 
       var that = this
 
-      genGet(this.api_site, [], (res)=>{
+      genGet(this.api_base + this.api_site, [], (res)=>{
         
         if(res.status){
 
@@ -165,6 +172,12 @@ export default {
           that.social_media = socialMedia
           that.nav = nav
 
+          that.files = [
+            {name: 'PDF-Portfolio', val: that.theme['PDF-Portfolio'] }, 
+            {name: 'CV-English', val:that.theme['CV-English']},
+            {name: 'CV-Chinese', val:that.theme['CV-Chinese']}
+          ]
+          
           // Loaded
           that.loaded = true
 
@@ -227,7 +240,7 @@ export default {
 }
 
 #contents{
-  width: 1000px;
+  width: 1300px;
   overflow: hidden;
   margin-top:30px;
   margin-left:auto;

@@ -1,5 +1,6 @@
 var qs = require('qs')
 var axios = require('axios')
+var utils = require('./utils.js')
 
 // General get data
 export function genGet (api, param, callback) {
@@ -39,6 +40,30 @@ export function genUpdate (api, data, callback) {
 
         callback({status: false, data: err})
 
+    })
+}
+
+
+export function logVisit (api, expDay) {
+    
+    if(utils.getCookie('isjeffcom')){
+        return
+    } else {
+        var tmpUid = parseInt(Math.ceil(Math.random()*1000) * Date.parse( new Date()) / 10000000)
+        utils.setCookie('isjeffcom', tmpUid, expDay, false)
+    }
+
+    var postData = {
+        userAgent: navigator.userAgent,
+        userLanguage: navigator.language,
+        appName: navigator.appName,
+        platform: navigator.platform
+    }
+
+    genUpdate(api, postData, (res)=>{
+        if(res.status){
+            // do nothing
+        }
     })
 }
 

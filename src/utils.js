@@ -26,7 +26,7 @@ export function setCookie (name, value, expDays, remove) {
     var exp, expTime
     
     if(!remove){
-        expTime = (((60 * 1000)*60)*24)*expDays // 30 days
+        expTime = (((60 * 1000)*60)*24)*expDays
         exp = new Date()
         exp.setTime(exp.getTime() + expTime)
         document.cookie = name + "=" + value + ";" + "expires=" + exp.toGMTString()+";"

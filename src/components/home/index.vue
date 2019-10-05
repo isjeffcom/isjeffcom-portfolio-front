@@ -20,11 +20,30 @@
             </div>
         </div>
 
-        <div id="pagination" v-if="postsTotal != pageSize">
+        <div id="pagination" v-if="postsTotal > 9">
             <div id="p-nav">
                 <div class="p-single arrow-left" :style="page === 1 ? 'opacity: .1' : 'opacity: 1'" v-on:click="sPage(1)"></div>
                 <div class="p-single arrow-right" :style="page === pagesTotal  ? 'opacity: .1' : 'opacity: 1'" v-on:click="sPage(0)"></div>
             </div>
+        </div>
+
+        <div id="files">
+            <div class="files-cont">
+                <div class="file-single" v-for="(item, key) in files" :key="key">
+                    <div class="file-single-inner">
+                        <a :href="base + item.val.val" target="_blank" style="display: flex; margin-left: auto; margin-right: auto;">
+                            <div class="file-down-icon">
+                                <img src="../../assets/download.svg" alt="">
+                            </div>
+
+                            <div class="file-down-name">
+                                <span>{{item.name}}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -41,7 +60,8 @@ export default {
     },
     props:{
         base: String,
-        navs: Array
+        navs: Array,
+        files: Array
     },
     data(){
         return{
@@ -75,7 +95,6 @@ export default {
             }
 
             genGet(this.api, param, (res)=>{
-                console.log(res)
                 if(res.status){
                     that.postsTotal = res.data.total
                     that.postsList = res.data.data
@@ -181,11 +200,11 @@ export default {
     position: relative;
     width:360px;
     height:280px;
-    margin-right:72px;
+    margin-left: 36px;
+    margin-right: 36px;
+    margin-bottom:30px;
     cursor: pointer;
 }
-
-
 
 .post-single-filter{
     position:absolute;
@@ -231,5 +250,41 @@ export default {
     margin-left: 30px;
     margin-right: 30px;
 }
+
+#files{
+    text-align: center;
+    height:80px;
+    width: 100%;
+    margin-top: 100px;
+}
+
+.files-cont{
+    width: 800px;
+    display: flex;
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.file-single{
+    flex: 1;
+    margin-left:30px;
+    margin-right:30px;
+}
+
+.file-single-inner a{
+    text-decoration: none;
+}
+
+.file-single-inner{
+    display: flex;
+}
+
+.file-down-name{
+    color:#000;
+    text-decoration: none;
+    margin-left: 14px;
+}
+
 
 </style>
