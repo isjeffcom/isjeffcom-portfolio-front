@@ -12,7 +12,7 @@
 
         <div id="post-title-img">
             <div id="post-title-img-inner">
-                <iimage :isrc="base + postData.title_img" :ialt="'title image'" :width="'100%'" :height="'360px'" :mode="'grey'"></iimage>
+                <iimage :isrc="base + postData.title_img" :ialt="'title image'" :width="'100%'" :height="'380px'" :mode="'grey'"></iimage>
             </div>
         </div>
 
@@ -52,7 +52,8 @@ export default {
         iimage
     },
     props:{
-        base: String
+        base: String,
+        files: Array
     },
     data(){
         return{
@@ -125,7 +126,6 @@ export default {
 
 #post-title{
     width: 100%;
-    margin-top: 10px;
     margin-bottom: 50px;
 }
 
@@ -140,13 +140,12 @@ export default {
     font-family: fblack;
     margin-left: auto;
     margin-right: auto;
-    width: 1000px;
+    width: 900px;
 }
 
 #post-title-inner span{
     text-align:center;
-    font-size: 64px;
-    font-weight: bold;
+    font-size: 54px;
 }
 
 #post-title-info{
@@ -156,7 +155,10 @@ export default {
 
 #post-contents{
     text-align: left;
-    margin-top: 480px;
+    margin-top: 470px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1120px;
 }
 
 #posts-contents-cont{
@@ -245,6 +247,24 @@ export default {
 #post-like-count{
     opacity: .7;
     margin-top: 24px;
+}
+
+@media only screen and (max-device-width : 812px)  { 
+    #post-contents {
+        width: 100%;
+    }
+
+    #posts-contents-cont iframe {
+        width: 100%;
+    }
+
+    #post-title-inner span{
+        font-size: 24px;
+    }
+
+    #post-title-inner{
+        width: 90%;
+    }
 }
 
 </style>

@@ -34,3 +34,6 @@ export function setCookie (name, value, expDays, remove) {
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     }
 }
+export function isMobile () {
+    return screen.width < 812 ? true : false
+}

@@ -86,6 +86,13 @@ export default {
     color: #000000;
 }
 
+@media only screen and (max-device-width : 812px)  { 
+    #f-inner {
+        width: 100%;
+        padding-top: 20px;
+    }
+}
+
 
 
 </style>

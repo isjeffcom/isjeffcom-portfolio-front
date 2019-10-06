@@ -1,12 +1,6 @@
 <template>
     <div id="all">
-        <div id="nav">
-            <div id="nav-inner">
-                <div class="nav-single" v-for="item in navs" :key="item.id">
-                    <a :href="item.url">{{item.name}}</a>
-                </div>
-            </div>
-        </div>
+        
 
         <div id="posts">
             <div id="posts-inner">
@@ -19,6 +13,7 @@
                 </div>
             </div>
         </div>
+
 
         <div id="pagination" v-if="postsTotal > 9">
             <div id="p-nav">
@@ -45,12 +40,12 @@
             </div>
             
         </div>
+        
     </div>
 </template>
 
 <script>
 import { genGet } from '../../request'
-import { EventBus } from '../../bus'
 import iimage from '../widgets/iimage'
 
 export default {
@@ -133,6 +128,7 @@ export default {
   width: 0 !important;
 }
 
+
 /* icons */
 .arrow-right {
   width: 0; 
@@ -152,39 +148,6 @@ export default {
 
 #all{
   user-select: none;
-}
-
-#nav{
-    width:100%;
-    height:48px;
-    margin-top:10px;
-    margin-bottom: 36px;
-}
-
-#nav-inner{
-    width: 480px;
-    height: 48px;
-    display: flex;
-    margin-left:auto;
-    margin-right:auto;
-}
-
-.nav-single{
-    width:auto;
-    margin-left:auto;
-    margin-right:auto;
-    text-align: center;
-    opacity: .8;
-    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
-}
-
-.nav-single:hover{
-    opacity: 1;
-}
-
-.nav-single a{
-    color:#333;
-    text-decoration: none;
 }
 
 #posts{
@@ -284,6 +247,31 @@ export default {
     color:#000;
     text-decoration: none;
     margin-left: 14px;
+}
+
+@media only screen and (max-device-width : 812px)  { 
+  .post-single{
+    width: 360px;
+    height: 280px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 20px;
+  }
+
+  #files{
+    margin-top: 40px;
+    height: 120px;
+  }
+
+  .files-cont{
+      width: 100%;
+      display: block;
+  }
+
+  .file-single{
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
 }
 
 

@@ -2,13 +2,13 @@
     <div id="iimage" ref="iimage" :style="'width:' + width + ';' + 'height:' + height + ';'">
 
         <div id="real" ref="real" :style="'width:' + width + ';' + 'height:' + height + ';'" v-if="loaded" :class="tclass">
-            <transition>
+            <transition name="fade">
                 <img id="realimg" :src="isrc" :alt="ialt" @load="imgLoaded" :style="'width:' + width + ';' + 'height:' + height + ';'">
             </transition>
         </div>
 
         <div id="placeholder" ref="placeholder" v-if="!loaded">
-            <img src="../../../assets/image.svg" alt="Image placeholder"  id="phimg" @load="imgLoaded">
+            <img src="../../../assets/image.svg" alt="Image placeholder"  class="phimg" @load="imgLoaded">
         </div>
 
     </div>
@@ -71,6 +71,14 @@ export default {
     transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
+#real{
+    position:relative;
+    margin-top:0px;
+    margin-left:0px;
+    opacity: 1;
+    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
+}
+
 #placeholder{
     position: absolute;
     margin-top:0px;
@@ -85,10 +93,6 @@ export default {
     object-fit: cover;
 }
 
-.normal{
-
-}
-
 .grey {
     background-color: #000000;
 }
@@ -99,7 +103,7 @@ export default {
     transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
-#phimg{
+.phimg{
     width:30px;
     margin-top:auto;
     margin-bottom:auto;

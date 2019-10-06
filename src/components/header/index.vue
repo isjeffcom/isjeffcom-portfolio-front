@@ -35,6 +35,7 @@
 <script>
 
 import { EventBus } from '../../bus'
+import { isMobile } from '../../utils' 
 
 export default {
     name:"hheader",
@@ -58,8 +59,26 @@ export default {
     watch:{
         '$route': 'initial'
     },
+    mounted(){
+        if(isMobile()){
+            var hc = document.getElementById('hheader-center')
+            var hl = document.getElementById('hheader-left')
+            window.addEventListener('scroll', function(e) {
+                if(window.scrollY > 10){
+                    hc.style.opacity = 1
+                    hl.style.opacity = 0
+                } else {
+                    hc.style.opacity = 0
+                    hl.style.opacity = 1
+                }
+            });
+        }
+    },
     created(){
         this.initial()
+
+        
+        
     },
     methods:{
         initial () {
@@ -115,10 +134,6 @@ export default {
 }
 
 #hheader{
-    position: relative;
-    height: 100px;
-    width: 100%;
-    background: rgba(255,255,255,1);
     user-select: none;
 }
 
@@ -132,6 +147,7 @@ export default {
     left:34px;
     top:20px;
     cursor: pointer;
+    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
 #hheader-left img{
@@ -190,5 +206,38 @@ export default {
 
 .hheader-switcher-single{
     cursor: pointer;
+}
+
+@media only screen and (max-device-width : 812px)  { 
+    #hheader-left{
+        position: absolute;
+        left: 41%;
+        top: 20px;
+    }
+
+    #hheader-center{
+        width: 100%;
+        margin-top: 0px;
+    }
+
+    #hheader-center img{
+        width: 50%;
+        margin-top: 0px;
+    }
+
+    #hheader-left img{
+        width: 70px;
+    }
+
+    #hheader-right {
+        display: none;
+    }
+
+    #hheader-center{
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    
 }
 </style>
