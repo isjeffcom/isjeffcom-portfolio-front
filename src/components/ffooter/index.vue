@@ -1,7 +1,7 @@
 <template>
 
     <div id="ffooter">
-        <div id="f-inner">
+        <div id="f-inner" v-show="show">
             <div id="f-logo" v-on:click="toTop">
                 <img :src="base + bottomLogo" alt="logo">
             </div>
@@ -18,6 +18,7 @@
 <script>
 
 import scrollTo from 'scroll-to'
+import { EventBus } from '../../bus'
 
 export default {
     name:"ffooter",
@@ -31,11 +32,13 @@ export default {
     },
     data(){
         return{
-            
+            show: true,
         }
     },
     created(){
-        
+        EventBus.$on("ffooter", function(data){
+            this.show = data
+        })
     },
     methods:{
         toTop(){
@@ -43,7 +46,7 @@ export default {
               ease: 'inOutQuart',
               duration: 500
             })
-        },
+        }
     }
 }
 </script>
@@ -90,6 +93,10 @@ export default {
     #f-inner {
         width: 100%;
         padding-top: 20px;
+    }
+
+    #f-logo img{
+        width: 160px;
     }
 }
 

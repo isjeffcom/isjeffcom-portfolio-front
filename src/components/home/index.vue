@@ -6,7 +6,11 @@
             <div id="posts-inner">
                 <div class="post-single" v-for="item in postsList" :key="item.id">
                     <router-link :to="{ path:'/post', query: { pid: item.id} }">
+                        <div class="post-single-title">
+                            <span>{{item.title}}</span>
+                        </div>
                         <div class="post-single-filter"></div>
+                        
                         <!--iimage :isrc="base + item.title_img" :ialt="item.title" :width="'360px'" :height="'260px'"></iimage-->
                         <img :src="base + item.title_img" :alt="item.title">
                     </router-link>
@@ -167,6 +171,19 @@ export default {
     margin-right: 36px;
     margin-bottom:30px;
     cursor: pointer;
+    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
+}
+
+.post-single-title{
+    position: absolute;
+    font-family: fblack;
+    color: #ffffff;
+    font-size: 18px;
+    top: 40%;
+    width: 100%;
+    z-index: 3;
+    opacity: 0;
+    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
 .post-single-filter{
@@ -176,6 +193,7 @@ export default {
     background: rgba(0,0,0,1);
     opacity: .1;
     z-index:2;
+    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
 .post-single img{
@@ -190,6 +208,15 @@ export default {
 .post-single:hover img{
     filter: grayscale(0%);
 }
+
+.post-single:hover .post-single-filter{
+    opacity: .7;
+}
+
+.post-single:hover .post-single-title{
+    opacity: 1;
+}
+
 
 #pagination{
     margin-top: 80px;

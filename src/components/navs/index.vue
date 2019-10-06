@@ -1,11 +1,13 @@
 <template>
-    <div id="navs">
-        <div id="navs-inner">
-            <div class="navs-single" v-for="item in navs" :key="item.id">
-                <a :href="item.url">{{item.name}}</a>
+    <transition name="fade">
+        <div id="navs" v-show="show">
+            <div id="navs-inner">
+                <div class="navs-single" v-for="item in navs" :key="item.id">
+                    <a :href="item.url">{{item.name}}</a>
+                </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -14,9 +16,26 @@ export default {
     props:{
         navs: Array
     },
+    data(){
+        return{
+            show: true
+        }
+    }, 
+    watch:{
+        '$route': 'initial'
+    },
 
     created(){
-        console.log('a')
+        
+    },
+    methods:{
+        initial(){
+            if(this.$route.name === "post"){
+                this.show = false
+            } else {
+                this.show = true
+            }
+        }
     }
 }
 </script>

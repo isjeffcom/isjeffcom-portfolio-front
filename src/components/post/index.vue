@@ -70,6 +70,10 @@ export default {
     },
     created(){
         var that = this
+        
+        // Hide footer
+        EventBus.$emit("ffooter", false)
+
         this.pid = this.$route.query.pid
         this.getData()
 
@@ -95,6 +99,9 @@ export default {
 
                     that.postData.content_sublang = decodeRichText(that.postData.content_sublang)
                     that.postData.content_sublang = decodeImgSrc(that.postData.content_sublang, that.base)
+                    
+                    // Show footer
+                    EventBus.$emit("ffooter", true)
                 }
             })
         },

@@ -90,13 +90,8 @@ export default {
             EventBus.$emit('switchLang', data)
         },
 
-        showCNName(bol){
+        showCNName(){
 
-            if(this.animating){
-                return
-            } else {
-                this.animating = true
-            }
 
             if(this.nameLogoShown){
                 this.$refs.cl.style.opacity = 0
@@ -105,9 +100,6 @@ export default {
                     this.nameLogoShown = false
                 }, 400)
 
-                setTimeout(()=>{
-                    this.animating = false
-                }, 450)
                 
             } else {
                 this.$refs.cl.style.opacity = 0
@@ -116,9 +108,6 @@ export default {
                     this.nameLogoShown = true
                 }, 400)
 
-                setTimeout(()=>{
-                    this.animating = false
-                }, 450)
             }
             
         }
@@ -145,7 +134,7 @@ export default {
 #hheader-left{
     position:absolute;
     left:34px;
-    top:20px;
+    top:16px;
     cursor: pointer;
     transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }

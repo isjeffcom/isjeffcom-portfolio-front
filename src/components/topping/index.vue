@@ -14,8 +14,6 @@ export default {
         base: String,
         toppingLogo: String
     },
-
-    
 }
 </script>
 
