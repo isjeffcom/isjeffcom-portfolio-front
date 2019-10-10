@@ -18,7 +18,7 @@
                                 </div>
 
                                 <div class="post-single-date">
-                                    <span>{{item.date_modi.slice(5,10)}} · {{item.ux_visit}} views</span>
+                                    <span>{{item.date_modi ? item.date_modi.slice(5,10) : "2910-01-01"}} · {{item.ux_visit}} views</span>
                                 </div>
 
                             </div>
@@ -39,7 +39,7 @@
 
                         <div class="post-single-titleimg">
                             <div class="post-single-filter"></div>
-                            <iimage :isrc="base + item.title_img" :ialt="item.title" :width="'100%'" :height="'330px'"></iimage>
+                            <iimage :isrc="base + item.title_img" :ialt="item.title" :width="'100%'" :height="'330px'" style="opacity: 0.8;"></iimage>
                         </div>
 
                     
@@ -106,9 +106,9 @@ export default {
             ] : []
 
             param.push({name: "cate", val: this.$route.query.cate})
-            
 
             genGet(this.api, param, (res)=>{
+                console.log(res)
                 if(res.status){
                     that.postsTotal = res.data.total
                     that.blogsList = res.data.data
@@ -237,6 +237,25 @@ export default {
 
 .post-single-content-brief{
     margin-top: 8px;
+}
+
+.post-single-titleimg{
+    width: 100%;
+    height: 330px;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.post-single-filter{
+    width: 100%;
+    height: 330px;
+    margin-bottom: -330px;
+    background: rgba(0,0,0,1);
+    transition: all 0.32s cubic-bezier(.25,.8,.25,1);
+}
+
+.post-single-titleimg:hover .post-single-filter{
+    background: rgba(0,0,0,0);
 }
 
 </style>
