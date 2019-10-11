@@ -145,6 +145,7 @@ export default {
 
 #post-title-inner { 
     font-family: fblack;
+    font-weight: bold;
     margin-left: auto;
     margin-right: auto;
     width: 900px;

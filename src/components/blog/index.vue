@@ -203,6 +203,7 @@ export default {
 
 .post-single-like-count{
     font-family: fblack;
+    font-weight: bold;
     color:#333;
     margin-right: 6px;
     font-size:20px;
@@ -230,6 +231,7 @@ export default {
 
 .post-single-content-title{
     font-family: fblack;
+    font-weight: bold;
     font-size: 36px;
     width: 640px;
 }
