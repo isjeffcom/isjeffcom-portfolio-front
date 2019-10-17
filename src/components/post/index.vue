@@ -145,6 +145,7 @@ export default {
 
 #post-title-inner { 
     font-family: fblack;
+    font-weight: bold;
     margin-left: auto;
     margin-right: auto;
     width: 900px;
@@ -175,6 +176,7 @@ export default {
 #posts-contents-cont img{
     margin-top: 15px;
     margin-bottom: 15px;
+    width: 50%;
     user-select: none;
 }
 
@@ -257,6 +259,10 @@ export default {
 }
 
 @media only screen and (max-device-width : 812px)  { 
+
+    #post{
+        margin-top:30px;
+    }
     #post-contents {
         width: 100%;
     }
@@ -271,6 +277,10 @@ export default {
 
     #post-title-inner{
         width: 90%;
+    }
+
+    #posts-contents-cont img{
+        width: 100%;
     }
 }
 
