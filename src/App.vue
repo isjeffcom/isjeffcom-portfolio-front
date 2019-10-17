@@ -3,7 +3,7 @@
 
     <topping
       v-show="showTopping"
-      :base="site.baseUrl"
+      :base="api_base"
       :toppingLogo="theme['Topping-Logo'].val">
     </topping>
     
@@ -11,7 +11,7 @@
     <hheader
       id="hheader"
       ref="headerRef"
-      :base="site.baseUrl"
+      :base="api_base"
       :leftLogo="theme['Side-Logo'].val"
       :centerLogo="theme['Center-Logo'].val"
       :socialMedia="social_media">
@@ -27,7 +27,7 @@
 
       <transition name="fade">
         <router-view 
-          :base="site.baseUrl"
+          :base="api_base"
           :files="files">
         </router-view>
       </transition>
@@ -37,7 +37,7 @@
 
     <ffooter
       id="ffooter"
-      :base="site.baseUrl"
+      :base="api_base"
       :bottomLogo="theme['Footer-Logo'].val"
       :icpNum="theme['China-ICP-License'].val">
     </ffooter>
@@ -66,7 +66,7 @@ export default {
   },
   data(){
     return{
-      api_base: "https://api.isjeff.com/pot",
+      api_base: "https://isjeff.com/api",
       api_site: "/front/home/",
       api_track: "/updater/visit/",
       mode: "home",
