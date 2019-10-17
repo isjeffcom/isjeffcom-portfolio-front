@@ -79,7 +79,7 @@ export default {
     },
     data(){
         return{
-            api: "https://api.isjeff.com/pot/front/posts/",
+            api: "/front/posts/",
             page: 1,
             blogsList: [],
             postsTotal: 0,
@@ -108,7 +108,7 @@ export default {
             param.push({name: "cate", val: this.$route.query.cate})
             
 
-            genGet(this.api, param, (res)=>{
+            genGet(this.base + this.api, param, (res)=>{
                 if(res.status){
                     that.postsTotal = res.data.total
                     that.blogsList = res.data.data

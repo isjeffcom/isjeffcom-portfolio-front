@@ -57,8 +57,8 @@ export default {
     },
     data(){
         return{
-            api: "https://api.isjeff.com/pot/front/posts/",
-            api_up: "https://api.isjeff.com/pot/front/like/",
+            api: "/front/posts/",
+            api_up: "/front/like/",
             loaded: false,
             liked: false,
             like_posted: false,
@@ -85,7 +85,7 @@ export default {
         getData () {
             var that = this
             
-            genGet(this.api, [{name: "pid", val: this.pid}], (res)=>{
+            genGet(this.base + this.api, [{name: "pid", val: this.pid}], (res)=>{
                 if(res.status){
 
                     that.postData = res.data.data[0]
@@ -114,7 +114,7 @@ export default {
             this.like_rotate = this.like_rotate == 360 ? 0 : this.like_rotate + 15
             
             if(!this.like_posted){
-                genUpdate(this.api_up, {pid: this.pid}, (res)=>{
+                genUpdate(this.base + this.api_up, {pid: this.pid}, (res)=>{
                     if(res.status){
                         this.like_posted = true
                     }

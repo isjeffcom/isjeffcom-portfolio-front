@@ -21,8 +21,8 @@
 
         <div id="pagination" v-if="postsTotal > 9">
             <div id="p-nav">
-                <div class="p-single arrow-left" :style="page === 1 ? 'opacity: .1' : 'opacity: 1'" v-on:click="sPage(1)"></div>
-                <div class="p-single arrow-right" :style="page === pagesTotal  ? 'opacity: .1' : 'opacity: 1'" v-on:click="sPage(0)"></div>
+                <div class="p-single arrow-left" :style="page === 1 ? 'opacity: .1' : 'opacity: 1'" v-on:click="sPage(0)"></div>
+                <div class="p-single arrow-right" :style="page === pagesTotal  ? 'opacity: .1' : 'opacity: 1'" v-on:click="sPage(1)"></div>
             </div>
         </div>
 
@@ -64,7 +64,7 @@ export default {
     },
     data(){
         return{
-            api: "https://api.isjeff.com/pot/front/posts/",
+            api: "/front/posts/",
             page: 1,
             postsList: [],
             postsTotal: 0,
@@ -93,7 +93,7 @@ export default {
                 param.push({name: "cate", val: this.$route.query.cate})
             }
 
-            genGet(this.api, param, (res)=>{
+            genGet(this.base + this.api, param, (res)=>{
                 if(res.status){
                     that.postsTotal = res.data.total
                     that.postsList = res.data.data
@@ -103,7 +103,7 @@ export default {
         },
 
         sPage (mode) {
-            
+            console.log(this.page)
             if(mode === 1 && this.page !== this.pagesTotal){
                 this.page = this.page + 1
             } 
@@ -200,7 +200,7 @@ export default {
     width:360px;
     height:280px;
     object-fit: cover;
-    filter: grayscale(100%);
+    filter: grayscale(10%);
     z-index:1;
     transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
