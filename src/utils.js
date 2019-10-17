@@ -29,11 +29,12 @@ export function setCookie (name, value, expDays, remove) {
         expTime = (((60 * 1000)*60)*24)*expDays
         exp = new Date()
         exp.setTime(exp.getTime() + expTime)
-        document.cookie = name + "=" + value + ";" + "expires=" + exp.toGMTString()+";"
+        document.cookie = name + "=" + value + ";" + "expires=" + exp.toGMTString()+";SameSite=Strict;"
     } else {
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     }
 }
+
 export function isMobile () {
     return screen.width < 812 ? true : false
 }

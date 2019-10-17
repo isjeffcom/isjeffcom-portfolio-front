@@ -8,9 +8,9 @@
             </div>
             </router-link>
 
-            <div id="hheader-center" ref="cl" @mouseenter="showCNName()" @mouseleave="showCNName()">
-                <img id="hheader-center-logo" :src="base + centerLogo" alt="Name" v-show="nameLogoShown">
-                <img id="hheader-center-upbtn" src="../../assets/sup.png" alt="Name" v-show="!nameLogoShown">
+            <div id="hheader-center" ref="cl">
+                <img id="hheader-center-logo" :src="base + centerLogo" alt="Name">
+                <img id="hheader-center-upbtn" src="../../assets/sup.png" alt="Name">
             </div>
 
             <div id="hheader-right">
@@ -22,9 +22,9 @@
                 
 
                 <div class="hheader-switcher" v-if="mode == 'post'">
-                    <span class="hheader-switcher-single" v-on:click="switchLang(0)" :style="lang == 0 ? 'font-weight: bold' : 'font-weight: normal'">ENG</span> 
+                    <span class="hheader-switcher-single" v-on:click="switchLang(0, false)" :style="lang == 0 ? 'font-weight: bold' : 'font-weight: normal'">ENG</span> 
                     <span> / </span> 
-                    <span class="hheader-switcher-single" v-on:click="switchLang(1)" :style="lang == 1 ? 'font-weight: bold' : 'font-weight: normal'">中文</span>
+                    <span class="hheader-switcher-single" v-on:click="switchLang(1, false)" :style="lang == 1 ? 'font-weight: bold' : 'font-weight: normal'">中文</span>
                 </div>
             </div>
         </div>
@@ -75,41 +75,23 @@ export default {
         }
     },
     created(){
+        var that = this
         this.initial()
 
-        
-        
+        EventBus.$on("switchLangSync", (d)=>{
+            that.switchLang(d, true)
+        })
     },
     methods:{
         initial () {
             this.lang = 0
             this.mode = this.$route.name
         },
-        switchLang(data) {
+        switchLang(data, sync) {
             this.lang = data
-            EventBus.$emit('switchLang', data)
-        },
-
-        showCNName(){
-
-
-            if(this.nameLogoShown){
-                this.$refs.cl.style.opacity = 0
-                setTimeout(()=>{
-                    this.$refs.cl.style.opacity = 1
-                    this.nameLogoShown = false
-                }, 400)
-
-                
-            } else {
-                this.$refs.cl.style.opacity = 0
-                setTimeout(()=>{
-                    this.$refs.cl.style.opacity = 1
-                    this.nameLogoShown = true
-                }, 400)
-
+            if(!sync){
+                EventBus.$emit('switchLang', data)
             }
-            
         }
     }
 }
@@ -148,10 +130,18 @@ export default {
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
-    cursor: pointer;
     transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
+#hheader-center:hover #hheader-center-logo{
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+#hheader-center:hover #hheader-center-upbtn{
+    opacity: 1;
+    transform: translateY(-60px);
+}
 
 
 #hheader-center img{
@@ -181,12 +171,15 @@ export default {
 }
 
 #hheader-center-logo{
-    transition: all 0.2s cubic-bezier(.25,.8,.25,1);
+    opacity: 1;
+    transition: all 0.32s cubic-bezier(.25,.8,.25,1);
 }
 
 #hheader-center-upbtn{
+    opacity:0;
     width:300px !important;
-    transition: all 0.2s cubic-bezier(.25,.8,.25,1);
+    margin-top: -50px;
+    transition: all 0.32s cubic-bezier(.25,.8,.25,1);
 }
 
 .hheader-switcher{

@@ -107,12 +107,7 @@ export default {
 
             param.push({name: "cate", val: this.$route.query.cate})
 
-<<<<<<< HEAD
             genGet(this.base + this.api, param, (res)=>{
-=======
-            genGet(this.api, param, (res)=>{
-                console.log(res)
->>>>>>> 45c565f7213cad84e61871aba1575489edfc386d
                 if(res.status){
                     that.postsTotal = res.data.total
                     that.blogsList = res.data.data

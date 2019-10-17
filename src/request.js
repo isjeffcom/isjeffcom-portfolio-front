@@ -62,6 +62,11 @@ export function logVisit (api, expDay) {
 
     genUpdate(api, postData, (res)=>{
         if(res.status){
+            var result = res.split(",");
+            if(result[1] == "CN"){
+                utils.setCookie('v_region', 'CN', expDay, false)
+            }
+            
             // do nothing
         }
     })

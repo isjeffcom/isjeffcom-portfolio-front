@@ -1,7 +1,7 @@
 <template>
 
     <div id="ffooter">
-        <div id="f-inner" v-show="show">
+        <div id="f-inner" v-show="fshow">
             <div id="f-logo" v-on:click="toTop">
                 <img :src="base + bottomLogo" alt="logo">
             </div>
@@ -32,12 +32,13 @@ export default {
     },
     data(){
         return{
-            show: true,
+            fshow: false,
         }
     },
     created(){
+        var that = this
         EventBus.$on("ffooter", function(data){
-            this.show = data
+            that.disShow(data)
         })
     },
     methods:{
@@ -46,6 +47,10 @@ export default {
               ease: 'inOutQuart',
               duration: 500
             })
+        },
+
+        disShow (bol) {
+            this.fshow = bol
         }
     }
 }
@@ -89,7 +94,7 @@ export default {
     color: #000000;
 }
 
-@media only screen and (max-device-width : 812px)  { 
+@media only screen and (max-device-width: 812px)  { 
     #f-inner {
         width: 100%;
         padding-top: 20px;

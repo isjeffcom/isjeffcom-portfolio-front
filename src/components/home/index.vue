@@ -103,7 +103,6 @@ export default {
         },
 
         sPage (mode) {
-            console.log(this.page)
             if(mode === 1 && this.page !== this.pagesTotal){
                 this.page = this.page + 1
             } 

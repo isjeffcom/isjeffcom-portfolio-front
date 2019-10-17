@@ -47,13 +47,10 @@ export default {
     },
     created(){
         this.tclass = this.mode
-        //console.log(this.isrc)
     },
 
     methods:{
         imgLoaded () {
-            //this.$refs.placeholder.style.opacity = 0
-            //this.$refs.real.style.opacity = 1
             setTimeout(()=>{
                 this.loaded = true
             }, 1000)
@@ -63,14 +60,6 @@ export default {
 </script>
 
 <style scoped>
-#real{
-    position:relative;
-    margin-top:0px;
-    margin-left:0px;
-    opacity: 1;
-    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
-}
-
 #real{
     position:relative;
     margin-top:0px;
@@ -98,8 +87,8 @@ export default {
 }
 
 .grey img{
-    opacity: 0.8;
-    filter: grayscale(100%) contrast(50%);
+    opacity: 0.4;
+    filter: grayscale(100%) contrast(60%);
     transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 

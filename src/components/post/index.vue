@@ -10,9 +10,9 @@
             </div>
         </div>
 
-        <div id="post-title-img">
+        <div id="post-title-img" v-if="postData.title_img.length > 1">
             <div id="post-title-img-inner">
-                <iimage :isrc="base + postData.title_img" :ialt="'title image'" :width="'100%'" :height="'380px'" :mode="'grey'"></iimage>
+                <iimage :isrc="base + postData.title_img" :ialt="'title image'" :width="'100%'" :height="'340px'" :mode="'grey'"></iimage>
             </div>
         </div>
 
@@ -38,8 +38,22 @@
             </div>
         </div>
 
+        <transition name="up">
 
-        <image-viewer v-if="showImgViewer && viewingImg.length > 1" :path="viewingImg"></image-viewer>
+            <div id="post-popup" v-if="popup">
+
+                <div id="post-popup-inner">
+                    <div id="post-popup-info">
+                        <span>{{popup_info}}</span>
+                    </div>
+                    <div id="post-popup-button" v-on:click="popupAct">{{popup_action}}</div>
+                </div>
+                
+            </div>
+
+        </transition>
+        
+        <image-viewer v-if="showImgViewer && viewingImg.length > 1" :imgWidth="viewingImgWidth" :imgHeight="viewingImgHeight" :path="viewingImg"></image-viewer>
 
     </div>
 </template>
@@ -47,7 +61,7 @@
 <script>
 import { genGet, genUpdate } from '../../request'
 
-import { decodeRichText, decodeImgSrc } from '../../utils'
+import { decodeRichText, decodeImgSrc, getCookie, setCookie } from '../../utils'
 import { EventBus } from '../../bus'
 
 import iimage from '../../components/widgets/iimage'
@@ -74,25 +88,41 @@ export default {
             lang:0,
             like_rotate: 15,
             postData: {},
-            viewingImg: ""
+            viewingImg: "",
+            viewingImgWidth: 0,
+            viewingImgHeight: 0,
+            popup: false,
+            popup_info: "",
+            popup_action: ""
 
         }
     },
 
     mounted(){
-        window.addEventListener('click', e => console.log(e))
+        var that = this
+        window.addEventListener('click', e => {
+            if(e.target.nodeName == "IMG" && e.target.parentNode.nodeName == "P" && e.target.id != "iv-close"){
+                that.handleImgViewer(e.target.src, e.target.naturalWidth, e.target.naturalHeight, true)
+            }
+        })
     },
     created(){
         var that = this
-        
-        // Hide footer
-        EventBus.$emit("ffooter", false)
 
         this.pid = this.$route.query.pid
         this.getData()
 
+        if(getCookie("v_region") == "CN"){
+            this.switchLang(1)
+            this.alertLang()
+        }
+
         EventBus.$on("switchLang", function(data){
             that.switchLang(data)
+        })
+
+        EventBus.$on("img-viewer-close", function(data){
+            that.handleImgViewer('', 0, 0, false)
         })
     },
     methods:{
@@ -114,9 +144,9 @@ export default {
                     that.postData.content_sublang = decodeRichText(that.postData.content_sublang)
                     that.postData.content_sublang = decodeImgSrc(that.postData.content_sublang, that.base)
                     
-                    // Show footer
-                    EventBus.$emit("ffooter", true)
                 }
+
+                EventBus.$emit("ffooter", true)
             })
         },
 
@@ -136,13 +166,48 @@ export default {
             }
         },
 
-        switchLang (data) {
-            this.lang = data
+        showPopup (info, action, delay) {
+            this.popup = true
+            this.popup_info = info
+            this.popup_action = action
+            setTimeout(()=>{
+                this.popup = false
+            }, delay*1000)
         },
 
-        handleImgViewer (bol, data) {
-            this.viewingImg = data
+        popupAct (){
+            this.switchLang(0)
+            this.popup = false
+            setCookie("v_region", 0, 0, true)
+        },
+
+        alertLang () {
+            this.showPopup(
+                "您可能在中国大陆地区，已切换自动至中文 You might visit from China mainland, post has been switch to Chinese.",
+                "BACK",
+                10
+            )
+        },
+
+        switchLang (data) {
+            this.lang = data
+            EventBus.$emit("switchLangSync", data)
+        },
+
+        handleImgViewer (data, width, height, bol) {
+
             this.showImgViewer = bol
+
+            if(bol){
+                this.viewingImg = data
+                this.viewingImgWidth = width
+                this.viewingImgHeight = height
+            } else {
+                this.viewingImg = ""
+                this.viewingImgWidth = 0
+                this.viewingImgHeight = 0
+            }
+
         }
     }
 }
@@ -150,9 +215,60 @@ export default {
 
 <style>
 
+.up-enter-active {
+  animation: poping-up .35s;
+  animation-fill-mode: forwards;
+}
+.up-leave-active {
+  animation: poping-up .35s reverse;
+}
+
+@keyframes poping-up {
+  0% {
+    opacity: 0;
+    bottom: -40px;
+  }
+  100% {
+    opacity: 1;
+    bottom: 0px;
+  }
+}
+
+#post-popup{
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+    height: 40px;
+    color: #444444;
+    font-weight: bold;
+    background-color: #00FFC3;
+    text-align:left;
+    user-select: none;
+}
+
+#post-popup-info{
+    width: 70%;
+    margin-top: 8px;
+    margin-left: 16px;
+}
+
+#post-popup-button{
+    position: absolute;
+    right: 20px;
+    top: 7px;
+    width: 59px;
+    height: 24px;
+    padding-top: 2px;
+    padding-left: 20px;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
 #post-title{
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 #post-title-img{
@@ -182,7 +298,7 @@ export default {
 
 #post-contents{
     text-align: left;
-    margin-top: 470px;
+    margin-top: 400px;
     margin-left: auto;
     margin-right: auto;
     width: 1120px;
@@ -192,12 +308,17 @@ export default {
     line-height: 32px;
 }
 
+#posts-contents-cont p{
+    margin-bottom: 26px;
+}
+
 #posts-contents-cont img{
     margin-top: 15px;
     margin-bottom: 15px;
     width: 50%;
     user-select: none;
 }
+
 
 #posts-contents-cont iframe{
     margin-top: 15px;

@@ -123,7 +123,7 @@ export default {
         
     },
 
-    scrollToTopping () {
+    /*scrollToTopping () {
 
       var that = this
       this.animating = true
@@ -149,7 +149,7 @@ export default {
         that.animating = false
         that.currentPosi = 0
       }, 700)
-    },
+    },*/
 
     getSiteData (){
 
@@ -191,7 +191,6 @@ export default {
           
 
           if(this.dontDisplayAni){
-            //console.log(this.dontDisplayAni)
             this.showTopping = false
           } else {
             this.scrollToMain()
