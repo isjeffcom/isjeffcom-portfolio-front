@@ -1,6 +1,5 @@
 <template>
     <div id="all">
-        
 
         <div id="posts">
             <div id="posts-inner">
@@ -49,6 +48,7 @@
 </template>
 
 <script>
+import { EventBus } from '../../bus'
 import { genGet } from '../../request'
 import iimage from '../widgets/iimage'
 
@@ -100,6 +100,8 @@ export default {
                     that.pagesTotal = Math.ceil(that.postsTotal / that.pageSize)
                 }
             })
+
+            EventBus.$emit("show-footer", true)
         },
 
         sPage (mode) {

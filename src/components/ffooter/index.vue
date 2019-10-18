@@ -1,7 +1,7 @@
 <template>
 
     <div id="ffooter">
-        <div id="f-inner" v-show="fshow">
+        <div id="f-inner">
             <div id="f-logo" v-on:click="toTop">
                 <img :src="base + bottomLogo" alt="logo">
             </div>
@@ -32,14 +32,11 @@ export default {
     },
     data(){
         return{
-            fshow: false,
+
         }
     },
     created(){
         var that = this
-        EventBus.$on("ffooter", function(data){
-            that.disShow(data)
-        })
     },
     methods:{
         toTop(){
@@ -47,10 +44,6 @@ export default {
               ease: 'inOutQuart',
               duration: 500
             })
-        },
-
-        disShow (bol) {
-            this.fshow = bol
         }
     }
 }

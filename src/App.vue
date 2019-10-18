@@ -26,10 +26,12 @@
          ref="contentsRef">
 
       <transition name="fade">
-        <router-view 
-          :base="api_base"
-          :files="files">
-        </router-view>
+        <keep-alive exclude="post">
+          <router-view 
+            :base="api_base"
+            :files="files">
+          </router-view>
+        </keep-alive>
       </transition>
 
     </div>
@@ -37,6 +39,7 @@
 
     <ffooter
       id="ffooter"
+      v-show="showFooter"
       :base="api_base"
       :bottomLogo="theme['Footer-Logo'].val"
       :icpNum="theme['China-ICP-License'].val">
@@ -48,6 +51,7 @@
 </template>
 
 <script>
+import { EventBus } from './bus'
 import { genGet, logVisit } from './request'
 import { decodeRichText, setCookie, getCookie } from './utils'
 import scrollTo from 'scroll-to'
@@ -79,6 +83,7 @@ export default {
       files: [],
       headerY: 0,
       showTopping: true,
+      showFooter: false,
       animating: false,
       currentPosi: 0,
       delay: 3000,
@@ -89,11 +94,17 @@ export default {
   },
 
   created(){
+    var that = this
     this.dontDisplayAni = getCookie('topping') == "true" ? true : false
     this.getSiteData()
     setTimeout(()=>{
       logVisit(this.api_base + this.api_track, 1)
     }, 1000)
+
+
+    EventBus.$on("show-footer", function(data){
+        that.showFot(data)
+    })
   },
   methods:{
 
@@ -121,6 +132,10 @@ export default {
 
         setCookie("topping", true, 3, false)
         
+    },
+
+    showFot (d) {
+      this.showFooter = d
     },
 
     /*scrollToTopping () {
@@ -232,24 +247,27 @@ a{
     text-decoration: none !important;
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .4s;
+.fade-enter-active{
+  animation: router-main .42s forwards;
 }
 
-.fade-enter{
-  opacity: 0;
-}
-.fade-enter-to {
-  opacity: 1;
+.fade-leave-active{
+  animation: router-main .42s reverse;
 }
 
-.fade-leave{
-  opacity: 1;
+@keyframes router-main {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
 
-.fade-leave-to{
-  opacity: 0;
-}
+
+
 
 #app {
   height:auto;
@@ -277,6 +295,7 @@ a{
     height:48px;
     margin-top:40px;
     margin-bottom: 36px;
+    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
 #contents{
@@ -285,6 +304,7 @@ a{
   margin-top:30px;
   margin-left:auto;
   margin-right:auto;
+  transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
 /*@media only screen 

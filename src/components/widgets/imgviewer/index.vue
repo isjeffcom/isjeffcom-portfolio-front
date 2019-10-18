@@ -55,6 +55,7 @@ export default {
     top: 24px;
     right: 24px;
     cursor: pointer;
+    z-index: 99999;
 }
 
 #image-viewer-close img{

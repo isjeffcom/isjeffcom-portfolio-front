@@ -1,5 +1,5 @@
 <template>
-    <transition name="fade">
+    <transition name="navshow">
         <div id="navs" v-show="show">
             <div id="navs-inner">
                 <div class="navs-single" v-for="item in navs" :key="item.id">
@@ -26,7 +26,7 @@ export default {
     },
 
     created(){
-        
+        this.initial()
     },
     methods:{
         initial(){
@@ -41,6 +41,25 @@ export default {
 </script>
 
 <style scoped>
+
+.navshow-enter-active{
+    animation: nav-show .3s forwards;
+}
+
+.navshow-leave-active{
+    animation: nav-show .3s reverse;
+}
+
+@keyframes nav-show {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
 
 
 #navs-inner{

@@ -146,7 +146,7 @@ export default {
                     
                 }
 
-                EventBus.$emit("ffooter", true)
+                EventBus.$emit("show-footer", true)
             })
         },
 
@@ -216,8 +216,7 @@ export default {
 <style>
 
 .up-enter-active {
-  animation: poping-up .35s;
-  animation-fill-mode: forwards;
+  animation: poping-up .35s forwards;
 }
 .up-leave-active {
   animation: poping-up .35s reverse;
@@ -266,6 +265,7 @@ export default {
     cursor: pointer;
 }
 
+
 #post-title{
     width: 100%;
     margin-bottom: 30px;
@@ -301,7 +301,7 @@ export default {
     margin-top: 400px;
     margin-left: auto;
     margin-right: auto;
-    width: 1120px;
+    width: 730px;
 }
 
 #posts-contents-cont{
@@ -315,12 +315,13 @@ export default {
 #posts-contents-cont img{
     margin-top: 15px;
     margin-bottom: 15px;
-    width: 50%;
+    width: 100%;
     user-select: none;
 }
 
 
 #posts-contents-cont iframe{
+    width: 100%;
     margin-top: 15px;
     margin-bottom: 15px;
 }
