@@ -401,8 +401,8 @@ export default {
 
 @media only screen and (max-device-width : 812px)  { 
 
-    #post{
-        margin-top:30px;
+    #post{ 
+        margin-top: 70px;
     }
     #post-contents {
         width: 100%;

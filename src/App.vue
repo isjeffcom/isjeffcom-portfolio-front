@@ -337,13 +337,13 @@ and (orientation : landscape) {
   #nnavs {
     width: 100%;
     height: 28px;
-    margin-top: 20px;
+    margin-top: 100px;
     margin-bottom: 16px;
   }
 
   #contents{
     width: 90%;
-    margin-top: 60px;
+    margin-top: 30px;
   }
 
   #ffooter{

@@ -45,6 +45,7 @@ export function genUpdate (api, data, callback) {
 
 
 export function logVisit (api, expDay) {
+
     
     if(utils.getCookie('isjeffcom')){
         return
@@ -62,12 +63,10 @@ export function logVisit (api, expDay) {
 
     genUpdate(api, postData, (res)=>{
         if(res.status){
-            var result = res.split(",");
-            if(result[1] == "CN"){
+            var result = res.data.split(",");
+            if(result[1].indexOf("CN") != -1){
                 utils.setCookie('v_region', 'CN', expDay, false)
             }
-            
-            // do nothing
         }
     })
 }
