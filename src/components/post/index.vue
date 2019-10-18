@@ -183,7 +183,7 @@ export default {
 
         alertLang () {
             this.showPopup(
-                "您可能在中国大陆地区，已切换自动至中文 You might visit from China mainland, post has been switch to Chinese.",
+                "您可能在中国大陆地区，已切换为中文 You might visit from China mainland, post has been switch to Chinese.",
                 "BACK",
                 10
             )
@@ -422,6 +422,26 @@ export default {
 
     #posts-contents-cont img{
         width: 100%;
+    }
+
+    #post-popup {
+        height: 84px;
+        font-size: 14px;
+    }
+
+    #post-popup-info {
+        width: 75%;
+        margin-top: 12px;
+    }
+
+    #post-popup-button{
+        right: 16px;
+        top: 20px;
+        width: 48px;
+        height: 34px;
+        padding-top: 12px;
+        padding-left: 13px;
+        border-radius: 4px;
     }
 }
 

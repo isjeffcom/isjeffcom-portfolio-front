@@ -23,6 +23,11 @@ export function getCookie (cname) {
 }
 
 export function setCookie (name, value, expDays, remove) {
+    // Prevent repeatedly set same cookie
+    if(getCookie(name).length > 1){
+        return
+    }
+
     var exp, expTime
     
     if(!remove){
