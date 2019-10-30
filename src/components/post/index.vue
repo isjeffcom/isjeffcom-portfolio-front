@@ -66,6 +66,7 @@ import { EventBus } from '../../bus'
 
 import iimage from '../../components/widgets/iimage'
 import imageViewer from '../../components/widgets/imgviewer'
+import scrollTo from 'scroll-to'
 
 export default {
     name: 'post',
@@ -124,6 +125,13 @@ export default {
         EventBus.$on("img-viewer-close", function(data){
             that.handleImgViewer('', 0, 0, false)
         })
+
+        if(window.scrollY != 0){
+            scrollTo(0, 0, {
+              ease: 'inOutQuart',
+              duration: 100
+            })
+        }
     },
     methods:{
         getData () {

@@ -3,18 +3,18 @@
     <div id="hheader">
         <div id="hheader-inner">
             <router-link :to="{ path:'/home'}">
-            <div id="hheader-left">
+            <div id="hheader-left" ref="hl">
                 <img :src="base + leftLogo" alt="Logo">
             </div>
             </router-link>
 
-            <div id="hheader-center" ref="cl">
+            <div id="hheader-center" ref="hc">
                 <img id="hheader-center-logo" :src="base + centerLogo" alt="Name">
                 <img id="hheader-center-upbtn" src="../../assets/sup.png" alt="Name">
             </div>
 
             <div id="hheader-right">
-                <div class="hheader-sm" v-if="mode != 'post'">
+                <div class="hheader-sm" v-if="mode != 'post' && !mobileView">
                     <div class="hheader-sm-single" v-for="item in socialMedia" :key="item.id">
                         <a :href="item.url"><img :src="base + item.icon" :alt="item.name" class="hheader-sm-single-img"></a>
                     </div>
@@ -53,6 +53,7 @@ export default {
             nameLogoShown: true,
             animating: false,
             lang: 0,
+            mobileView: isMobile(),
             mode: "home"
         }
     },
@@ -60,16 +61,21 @@ export default {
         '$route': 'initial'
     },
     mounted(){
-        if(isMobile()){
+        if(this.mobileView){
             var hc = document.getElementById('hheader-center')
             var hl = document.getElementById('hheader-left')
+            var hr = document.getElementById('hheader-right')
+
+
             window.addEventListener('scroll', function(e) {
                 if(window.scrollY > 10){
                     hc.style.opacity = 1
                     hl.style.opacity = 0
+                    hr.style.top = "-11px"
                 } else {
                     hc.style.opacity = 0
                     hl.style.opacity = 1
+                    hr.style.top = "3px"
                 }
             });
         }
@@ -85,7 +91,22 @@ export default {
     methods:{
         initial () {
             this.lang = 0
+            
             this.mode = this.$route.name
+
+            if(this.mobileView && this.mode == "home"){
+                this.$nextTick(()=>{
+                    this.$refs.hl.style.left = "41%"
+                    this.$refs.hc.style.left = "0px"
+                })
+            }
+            
+            if(this.mobileView && this.mode != "home"){
+                this.$nextTick(()=>{
+                    this.$refs.hl.style.left = "2%"
+                    this.$refs.hc.style.left = "-100px"
+                })
+            }
         },
         switchLang(data, sync) {
             this.lang = data
@@ -118,7 +139,7 @@ export default {
     left:34px;
     top:16px;
     cursor: pointer;
-    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
+    transition: all 0.32s cubic-bezier(.25,.8,.25,1);
 }
 
 #hheader-left img{
@@ -130,7 +151,7 @@ export default {
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
-    transition: all 0.42s cubic-bezier(.25,.8,.25,1);
+    transition: all 0.32s cubic-bezier(.25,.8,.25,1);
 }
 
 #hheader-center:hover #hheader-center-logo{
@@ -152,6 +173,7 @@ export default {
     position: absolute;
     top:20px;
     right:50px;
+    transition: all 0.32s cubic-bezier(.25,.8,.25,1);
 }
 
 .hheader-sm{
@@ -191,15 +213,18 @@ export default {
 }
 
 @media only screen and (max-device-width : 812px)  { 
+
     #hheader-left{
         position: absolute;
-        left: 41%;
-        top: 20px;
+        left: 2%;
+        top: 15px;
     }
 
     #hheader-center{
         width: 100%;
         margin-top: 0px;
+        position: absolute;
+        left: -100px;
     }
 
     #hheader-center img{
@@ -212,7 +237,9 @@ export default {
     }
 
     #hheader-right {
-        display: none;
+        position: absolute;
+        top: 3px;
+        right: 10px;
     }
 
     #hheader-center{

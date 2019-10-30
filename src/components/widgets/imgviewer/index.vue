@@ -1,8 +1,8 @@
 <template>
     <div id="image-viewer">
-        <div id="image-viewer-close" v-on:click="close"><img id="iv-close" src="../../../assets/close.svg" alt=""></div>
+        <div id="image-viewer-close" v-on:click="close"><img id="iv-close" src="../../../assets/close.png" alt=""></div>
         <div id="image-viewer-inner">
-            <img :src="path" :style="stylePreset" alt="image">
+            <img :src="path" alt="image">
         </div>
     </div>
 </template>
@@ -10,6 +10,7 @@
 <script>
 
 import { EventBus } from '../../../bus'
+import { isMobile } from '../../../utils'
 
 export default {
     name: "viewimg",
@@ -18,17 +19,7 @@ export default {
         imgHeight: Number,
         path: String
     },
-    data(){
-        return{
-            stylePreset: ""
-        }
-    },
-    created(){
-        this.stylePreset = this.imgWidth > this.imgHeight ? "width:" + window.innerWidth + "px" : "height:" + window.innerHeight + "px"
-        if(this.imgWidth > this.imgHeight && this.imgHeight > window.innerHeight){
-            this.stylePreset = "height:" + window.innerHeight + "px"
-        }
-    },
+
     methods:{
         close () {
             EventBus.$emit("img-viewer-close", true)
@@ -61,4 +52,17 @@ export default {
 #image-viewer-close img{
     width: 44px;
 }
+
+#image-viewer-inner{
+    height: 100%;
+    width: 100%;
+}
+
+#image-viewer-inner img{
+    height: 100%;
+    width: 100%;
+    object-fit: scale-down;
+}
+
+
 </style>
