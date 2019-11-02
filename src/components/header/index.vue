@@ -20,9 +20,9 @@
                 
 
                 <div class="hheader-switcher" v-if="mode == 'post'">
-                    <span class="hheader-switcher-single" v-on:click="switchLang(0, false)" :style="lang == 0 ? 'font-weight: bold' : 'font-weight: normal'">ENG</span> 
+                    <span class="hheader-switcher-single" v-on:click="switchLang(0, false)" :style="lang == 0 ? 'font-weight: bold;' : 'font-weight: normal;'">ENG</span> 
                     <span> / </span> 
-                    <span class="hheader-switcher-single" v-on:click="switchLang(1, false)" :style="lang == 1 ? 'font-weight: bold' : 'font-weight: normal'">中文</span>
+                    <span class="hheader-switcher-single" v-on:click="switchLang(1, false)" :style="lang == 1 ? 'font-weight: bold;' : 'font-weight: normal;'">中文</span>
                 </div>
             </div>
         </div>
@@ -101,14 +101,10 @@ export default {
     created(){
         var that = this
         this.initial()
-
-        EventBus.$on("switchLangSync", (d)=>{
-            that.switchLang(d, true)
-        })
     },
     methods:{
         initial () {
-            this.lang = 0
+            this.lang = parseInt(this.$route.query.lang)
             
             this.mode = this.$route.name
             
@@ -144,9 +140,12 @@ export default {
                 this.$router.push('home')
 
             } else {
-
-                window.history.back()
-
+                // Lang param is added after page loaded so if has lang parma than go 2 stpe backward
+                if(this.$route.query.lang){
+                    window.history.go(-2)
+                } else {
+                    window.history.go(-1)
+                }
             }
             
         }

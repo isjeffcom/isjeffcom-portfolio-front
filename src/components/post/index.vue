@@ -97,15 +97,19 @@ export default {
             popup: false,
             popup_info: "",
             popup_action: "",
-            postTitle: ""
+            shareTitle: "",
+            shareDes: ""
 
         }
     },
 
     metaInfo() {
         return{
-            title: this.postData.title,
+            title: this.shareTitle,
             titleTemplate: '%s - ' + this.siteName,
+            meta: [
+                { name: "description", content: this.shareDes },
+            ],
             htmlAttrs: {
                 lang: 'en',
                 amp: true
@@ -125,22 +129,47 @@ export default {
     created(){
         var that = this
 
+        EventBus.$emit("show-footer", false)
+
         this.pid = this.$route.query.pid
         this.getData()
 
-        if(getCookie("v_region") == "CN"){
-            this.switchLang(1)
+        // If user share link with lang
+        if(this.$route.query.lang == 1){
+            this.lang = parseInt(this.$route.query.lang)
+            this.switchLang(1, true)
+        }
+        
+        // If user from China mainland
+        else if(getCookie("v_region") == "CN"){
+            this.switchLang(1, true)
             this.alertLang()
+        } 
+        
+        // If no lang param than set up one
+        else {
+            this.setUrlParam()
         }
 
+        // Check later (in case if IP check might return late)
+        setTimeout(()=>{
+            if(getCookie("v_region") == "CN" && this.lang == 0){
+                this.switchLang(1, true)
+                this.alertLang()
+            }
+        }, 3000)
+
+        // If switch lang from navigation bar
         EventBus.$on("switchLang", function(data){
-            that.switchLang(data)
+            that.switchLang(data, false)
         })
 
+        // If image viewer closed
         EventBus.$on("img-viewer-close", function(data){
             that.handleImgViewer('', 0, 0, false)
         })
 
+        // If not on top when open than scroll to top
         if(window.scrollY != 0){
             scrollTo(0, 0, {
               ease: 'inOutQuart',
@@ -157,21 +186,23 @@ export default {
 
                     that.postData = res.data.data[0]
                     
+                    // Parse and decode data
                     that.postData.content = decodeRichText(that.postData.content)
                     that.postData.content = decodeImgSrc(that.postData.content, that.base)
+                    
                     that.postData.ux_likes = parseInt(that.postData.ux_likes)
-                    that.$nextTick(()=>{
-                        that.loaded = true
-                    })
                     that.postData.date_pub = that.postData.date_pub.substr(0, that.postData.date_pub.length -9 )
-
                     that.postData.content_sublang = decodeRichText(that.postData.content_sublang)
                     that.postData.content_sublang = decodeImgSrc(that.postData.content_sublang, that.base)
-                    
-                    // Set page title
-                    metaInfo.title = that.postData.title
-                }
 
+                    that.$nextTick(()=>{
+                        // Tell everyone we are ready
+                        that.loaded = true
+                        // Set meta for SEO and Share
+                        that.setMeta()
+                    })
+                    
+                }
                 EventBus.$emit("show-footer", true)
             })
 
@@ -205,7 +236,7 @@ export default {
         },
 
         popupAct (){
-            this.switchLang(0)
+            this.switchLang(0, true)
             this.popup = false
             setCookie("v_region", 0, 0, true)
         },
@@ -218,9 +249,11 @@ export default {
             )
         },
 
-        switchLang (data) {
+        switchLang (data, sync) {
             this.lang = data
-            EventBus.$emit("switchLangSync", data)
+            this.setMeta()
+            this.setUrlParam()
+            
         },
 
         handleImgViewer (data, width, height, bol) {
@@ -237,6 +270,20 @@ export default {
                 this.viewingImgHeight = 0
             }
 
+        },
+
+        // Set page meta for share
+        setMeta () {
+            this.shareTitle = this.lang == 0 ? this.postData.title : this.postData.title_sublang
+            this.shareDes = this.lang == 0 ? this.postData.brief : this.postData.brief_sublang
+        },
+
+        // Save language settings when user share a post
+        setUrlParam () {
+            if(!this.$route.query.lang || this.$route.query.lang != parseInt(this.lang)){
+                this.$router.push({ query: Object.assign({}, this.$route.query, { lang: this.lang }) })
+            }
+            
         }
     }
 }
