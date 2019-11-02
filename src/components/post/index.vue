@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { genGet, genUpdate } from '../../request'
+import { genGet, genUpdate, logView } from '../../request'
 
 import { decodeRichText, decodeImgSrc, getCookie, setCookie } from '../../utils'
 import { EventBus } from '../../bus'
@@ -76,12 +76,14 @@ export default {
     },
     props:{
         base: String,
-        files: Array
+        files: Array,
+        siteName: String
     },
     data(){
         return{
             api: "/front/posts/",
             api_up: "/front/like/",
+            api_view: "/front/view/",
             loaded: false,
             liked: false,
             like_posted: false,
@@ -94,9 +96,22 @@ export default {
             viewingImgHeight: 0,
             popup: false,
             popup_info: "",
-            popup_action: ""
+            popup_action: "",
+            postTitle: ""
 
         }
+    },
+
+    metaInfo() {
+        return{
+            title: this.postData.title,
+            titleTemplate: '%s - ' + this.siteName,
+            htmlAttrs: {
+                lang: 'en',
+                amp: true
+            }
+        }
+      
     },
 
     mounted(){
@@ -141,6 +156,7 @@ export default {
                 if(res.status){
 
                     that.postData = res.data.data[0]
+                    
                     that.postData.content = decodeRichText(that.postData.content)
                     that.postData.content = decodeImgSrc(that.postData.content, that.base)
                     that.postData.ux_likes = parseInt(that.postData.ux_likes)
@@ -152,10 +168,15 @@ export default {
                     that.postData.content_sublang = decodeRichText(that.postData.content_sublang)
                     that.postData.content_sublang = decodeImgSrc(that.postData.content_sublang, that.base)
                     
+                    // Set page title
+                    metaInfo.title = that.postData.title
                 }
 
                 EventBus.$emit("show-footer", true)
             })
+
+            // Log View
+            logView(this.base + this.api_view, this.pid)
         },
 
         like () {
@@ -318,6 +339,12 @@ export default {
 
 #posts-contents-cont p{
     margin-bottom: 26px;
+    line-height: 36px;
+    font-size: 20px;
+}
+
+#posts-contents-cont li{
+    margin-left: 24px;
 }
 
 #posts-contents-cont img{
@@ -450,6 +477,11 @@ export default {
         padding-top: 12px;
         padding-left: 13px;
         border-radius: 4px;
+    }
+
+    #posts-contents-cont p{
+        font-size: 16px;
+        line-height: 30px;
     }
 }
 

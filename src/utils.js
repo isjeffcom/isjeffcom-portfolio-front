@@ -41,5 +41,6 @@ export function setCookie (name, value, expDays, remove) {
 }
 
 export function isMobile () {
-    return screen.width < 812 ? true : false
+    return screen.width < 480 ? true : false
 }
+

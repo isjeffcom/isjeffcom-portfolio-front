@@ -39,7 +39,7 @@
 
                         <div class="post-single-titleimg">
                             <div class="post-single-filter"></div>
-                            <iimage :isrc="base + item.title_img" :ialt="item.title" :width="'100%'" :height="'330px'" style="opacity: 0.8;"></iimage>
+                            <iimage :isrc="base + item.title_img" :ialt="item.title" :width="'100%'" :height="'330px'"></iimage>
                         </div>
 
                     
@@ -68,6 +68,8 @@ import { genGet } from '../../request'
 import { EventBus } from '../../bus'
 import iimage from '../widgets/iimage'
 
+import { isMobile } from '../../utils'
+
 export default {
     name: "home",
     components:{
@@ -85,9 +87,11 @@ export default {
             postsTotal: 0,
             pagesTotal: 0,
             pageSize: 10,
+
         }
     },
     created(){
+
         this.getData(this.page)
     },
     methods:{
@@ -259,4 +263,60 @@ export default {
     background: rgba(0,0,0,0);
 }
 
+
+
+
+@media only screen and (max-device-width : 812px)  { 
+
+
+
+    #posts{
+        width:100%;
+        margin-top: 20px;
+    }
+
+    .post-single-author-avator{
+        width: 35px;
+        height: 35px;
+    }
+
+    .post-single-author-name{
+        font-size: 14px;
+    }
+
+    .post-single-like{
+        top:4px;
+    }
+
+    .post-single-like-count{
+        margin-top: 2px;
+        font-size: 16px;
+    }
+
+    
+
+    .post-single-date{
+        font-size: 12px;
+    }
+
+    .post-single-like img{
+        width: 20px;
+    }
+
+    .post-single-titleimg{
+        border-radius: 4px;
+    }
+
+    .post-single-content-title{
+        font-size: 22px;
+        width: 100%;
+    }
+
+    .post-single-content-brief{
+        width: 100%;
+        font-size: 16px;
+    }
+
+       
+ }
 </style>

@@ -2,11 +2,9 @@
 
     <div id="hheader">
         <div id="hheader-inner">
-            <router-link :to="{ path:'/home'}">
-            <div id="hheader-left" ref="hl">
+            <div id="hheader-left" ref="hl" v-on:click="back()">
                 <img :src="base + leftLogo" alt="Logo">
             </div>
-            </router-link>
 
             <div id="hheader-center" ref="hc">
                 <img id="hheader-center-logo" :src="base + centerLogo" alt="Name">
@@ -71,13 +69,33 @@ export default {
                 if(window.scrollY > 10){
                     hc.style.opacity = 1
                     hl.style.opacity = 0
-                    hr.style.top = "-11px"
+                    hr.style.top = "-13px"
                 } else {
                     hc.style.opacity = 0
                     hl.style.opacity = 1
-                    hr.style.top = "3px"
+                    hr.style.top = "5px"
                 }
             });
+
+
+            // Orientation 
+
+            window.addEventListener("orientationchange", function() {
+                
+                if(screen.orientation.angle == 90 || screen.orientation.angle == -90){
+                    hc.style.top = "-40px"
+                } else {
+                    hc.style.top = "0px"
+                }
+
+            });
+
+            if(screen.orientation.angle == 90 || screen.orientation.angle == -90){
+                hc.style.top = "-40px"
+            } else {
+                hc.style.top = "0px"
+            }
+
         }
     },
     created(){
@@ -93,26 +111,44 @@ export default {
             this.lang = 0
             
             this.mode = this.$route.name
-
-            if(this.mobileView && this.mode == "home"){
-                this.$nextTick(()=>{
-                    this.$refs.hl.style.left = "41%"
-                    this.$refs.hc.style.left = "0px"
-                })
-            }
             
-            if(this.mobileView && this.mode != "home"){
-                this.$nextTick(()=>{
-                    this.$refs.hl.style.left = "2%"
-                    this.$refs.hc.style.left = "-100px"
-                })
+            if(this.mobileView){
+                
+                if(this.mode == "home" || this.mode == "blog"){
+                    this.$nextTick(()=>{
+                        this.$refs.hl.style.left = "41%"
+                        this.$refs.hc.style.left = "0px"
+                    })
+                }
+
+                else{
+                    this.$nextTick(()=>{
+                        this.$refs.hl.style.left = "2%"
+                        this.$refs.hc.style.left = "-108px"
+                    })
+                }
             }
+        
         },
         switchLang(data, sync) {
             this.lang = data
             if(!sync){
                 EventBus.$emit('switchLang', data)
             }
+        },
+
+        back(){
+            // if no where to go
+            if(history.length == 1){
+
+                this.$router.push('home')
+
+            } else {
+
+                window.history.back()
+
+            }
+            
         }
     }
 }
@@ -228,7 +264,7 @@ export default {
     }
 
     #hheader-center img{
-        width: 50%;
+        width: 180px;
         margin-top: 0px;
     }
 
@@ -238,8 +274,8 @@ export default {
 
     #hheader-right {
         position: absolute;
-        top: 3px;
-        right: 10px;
+        top: 5px;
+        right: 15px;
     }
 
     #hheader-center{

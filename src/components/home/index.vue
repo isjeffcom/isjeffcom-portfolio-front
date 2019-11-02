@@ -10,7 +10,6 @@
                         </div>
                         <div class="post-single-filter"></div>
                         
-                        <!--iimage :isrc="base + item.title_img" :ialt="item.title" :width="'360px'" :height="'260px'"></iimage-->
                         <img :src="base + item.title_img" :alt="item.title">
                     </router-link>
                 </div>
@@ -277,7 +276,7 @@ export default {
     margin-left: 14px;
 }
 
-@media only screen and (max-device-width : 812px)  { 
+@media only screen and (max-width : 812px)  { 
   .post-single{
     width: 360px;
     height: 280px;
@@ -301,6 +300,5 @@ export default {
     margin-bottom: 24px;
   }
 }
-
 
 </style>

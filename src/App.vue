@@ -29,6 +29,7 @@
         <keep-alive exclude="post">
           <router-view 
             :base="api_base"
+            :siteName="site.title"
             :files="files">
           </router-view>
         </keep-alive>
@@ -276,6 +277,7 @@ a{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  background:#ffffff;
   color:#333;
 }
 
@@ -306,18 +308,6 @@ a{
   margin-right:auto;
   transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
-
-/*@media only screen 
-and (min-device-width : 375px) 
-and (max-device-width : 812px) 
-and (-webkit-device-pixel-ratio : 3)
-and (orientation : landscape) { 
-  .contents{
-    width: 90%;
-  }
-}*/
-
-
 
 #ffooter{
   margin-top: 50px;

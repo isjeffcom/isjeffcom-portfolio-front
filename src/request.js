@@ -71,6 +71,18 @@ export function logVisit (api, expDay) {
     })
 }
 
+export function logView (api, pid) {
+    var postData = {
+        pid: pid
+    }
+
+    genUpdate(api, postData, (res)=>{
+        if(res.status){
+            // Do nothing...
+        }
+    })
+}
+
 // Construct url with paramaters
 function contParam (api, param) {
     
