@@ -35,7 +35,7 @@
                         </div>
                     </div>
 
-                    <router-link :to="{ path:'/post', query: { pid: item.id} }">
+                    <router-link :to="{ path:'/post', query: { pid: item.id, from: 'blog'} }">
 
                         <div class="post-single-titleimg">
                             <div class="post-single-filter"></div>

@@ -385,7 +385,7 @@ export default {
 }
 
 #posts-contents-cont p{
-    margin-bottom: 26px;
+    margin-bottom: 16px;
     line-height: 36px;
     font-size: 20px;
 }
@@ -401,6 +401,17 @@ export default {
     user-select: none;
 }
 
+#posts-contents-cont h1{
+    margin-bottom: 20px;
+}
+
+#posts-contents-cont h2{
+    margin-bottom: 20px;
+}
+
+#posts-contents-cont h3{
+    margin-bottom: 20px;
+}
 
 #posts-contents-cont iframe{
     width: 100%;

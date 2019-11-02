@@ -134,17 +134,23 @@ export default {
         },
 
         back(){
-            // if no where to go
+            // if no where to go (mostly from share link)
             if(history.length == 1){
 
                 this.$router.push('home')
 
             } else {
                 // Lang param is added after page loaded so if has lang parma than go 2 stpe backward
-                if(this.$route.query.lang){
+                /*if(this.$route.query.lang){
                     window.history.go(-2)
                 } else {
                     window.history.go(-1)
+                }*/
+                
+                if(this.$route.query.from){
+                    this.$router.push(this.$route.query.from)
+                } else {
+                    this.$router.push('home')
                 }
             }
             

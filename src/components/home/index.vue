@@ -4,7 +4,7 @@
         <div id="posts">
             <div id="posts-inner">
                 <div class="post-single" v-for="item in postsList" :key="item.id">
-                    <router-link :to="{ path:'/post', query: { pid: item.id} }">
+                    <router-link :to="{ path:'/post', query: { pid: item.id, from: 'home'} }">
                         <div class="post-single-title">
                             <span>{{item.title}}</span>
                         </div>
