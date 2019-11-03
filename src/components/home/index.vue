@@ -28,7 +28,7 @@
             <div class="files-cont">
                 <div class="file-single" v-for="(item, key) in files" :key="key">
                     <div class="file-single-inner">
-                        <a :href="base + item.val.val" target="_blank" style="display: flex; margin-left: auto; margin-right: auto;">
+                        <a :href="item.val.val.indexOf('http') != -1 ? item.val.val : base + item.val.val" target="_blank" style="display: flex; margin-left: auto; margin-right: auto;">
                             <div class="file-down-icon">
                                 <img src="../../assets/download.svg" alt="">
                             </div>

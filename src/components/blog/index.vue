@@ -91,8 +91,14 @@ export default {
         }
     },
     created(){
+        // Hard Fix, attention needed!!!!!
+        if(!this.$route.query.cate){
+            this.$router.push({ query: { cate: 3 } })
+        }
 
         this.getData(this.page)
+
+        
     },
     methods:{
         getData(page){
