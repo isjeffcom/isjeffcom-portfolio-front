@@ -268,7 +268,9 @@ a{
 }
 
 
-
+body{
+  background-color: #ffffff;
+}
 
 #app {
   height:auto;

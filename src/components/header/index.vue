@@ -120,7 +120,7 @@ export default {
                 else{
                     this.$nextTick(()=>{
                         this.$refs.hl.style.left = "2%"
-                        this.$refs.hc.style.left = "-108px"
+                        this.$refs.hc.style.left = screen.width > 320 ? "-108px" : "-80px"
                     })
                 }
             }
