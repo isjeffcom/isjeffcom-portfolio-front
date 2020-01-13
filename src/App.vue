@@ -86,7 +86,7 @@ export default {
   },
   data(){
     return{
-      api_base: "https://isjeff.com/api",
+      api_base: "https://api.isjeff.com/main",
       api_site: "/front/home/",
       api_track: "/updater/visit/",
       mode: "home",
