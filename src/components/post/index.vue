@@ -96,26 +96,9 @@ export default {
             viewingImgHeight: 0,
             popup: false,
             popup_info: "",
-            popup_action: "",
-            shareTitle: "",
-            shareDes: ""
+            popup_action: ""
 
         }
-    },
-
-    metaInfo() {
-        return{
-            title: this.shareTitle,
-            titleTemplate: '%s - ' + this.siteName,
-            meta: [
-                { name: "description", content: this.shareDes },
-            ],
-            htmlAttrs: {
-                lang: 'en',
-                amp: true
-            }
-        }
-      
     },
 
     mounted(){
@@ -274,8 +257,9 @@ export default {
 
         // Set page meta for share
         setMeta () {
-            this.shareTitle = this.lang == 0 ? this.postData.title : this.postData.title_sublang
-            this.shareDes = this.lang == 0 ? this.postData.brief : this.postData.brief_sublang
+            const title = this.lang == 0 ? this.postData.title : this.postData.title_sublang
+            const des = this.lang == 0 ? this.postData.brief : this.postData.brief_sublang
+            EventBus.$emit("set-meta", {title: title, des: des})
         },
 
         // Save language settings when user share a post

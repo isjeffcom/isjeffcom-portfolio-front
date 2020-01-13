@@ -97,8 +97,10 @@ export default {
         }
 
         this.getData(this.page)
+    },
 
-        
+    activated(){
+        EventBus.$emit("set-meta", {title: "Blog", des: this.siteDes})
     },
     methods:{
         getData(page){
@@ -124,6 +126,9 @@ export default {
                     that.pagesTotal = Math.ceil(that.postsTotal / that.pageSize)
                 }
             })
+
+            EventBus.$emit("show-footer", true)
+            EventBus.$emit("set-meta", {title: "Blog", des: this.siteDes})
         },
 
         sPage (mode) {

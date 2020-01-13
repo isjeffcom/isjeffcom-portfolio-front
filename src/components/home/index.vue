@@ -57,6 +57,8 @@ export default {
         iimage
     },
     props:{
+        siteName: String,
+        siteDes: String,
         base: String,
         navs: Array,
         files: Array
@@ -73,6 +75,10 @@ export default {
     },
     created(){
         this.getPosts(this.page)
+        
+    },
+    activated(){
+        EventBus.$emit("set-meta", {title: "Home", des: this.siteDes})
     },
     methods:{
         getPosts(page){
@@ -101,6 +107,7 @@ export default {
             })
 
             EventBus.$emit("show-footer", true)
+            EventBus.$emit("set-meta", {title: "Home", des: this.siteDes})
         },
 
         sPage (mode) {

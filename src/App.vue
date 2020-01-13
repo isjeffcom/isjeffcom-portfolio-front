@@ -30,6 +30,7 @@
           <router-view 
             :base="api_base"
             :siteName="site.title"
+            :siteDes="site.desText"
             :files="files">
           </router-view>
         </keep-alive>
@@ -69,6 +70,20 @@ export default {
     navs,
     ffooter
   },
+  metaInfo() {
+      return{
+          title: this.metaTitle,
+          titleTemplate: '%s - ' + this.site.title,
+          meta: [
+              { name: "description", content: this.metaDes },
+          ],
+          htmlAttrs: {
+              lang: 'en',
+              amp: true
+          }
+      }
+    
+  },
   data(){
     return{
       api_base: "https://isjeff.com/api",
@@ -90,6 +105,8 @@ export default {
       delay: 3000,
       damping: 20,
       dontDisplayAni: false,
+      metaTitle: "Welcome",
+      metaDes: "Hello",
 
     }
   },
@@ -98,10 +115,14 @@ export default {
     var that = this
     this.dontDisplayAni = getCookie('topping') == "true" ? true : false
     this.getSiteData()
+
     setTimeout(()=>{
       logVisit(this.api_base + this.api_track, 1)
     }, 1000)
 
+    EventBus.$on("set-meta", function(data){
+        that.setMeta(data)
+    })
 
     EventBus.$on("show-footer", function(data){
         that.showFot(data)
@@ -139,33 +160,10 @@ export default {
       this.showFooter = d
     },
 
-    /*scrollToTopping () {
-
-      var that = this
-      this.animating = true
-
-      scrollTo(0, 30, {
-        ease: 'inOutQuart',
-        duration: 100
-      })
-      
-      
-      setTimeout(()=>{
-        that.showTopping = true
-        that.$nextTick(()=>{
-          scrollTo(0, 0, {
-            ease: 'inOutQuart',
-            duration: 600
-          })
-        })
-        
-      }, 150)
-
-      setTimeout(()=>{
-        that.animating = false
-        that.currentPosi = 0
-      }, 700)
-    },*/
+    setMeta (data) {
+      this.metaTitle = data.title
+      this.metaDes = data.des
+    },
 
     getSiteData (){
 
@@ -216,6 +214,7 @@ export default {
           // Get header render X value
           that.$nextTick(()=>{
             that.headerY = that.$refs.headerRef.$el.offsetTop
+            that.setMeta({title: "Home", des: this.site.desText})
           })
           
         }
