@@ -7,7 +7,7 @@
             </div>
 
             <div id="f-info">
-                <span>Design by JIANFENG WU | Power by POSTER <a href="http://www.miit.gov.cn/">{{icpNum.length>0 ? "|&nbsp;" + icpNum : ""}}</a></span>
+                <span>Design by JIANFENG WU | Powered by POSTER <a href="http://www.miit.gov.cn/">{{icpNum.length>0 ? "|&nbsp;" + icpNum : ""}}</a></span>
             </div>
         </div>
         
