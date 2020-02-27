@@ -65,7 +65,7 @@ export default {
             var hr = document.getElementById('hheader-right')
 
 
-            window.addEventListener('scroll', function(e) {
+            window.addEventListener('scroll', function() {
                 if(window.scrollY > 10){
                     hc.style.opacity = 1
                     hl.style.opacity = 0
@@ -99,7 +99,6 @@ export default {
         }
     },
     created(){
-        var that = this
         this.initial()
     },
     methods:{
@@ -189,6 +188,7 @@ export default {
 
 #hheader-center{
     width: 300px;
+    height: 100px;
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
@@ -202,7 +202,7 @@ export default {
 
 #hheader-center:hover #hheader-center-upbtn{
     opacity: 1;
-    transform: translateY(-60px);
+    transform: translateY(-30px);
 }
 
 
@@ -241,7 +241,7 @@ export default {
 #hheader-center-upbtn{
     opacity:0;
     width:300px !important;
-    margin-top: -50px;
+    margin-top: -100px;
     transition: all 0.32s cubic-bezier(.25,.8,.25,1);
 }
 
