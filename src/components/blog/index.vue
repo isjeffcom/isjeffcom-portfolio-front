@@ -68,7 +68,7 @@ import { genGet } from '../../request'
 import { EventBus } from '../../bus'
 import iimage from '../widgets/iimage'
 
-import { isMobile } from '../../utils'
+//import { isMobile } from '../../utils'
 
 export default {
     name: "home",

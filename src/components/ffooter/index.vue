@@ -18,7 +18,7 @@
 <script>
 
 import scrollTo from 'scroll-to'
-import { EventBus } from '../../bus'
+//import { EventBus } from '../../bus'
 
 export default {
     name:"ffooter",
@@ -36,7 +36,7 @@ export default {
         }
     },
     created(){
-        var that = this
+        //var that = this
     },
     methods:{
         toTop(){
