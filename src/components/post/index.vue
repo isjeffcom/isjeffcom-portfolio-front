@@ -12,7 +12,7 @@
 
         <div id="post-title-img" v-if="postData.title_img.length > 1">
             <div id="post-title-img-inner">
-                <iimage :isrc="base + postData.title_img" :ialt="'title image'" :width="'100%'" :height="'340px'" :mode="'grey'"></iimage>
+                <iimage :isrc="postData.title_img" :ialt="'title image'" :width="'100%'" :height="'340px'" :mode="'grey'"></iimage>
             </div>
         </div>
 
@@ -148,7 +148,7 @@ export default {
         })
 
         // If image viewer closed
-        EventBus.$on("img-viewer-close", function(data){
+        EventBus.$on("img-viewer-close", function(){
             that.handleImgViewer('', 0, 0, false)
         })
 
@@ -172,6 +172,8 @@ export default {
                     // Parse and decode data
                     that.postData.content = decodeRichText(that.postData.content)
                     that.postData.content = decodeImgSrc(that.postData.content, that.base)
+
+                    that.postData.title_img = that.parseTitleImg(that.postData.title_img)
                     
                     that.postData.ux_likes = parseInt(that.postData.ux_likes)
                     that.postData.date_pub = that.postData.date_pub.substr(0, that.postData.date_pub.length -9 )
@@ -232,7 +234,7 @@ export default {
             )
         },
 
-        switchLang (data, sync) {
+        switchLang (data) {
             this.lang = data
             this.setMeta()
             this.setUrlParam()
@@ -268,6 +270,10 @@ export default {
                 this.$router.push({ query: Object.assign({}, this.$route.query, { lang: this.lang }) })
             }
             
+        },
+
+        parseTitleImg(url){
+            return url.indexOf('cos') != -1 ? 'https://' + url : this.base + url
         }
     }
 }

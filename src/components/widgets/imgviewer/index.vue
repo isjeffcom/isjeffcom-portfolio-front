@@ -10,7 +10,7 @@
 <script>
 
 import { EventBus } from '../../../bus'
-import { isMobile } from '../../../utils'
+//import { isMobile } from '../../../utils'
 
 export default {
     name: "viewimg",

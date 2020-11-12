@@ -10,7 +10,7 @@
                         </div>
                         <div class="post-single-filter"></div>
                         
-                        <img :src="base + item.title_img" :alt="item.title">
+                        <img :src="parseTitleImg(item.title_img)" :alt="item.title">
                     </router-link>
                 </div>
             </div>
@@ -49,12 +49,12 @@
 <script>
 import { EventBus } from '../../bus'
 import { genGet } from '../../request'
-import iimage from '../widgets/iimage'
+//import iimage from '../widgets/iimage'
 
 export default {
     name: "home",
     components:{
-        iimage
+        //iimage
     },
     props:{
         siteName: String,
@@ -126,6 +126,10 @@ export default {
 
         pageToLimit ( val ) {
             return (val - 1) * this.pageSize
+        },
+
+        parseTitleImg(url){
+            return url.indexOf('cos') != -1 ? 'https://' + url : this.base + url
         }
 
         
