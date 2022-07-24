@@ -167,7 +167,7 @@ export default {
             genGet(this.base + this.api, [{name: "pid", val: this.pid}], (res)=>{
                 if(res.status){
 
-                    that.postData = res.data.data[0]
+                    that.postData = res.data.data
                     
                     // Parse and decode data
                     that.postData.content = decodeRichText(that.postData.content)
