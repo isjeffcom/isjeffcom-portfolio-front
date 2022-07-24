@@ -172,10 +172,10 @@ export default {
       genGet(this.api_base + this.api_site, [], (res)=>{
         if(res.status){
 
-          var finalRes = res.data
-          var siteData = finalRes.site[0]
-          var socialMedia = finalRes.sm
-          var navs = finalRes.nav
+          const finalRes = res.data
+          const siteData = finalRes.site
+          const socialMedia = finalRes.sm
+          const navs = finalRes.nav
 
           // Parse site data
           siteData.title = decodeRichText(siteData.title)
