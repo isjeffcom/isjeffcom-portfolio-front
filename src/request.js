@@ -7,17 +7,11 @@ export function genGet (api, param, callback) {
     
     axios.get(contParam(api, param)).then((response) => {
 
-        if(typeof(response.data) == "string"){
-            callback({status: false, error: response.data})
-            return
-        } else {
-            callback({status: true, data: response.data})
-            return
-        }
+        callback(response.data);
 
     }).catch((err) => {
 
-        callback({status: false, error: err})
+        callback({status: false, msg: err, data: null});
 
     })
 }
@@ -30,15 +24,11 @@ export function genUpdate (api, data, callback) {
     axios.post(api, postData)
     .then(function (response) {
 
-        if(response.data.indexOf("success") != -1){
-            callback({status: true, data: response.data})
-        } else {
-            callback({status: false, data: response.data})
-        }
+        callback(response.data);
 
     }).catch(function(err){
 
-        callback({status: false, data: err})
+        callback({status: false, msg: err, data: null});
 
     })
 }
@@ -54,7 +44,7 @@ export function logVisit (api, expDay) {
         utils.setCookie('isjeffcom', tmpUid, expDay, false)
     }
 
-    var postData = {
+    const postData = {
         userAgent: navigator.userAgent,
         userLanguage: navigator.language,
         appName: navigator.appName,
@@ -63,8 +53,9 @@ export function logVisit (api, expDay) {
 
     genUpdate(api, postData, (res)=>{
         if(res.status){
-            var result = res.data.split(",");
-            if(result[1].indexOf("CN") != -1){
+            const result = res.data;
+            // var result = res.data.split(",");
+            if(result.region.indexOf("CN") != -1){
                 utils.setCookie('v_region', 'CN', expDay, false)
             }
         }
@@ -72,7 +63,7 @@ export function logVisit (api, expDay) {
 }
 
 export function logView (api, pid) {
-    var postData = {
+    const postData = {
         pid: pid
     }
 

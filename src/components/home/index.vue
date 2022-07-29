@@ -3,8 +3,8 @@
 
         <div id="posts">
             <div id="posts-inner">
-                <div class="post-single" v-for="item in postsList" :key="item.id">
-                    <router-link :to="{ path:'/post', query: { pid: item.id, from: 'home'} }">
+                <div class="post-single" v-for="item in postsList" :key="item._id">
+                    <router-link :to="{ path:'/post', query: { pid: item._id, from: 'home'} }">
                         <div class="post-single-title">
                             <span>{{item.title}}</span>
                         </div>
@@ -100,8 +100,8 @@ export default {
 
             genGet(this.base + this.api, param, (res)=>{
                 if(res.status){
-                    that.postsTotal = res.data.total
-                    that.postsList = res.data.data
+                    that.postsTotal = res.total
+                    that.postsList = res.data
                     that.pagesTotal = Math.ceil(that.postsTotal / that.pageSize)
                 }
             })

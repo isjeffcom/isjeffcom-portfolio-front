@@ -86,7 +86,7 @@ export default {
   },
   data(){
     return{
-      api_base: "https://api.isjeff.com/main",
+      api_base: process.eng === "production" ? "https://api.isjeff.com/main" : "http://localhost:3000",
       api_site: "/front/home/",
       api_track: "/updater/visit/",
       mode: "home",
@@ -112,7 +112,7 @@ export default {
   },
 
   created(){
-    var that = this
+    const that = this;
     this.dontDisplayAni = getCookie('topping') == "true" ? true : false
     this.getSiteData()
 
@@ -131,9 +131,9 @@ export default {
   methods:{
 
     scrollToMain () {
-      this.animating = true
-      var that = this
-      var time = this.delay
+      this.animating = true;
+      const that = this;
+      const time = this.delay;
       setTimeout(()=>{
           if(that.loaded){
             scrollTo(0, that.headerY, {
@@ -167,9 +167,10 @@ export default {
 
     getSiteData (){
 
-      var that = this
+      const that = this
 
       genGet(this.api_base + this.api_site, [], (res)=>{
+        console.log(res);
         if(res.status){
 
           const finalRes = res.data

@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import { genGet } from '../../request'
-import { EventBus } from '../../bus'
-import iimage from '../widgets/iimage'
+import { genGet } from '../../request';
+import { EventBus } from '../../bus';
+import iimage from '../widgets/iimage';
 
 //import { isMobile } from '../../utils'
 
@@ -93,20 +93,20 @@ export default {
     created(){
         // Hard Fix, attention needed!!!!!
         if(!this.$route.query.cate){
-            this.$router.push({ query: { cate: 3 } })
+            this.$router.push({ query: { cate: 3 } });
         }
 
-        this.getData(this.page)
+        this.getData(this.page);
     },
 
     activated(){
-        EventBus.$emit("set-meta", {title: "Blog", des: this.siteDes})
+        EventBus.$emit("set-meta", {title: "Blog", des: this.siteDes});
     },
     methods:{
         getData(page){
-            var that = this
-            var ls = this.pageToLimit(page)
-            var param = page ? [ 
+            const that = this;
+            const ls = this.pageToLimit(page);
+            const param = page ? [ 
                 {
                     name: "ls", 
                     val: ls
@@ -115,39 +115,40 @@ export default {
                     name: "size",
                     val: this.pageSize
                 } 
-            ] : []
+            ] : [];
 
-            param.push({name: "cate", val: this.$route.query.cate})
+            param.push({name: "cate", val: this.$route.query.cate});
 
             genGet(this.base + this.api, param, (res)=>{
+                console.log(res);
                 if(res.status){
-                    that.postsTotal = res.data.total
-                    that.blogsList = res.data.data
-                    that.pagesTotal = Math.ceil(that.postsTotal / that.pageSize)
+                    that.postsTotal = res.total;
+                    that.blogsList = res.data;
+                    that.pagesTotal = Math.ceil(that.postsTotal / that.pageSize);
                 }
             })
 
-            EventBus.$emit("show-footer", true)
-            EventBus.$emit("set-meta", {title: "Blog", des: this.siteDes})
+            EventBus.$emit("show-footer", true);
+            EventBus.$emit("set-meta", {title: "Blog", des: this.siteDes});
         },
 
         sPage (mode) {
             
             if(mode === 1 && this.page !== this.pagesTotal){
-                this.page = this.page + 1
+                this.page = this.page + 1;
             } 
             else if(mode === 0 && this.page != 1) {
-                this.page = this.page - 1
+                this.page = this.page - 1;
             } 
             else {
-                return false
+                return false;
             }
             
-            this.getPosts(this.page)
+            this.getPosts(this.page);
         },
 
         pageToLimit ( val ) {
-            return (val - 1) * this.pageSize
+            return (val - 1) * this.pageSize;
         }
 
         

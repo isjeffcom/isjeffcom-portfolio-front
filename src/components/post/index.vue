@@ -102,7 +102,7 @@ export default {
     },
 
     mounted(){
-        var that = this
+        const that = this
         window.addEventListener('click', e => {
             if(e.target.nodeName == "IMG" && e.target.parentNode.nodeName == "P" && e.target.id != "iv-close"){
                 that.handleImgViewer(e.target.src, e.target.naturalWidth, e.target.naturalHeight, true)
@@ -110,7 +110,7 @@ export default {
         })
     },
     created(){
-        var that = this
+        const that = this
 
         EventBus.$emit("show-footer", false)
 
@@ -167,7 +167,7 @@ export default {
             genGet(this.base + this.api, [{name: "pid", val: this.pid}], (res)=>{
                 if(res.status){
 
-                    that.postData = res.data.data
+                    that.postData = res.data
                     
                     // Parse and decode data
                     that.postData.content = decodeRichText(that.postData.content)
