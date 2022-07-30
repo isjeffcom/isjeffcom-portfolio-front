@@ -129,6 +129,7 @@ export default {
         },
 
         parseTitleImg(url){
+            if(!url || url.length < 1) return null;
             return url.indexOf('cos') != -1 ? 'https://' + url : this.base + url
         }
 

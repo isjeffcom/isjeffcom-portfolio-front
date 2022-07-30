@@ -10,14 +10,16 @@
             </div>
         </div>
 
-        <div id="post-title-img" v-if="postData.title_img.length > 1">
+        <div id="post-title-img" v-if="postData.title_img && postData.title_img.length > 1">
             <div id="post-title-img-inner">
                 <iimage :isrc="postData.title_img" :ialt="'title image'" :width="'100%'" :height="'340px'" :mode="'grey'"></iimage>
             </div>
         </div>
 
         <div id="post-contents">
-            <div id="posts-contents-cont" v-html="lang === 0 ? postData.content : postData.content_sublang"></div>
+            <Editor v-if="lang === 0" editorId="1" :text="postData.content" ref="editor_1"></Editor>
+            <Editor v-if="lang === 1" editorId="2" :text="postData.content_sublang" ref="editor_2"></Editor>
+            <!-- <div id="posts-contents-cont" v-html="lang === 0 ? postData.content : postData.content_sublang"></div> -->
             <div id="posts-content-end">
                 <div id="posts-content-end-inner">
                     <span> - END - </span>
@@ -66,13 +68,15 @@ import { EventBus } from '../../bus'
 
 import iimage from '../../components/widgets/iimage'
 import imageViewer from '../../components/widgets/imgviewer'
+import Editor from '../widgets/editor';
 import scrollTo from 'scroll-to'
 
 export default {
     name: 'post',
     components:{
         iimage,
-        imageViewer
+        imageViewer,
+        Editor
     },
     props:{
         base: String,
@@ -273,6 +277,8 @@ export default {
         },
 
         parseTitleImg(url){
+            console.log(url)
+            if(!url || url.length < 1) return null;
             return url.indexOf('cos') != -1 ? 'https://' + url : this.base + url
         }
     }
