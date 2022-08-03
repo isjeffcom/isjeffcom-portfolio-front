@@ -3,7 +3,7 @@
     <div id="ffooter">
         <div id="f-inner">
             <div id="f-logo" v-on:click="toTop">
-                <img :src="base + bottomLogo" alt="logo">
+                <img :src="parseTitleImg(bottomLogo)" alt="logo">
             </div>
 
             <div id="f-info">
@@ -44,6 +44,10 @@ export default {
               ease: 'inOutQuart',
               duration: 500
             })
+        },
+        parseTitleImg(url){
+            if(!url || url.length < 1) return null;
+            return url.indexOf('qcloud') != -1 ? 'https://' + url : this.base + url
         }
     }
 }

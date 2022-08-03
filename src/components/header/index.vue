@@ -3,18 +3,18 @@
     <div id="hheader">
         <div id="hheader-inner">
             <div id="hheader-left" ref="hl" v-on:click="back()">
-                <img :src="base + leftLogo" alt="Logo">
+                <img :src="parseTitleImg(leftLogo)" alt="Logo">
             </div>
 
             <div id="hheader-center" ref="hc">
-                <img id="hheader-center-logo" :src="base + centerLogo" alt="Name">
+                <img id="hheader-center-logo" :src="parseTitleImg(centerLogo)" alt="Name">
                 <img id="hheader-center-upbtn" src="../../assets/sup.png" alt="Name">
             </div>
 
             <div id="hheader-right">
                 <div class="hheader-sm" v-if="mode != 'post' && !mobileView">
                     <div class="hheader-sm-single" v-for="item in socialMedia" :key="item.id">
-                        <a :href="item.url"><img :src="base + item.icon" :alt="item.name" class="hheader-sm-single-img"></a>
+                        <a :href="item.url"><img :src="parseTitleImg(item.icon)" :alt="item.name" class="hheader-sm-single-img"></a>
                     </div>
                 </div>
                 
@@ -153,6 +153,10 @@ export default {
                 }
             }
             
+        },
+        parseTitleImg(url){
+            if(!url || url.length < 1) return null;
+            return url.indexOf('qcloud') != -1 ? 'https://' + url : this.base + url
         }
     }
 }
@@ -189,7 +193,7 @@ export default {
 #hheader-center{
     width: 300px;
     height: 100px;
-    margin-top: 20px;
+    margin-top: 44px;
     margin-left: auto;
     margin-right: auto;
     transition: all 0.32s cubic-bezier(.25,.8,.25,1);
@@ -203,11 +207,6 @@ export default {
 #hheader-center:hover #hheader-center-upbtn{
     opacity: 1;
     transform: translateY(-30px);
-}
-
-
-#hheader-center img{
-    width:300px;
 }
 
 #hheader-right{
@@ -241,7 +240,7 @@ export default {
 #hheader-center-upbtn{
     opacity:0;
     width:300px !important;
-    margin-top: -100px;
+    margin-top: -50px;
     transition: all 0.32s cubic-bezier(.25,.8,.25,1);
 }
 
@@ -269,7 +268,7 @@ export default {
     }
 
     #hheader-center img{
-        width: 180px;
+        width:220px;
         margin-top: 0px;
     }
 
