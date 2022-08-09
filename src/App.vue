@@ -86,7 +86,8 @@ export default {
   },
   data(){
     return{
-      api_base: process.eng === "production" ? "https://api.isjeff.com/main" : "http://localhost:3000",
+      api_base: process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000",
+      // api_base: "http://api.isjeff.com",
       api_site: "/front/home/",
       api_track: "/updater/visit/",
       mode: "home",
@@ -170,7 +171,6 @@ export default {
       const that = this
 
       genGet(this.api_base + this.api_site, [], (res)=>{
-        console.log(res);
         if(res.status){
 
           const finalRes = res.data

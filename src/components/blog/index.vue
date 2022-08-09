@@ -8,13 +8,13 @@
                     <div class="post-single-topbar">
                         <div class="post-single-author">
                             <div class="post-single-author-avator">
-                                <img :src="base + item.avatar" alt="Author avatar">
+                                <img :src="parseTitleImg(item.users[0].avatar)" alt="Author avatar">
                             </div>
 
                             <div class="post-single-author-info">
 
                                 <div class="post-single-author-name">
-                                    <span>{{item.name}}</span>
+                                    <span>{{item.users[0].name}}</span>
                                 </div>
 
                                 <div class="post-single-date">
@@ -35,11 +35,11 @@
                         </div>
                     </div>
 
-                    <router-link :to="{ path:'/post', query: { pid: item.id, from: 'blog'} }">
+                    <router-link :to="{ path:'/post', query: { pid: item._id, from: 'blog'} }">
 
                         <div class="post-single-titleimg">
                             <div class="post-single-filter"></div>
-                            <iimage :isrc="base + item.title_img" :ialt="item.title" :width="'100%'" :height="'330px'"></iimage>
+                            <iimage :isrc="parseTitleImg(item.title_img)" :ialt="item.title" :width="'100%'" :height="'330px'"></iimage>
                         </div>
 
                     
@@ -67,6 +67,7 @@
 import { genGet } from '../../request';
 import { EventBus } from '../../bus';
 import iimage from '../widgets/iimage';
+import { parseDiffImg } from '../../utils';
 
 //import { isMobile } from '../../utils'
 
@@ -124,6 +125,7 @@ export default {
                 if(res.status){
                     that.postsTotal = res.total;
                     that.blogsList = res.data;
+                    console.log(that.blogsList);
                     that.pagesTotal = Math.ceil(that.postsTotal / that.pageSize);
                 }
             })
@@ -149,6 +151,10 @@ export default {
 
         pageToLimit ( val ) {
             return (val - 1) * this.pageSize;
+        },
+
+        parseTitleImg(url){
+            return parseDiffImg(this.base, url);
         }
 
         

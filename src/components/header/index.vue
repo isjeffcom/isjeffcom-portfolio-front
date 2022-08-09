@@ -33,7 +33,7 @@
 <script>
 
 import { EventBus } from '../../bus'
-import { isMobile } from '../../utils' 
+import { isMobile, parseDiffImg } from '../../utils' 
 
 export default {
     name:"hheader",
@@ -155,8 +155,7 @@ export default {
             
         },
         parseTitleImg(url){
-            if(!url || url.length < 1) return null;
-            return url.indexOf('qcloud') != -1 ? 'https://' + url : this.base + url
+            return parseDiffImg(this.base, url);
         }
     }
 }
@@ -268,8 +267,8 @@ export default {
     }
 
     #hheader-center img{
-        width:220px;
-        margin-top: 0px;
+        width:40%;
+        margin-top: 15px;
     }
 
     #hheader-left img{

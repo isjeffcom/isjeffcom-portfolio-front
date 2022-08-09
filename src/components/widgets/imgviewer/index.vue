@@ -1,6 +1,8 @@
 <template>
     <div id="image-viewer">
-        <div id="image-viewer-close" v-on:click="close"><img id="iv-close" src="../../../assets/close.png" alt=""></div>
+        <div id="image-viewer-close" v-on:click="close">
+            <img id="iv-close" src="../../../assets/close_fill.svg" alt="">
+        </div>
         <div id="image-viewer-inner">
             <img :src="path" alt="image">
         </div>
@@ -49,8 +51,10 @@ export default {
     z-index: 99999;
 }
 
+
+
 #image-viewer-close img{
-    width: 44px;
+    width: 54px;
 }
 
 #image-viewer-inner{
@@ -64,5 +68,16 @@ export default {
     object-fit: scale-down;
 }
 
+#iv-close{
+    opacity: 0.65;
+}
+
+#iv-close:hover{
+    opacity: 1;
+}
+
+#iv-close:active{
+    transform: scale(0.9);
+}
 
 </style>

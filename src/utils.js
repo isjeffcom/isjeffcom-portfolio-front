@@ -44,3 +44,7 @@ export function isMobile () {
     return screen.width < 480 ? true : false
 }
 
+export function parseDiffImg(base, url){
+    if(!url || url.length < 1) return null;
+    return url.indexOf('cos') != -1 ? 'https://' + url : base + url
+}

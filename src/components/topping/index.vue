@@ -1,19 +1,25 @@
 <template>
     <div id="topping">
         <div id="topping-inner">
-            <img :src="base + toppingLogo" alt="Topping logo">
+            <img :src="parseTitleImg(toppingLogo)" alt="Topping logo">
         </div>
         
     </div>
 </template>
 
 <script>
+import { parseDiffImg } from '../../utils'
 export default {
     name: "topping",
     props:{
         base: String,
         toppingLogo: String
     },
+    methods: {
+        parseTitleImg(url) {
+            return parseDiffImg(this.base, url);
+        }
+    }
 }
 </script>
 

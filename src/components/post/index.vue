@@ -63,7 +63,7 @@
 <script>
 import { genGet, genUpdate, logView } from '../../request'
 
-import { decodeRichText, decodeImgSrc, getCookie, setCookie } from '../../utils'
+import { decodeRichText, decodeImgSrc, getCookie, setCookie, parseDiffImg } from '../../utils'
 import { EventBus } from '../../bus'
 
 import iimage from '../../components/widgets/iimage'
@@ -106,54 +106,54 @@ export default {
     },
 
     mounted(){
-        const that = this
+        const that = this;
         window.addEventListener('click', e => {
-            if(e.target.nodeName == "IMG" && e.target.parentNode.nodeName == "P" && e.target.id != "iv-close"){
-                that.handleImgViewer(e.target.src, e.target.naturalWidth, e.target.naturalHeight, true)
+            if(e.target.nodeName == "IMG" && e.target.className == "image-tool__image-picture"){
+                that.handleImgViewer(e.target.src, e.target.naturalWidth, e.target.naturalHeight, true);
             }
         })
     },
     created(){
         const that = this
 
-        EventBus.$emit("show-footer", false)
+        EventBus.$emit("show-footer", false);
 
-        this.pid = this.$route.query.pid
-        this.getData()
+        this.pid = this.$route.query.pid;
+        this.getData();
 
         // If user share link with lang
         if(this.$route.query.lang == 1){
-            this.lang = parseInt(this.$route.query.lang)
-            this.switchLang(1, true)
+            this.lang = parseInt(this.$route.query.lang);
+            this.switchLang(1, true);
         }
         
         // If user from China mainland
         else if(getCookie("v_region") == "CN"){
-            this.switchLang(1, true)
-            this.alertLang()
+            this.switchLang(1, true);
+            this.alertLang();
         } 
         
         // If no lang param than set up one
         else {
-            this.setUrlParam()
+            this.setUrlParam();
         }
 
         // Check later (in case if IP check might return late)
         setTimeout(()=>{
             if(getCookie("v_region") == "CN" && this.lang == 0){
-                this.switchLang(1, true)
-                this.alertLang()
+                this.switchLang(1, true);
+                this.alertLang();
             }
         }, 3000)
 
         // If switch lang from navigation bar
         EventBus.$on("switchLang", function(data){
-            that.switchLang(data, false)
+            that.switchLang(data, false);
         })
 
         // If image viewer closed
         EventBus.$on("img-viewer-close", function(){
-            that.handleImgViewer('', 0, 0, false)
+            that.handleImgViewer('', 0, 0, false);
         })
 
         // If not on top when open than scroll to top
@@ -161,7 +161,7 @@ export default {
             scrollTo(0, 0, {
               ease: 'inOutQuart',
               duration: 100
-            })
+            });
         }
     },
     methods:{
@@ -232,7 +232,7 @@ export default {
 
         alertLang () {
             this.showPopup(
-                "您可能在中国大陆地区，已切换为中文 You might visit from China mainland, post has been switch to Chinese.",
+                "您可能在中国大陆地区，已切换为中文 You might visit from Mainland China, switch to Chinese.",
                 "BACK",
                 10
             )
@@ -277,9 +277,7 @@ export default {
         },
 
         parseTitleImg(url){
-            console.log(url)
-            if(!url || url.length < 1) return null;
-            return url.indexOf('cos') != -1 ? 'https://' + url : this.base + url
+            return parseDiffImg(this.base, url);
         }
     }
 }
@@ -303,6 +301,10 @@ export default {
     opacity: 1;
     bottom: 0px;
   }
+}
+
+#post{
+    font-family: Helvetica, Arial, sans-serif !important;
 }
 
 #post-popup{
@@ -373,7 +375,7 @@ export default {
     margin-top: 400px;
     margin-left: auto;
     margin-right: auto;
-    width: 730px;
+    width: 1080px;
 }
 
 #posts-contents-cont{

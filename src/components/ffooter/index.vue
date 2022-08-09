@@ -18,6 +18,7 @@
 <script>
 
 import scrollTo from 'scroll-to'
+import { parseDiffImg } from '../../utils'
 //import { EventBus } from '../../bus'
 
 export default {
@@ -46,8 +47,7 @@ export default {
             })
         },
         parseTitleImg(url){
-            if(!url || url.length < 1) return null;
-            return url.indexOf('qcloud') != -1 ? 'https://' + url : this.base + url
+            return parseDiffImg(this.base, url);
         }
     }
 }

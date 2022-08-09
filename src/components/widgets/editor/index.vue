@@ -58,3 +58,18 @@ export default ({
   }
 })
 </script>
+
+<style>
+.image-tool__caption{
+  border: none;
+  font-size: 1rem;
+  text-align: center;
+  color: #888;
+  box-shadow: none;
+  padding-top: 0px;
+  padding-bottom: 16px;
+}
+.image-tool__caption:empty{
+  display: none;
+}
+</style>
