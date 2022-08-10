@@ -169,6 +169,7 @@ export default {
 }
 
 #hheader{
+    z-index: 5;
     user-select: none;
 }
 

@@ -86,8 +86,8 @@ export default {
   },
   data(){
     return{
-      api_base: process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000",
-      // api_base: "http://api.isjeff.com",
+      // api_base: process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000",
+      api_base: "http://api.isjeff.com",
       api_site: "/front/home/",
       api_track: "/updater/visit/",
       mode: "home",
@@ -99,7 +99,7 @@ export default {
       social_media: [],
       files: [],
       headerY: 0,
-      showTopping: true,
+      showTopping: false,
       showFooter: false,
       animating: false,
       currentPosi: 0,
@@ -136,25 +136,24 @@ export default {
       const that = this;
       const time = this.delay;
       setTimeout(()=>{
-          if(that.loaded){
-            scrollTo(0, that.headerY, {
-              ease: 'inOutQuart',
-              duration: 500
-            })
-          } else {
-            that.showTopping = false
-          }
-        }, time)
-
-        setTimeout(()=>{
+        if(that.loaded){
+          scrollTo(0, that.headerY, {
+            ease: 'inOutQuart',
+            duration: 500
+          })
+        } else {
           that.showTopping = false
-          that.animating = false
-          that.currentPosi = 1
-        }, time+550)
+        }
+      }, time)
+
+      setTimeout(()=>{
+        that.showTopping = false
+        that.animating = false
+        that.currentPosi = 1
+      }, time+550)
 
 
-        setCookie("topping", true, 3, false)
-        
+      setCookie("topping", true, 3, false)
     },
 
     showFot (d) {
@@ -203,13 +202,13 @@ export default {
           // Loaded
          
           that.loaded = true
-          
+          this.showTopping = false;
 
-          if(this.dontDisplayAni){
-            this.showTopping = false
-          } else {
-            this.scrollToMain()
-          }
+          // if(this.dontDisplayAni){
+          //   this.showTopping = false;
+          // } else {
+          //   // this.scrollToMain()
+          // }
           
 
           // Get header render X value
@@ -238,6 +237,26 @@ export default {
   font-family: fregular;
   src: url('./assets/regular.otf');
 }
+
+/** Overwrite scroll bar style */
+::-webkit-scrollbar {
+  border: none;
+  width: 8px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  border: none;
+  background: rgba(0,0,0,0);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: rgba(0,0,0,0.1);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.3);
+}
+
 
 *{
   margin:0;

@@ -1,6 +1,10 @@
 <template>
     <div id="all">
 
+        <!-- <div id="home-avatar">
+            <avatar></avatar>
+        </div> -->
+
         <div id="posts">
             <div id="posts-inner">
                 <div class="post-single" v-for="item in postsList" :key="item._id">
@@ -47,6 +51,7 @@
 </template>
 
 <script>
+// import avatar from '../avatar'
 import { EventBus } from '../../bus'
 import { genGet } from '../../request'
 import { parseDiffImg } from '../../utils'
@@ -55,6 +60,7 @@ import { parseDiffImg } from '../../utils'
 export default {
     name: "home",
     components:{
+        // avatar,
         //iimage
     },
     props:{
@@ -100,6 +106,7 @@ export default {
             }
 
             genGet(this.base + this.api, param, (res)=>{
+                console.log(res)
                 if(res.status){
                     that.postsTotal = res.total
                     that.postsList = res.data
@@ -164,6 +171,14 @@ export default {
 
 #all{
   user-select: none;
+}
+
+#home-avatar{
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 100%;
+    width: 100%;
 }
 
 #posts{
