@@ -12,7 +12,9 @@
       ref="headerRef"
       :base="api_base"
       :leftLogo="theme['Side-Logo'].val"
+      :leftLogoDark="theme['Side-Logo-Dark'].val"
       :centerLogo="theme['Center-Logo'].val"
+      :centerLogoDark="theme['Center-Logo-Dark'].val"
       :socialMedia="social_media">
     </hheader>
 
@@ -22,7 +24,7 @@
     </navs>
 
     <div id="contents"
-         ref="contentsRef">
+      ref="contentsRef">
 
       <transition name="fade">
         <keep-alive exclude="post">
@@ -43,6 +45,7 @@
       v-show="showFooter"
       :base="api_base"
       :bottomLogo="theme['Footer-Logo'].val"
+      :bottomLogoDark="theme['Footer-Logo-Dark'].val"
       :icpNum="theme['China-ICP-License'].val">
     </ffooter>
     
@@ -85,8 +88,8 @@ export default {
   },
   data(){
     return{
-      api_base: process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000",
-      // api_base: "http://api.isjeff.com",
+      // api_base: process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000",
+      api_base: "http://api.isjeff.com",
       api_site: "/front/home/",
       api_track: "/updater/visit/",
       mode: "home",
@@ -177,13 +180,14 @@ export default {
           const navs = finalRes.nav
 
           // Parse site data
-          siteData.title = decodeRichText(siteData.title)
-          siteData.subtitle = decodeRichText(siteData.subtitle)
-          siteData.desText = decodeRichText(siteData.desText)
-          siteData.seoTitle = decodeRichText(siteData.seoTitle)
+          siteData.title = decodeRichText(siteData.title);
+          siteData.subtitle = decodeRichText(siteData.subtitle);
+          siteData.desText = decodeRichText(siteData.desText);
+          siteData.seoTitle = decodeRichText(siteData.seoTitle);
 
           // Parse theme data
-          that.theme = JSON.parse(decodeRichText(siteData.data_struct))
+          that.theme = JSON.parse(decodeRichText(siteData.data_struct));
+          console.log(that.theme);
 
           // Merge theme data into site data
           siteData.data_struct = ""
@@ -263,7 +267,7 @@ export default {
 /** Overwrite scroll bar style */
 ::-webkit-scrollbar {
   border: none;
-  width: 8px;
+  width: 9px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
@@ -308,9 +312,74 @@ a{
   }
 }
 
+:root {
+  --body-bg: #ffffff;
+  --bg-caption: #F9F9F9;
+  --bg-cover: linear-gradient(90deg, #FFFFFF 20%, rgba(255, 255, 255, 0) 100%);
+  --bg-card: linear-gradient(195.65deg, #EFF2F3 0%, #FFFFFF 100%);
+  --bg-card-shadow: 0px 16px 24px rgba(69, 76, 84, 0.1);
+  --bg-card-border: 1px solid #D2D5E1;
+  --bg-card-text: #454C54;
+  --bg-card-button: rgba(255, 255, 255, 1);
+  --bg-card-button-shadow: 0px 4px 8px rgba(69, 76, 84, 0.05);
+  --bg-card-button-shadow-hover: 0px 12px 18px rgba(69, 76, 84, 0.24);
+  --border-card-button: 0.5px solid #BCC3C8;;
+  --header-bg: transparent;
+  --header-bg-mobile: #ffffff;
+  --text-normal: #333333;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-bg: linear-gradient(252.44deg, rgba(0, 0, 0, 0.84) 0%, #000000 100%);
+    --bg-caption: #252525;
+    --bg-cover: linear-gradient(90deg, #090909 20%, rgba(25, 25, 25, 0) 100%);
+    --bg-card: linear-gradient(214.44deg, #19203A 27.18%, #341222 100%);
+    --bg-card-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    --border-card: 1px solid #202020;
+    --bg-card-text: #ffffff;
+    --bg-card-button: rgba(255, 255, 255, 0.05);
+    --bg-card-button-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    --bg-card-button-shadow-hover: 0px 12px 20px rgba(0, 0, 0, 0.36);
+    --border-card-button: 1px solid rgba(255, 255, 255, 0.15);
+    --header-bg: transparent;
+    --header-bg-mobile: linear-gradient(252.44deg, #282828 0%, #1e1e1e 100%);
+    --text-normal: #ffffff;
+  }
+
+  .hheader-sm-single, #hheader-center-upbtn{
+    filter: invert(100%);
+  }
+
+  .ce-block--selected .ce-block__content{
+    background: #1e2d38;
+  }
+
+  #namecard-person img, #namecard-actions img{
+    filter: invert(100%);
+  }
+
+  ::selection {
+    background-color: #365165;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(116 116 116 / 25%);
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1C1C1C;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #484848;
+  }
+}
+
+
 
 body{
-  background-color: #ffffff;
+  background: var(--body-bg);
 }
 
 #app {
@@ -320,8 +389,7 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background:#ffffff;
-  color:#333;
+  color:var(--text-normal);
 }
 
 #topping{
@@ -330,7 +398,7 @@ body{
 
 #hheader{
   position: relative;
-  background: rgba(255,255,255,1);
+  background: var(--header-bg);
   height:100px;
   transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
@@ -356,6 +424,10 @@ body{
   margin-top: 50px;
 }
 
+.file-down-icon svg g{
+  fill: var(--text-normal);
+}
+
 @media only screen and (max-device-width : 812px)  { 
 
   #hheader{
@@ -364,7 +436,7 @@ body{
     z-index: 80;
     height: 64px;
     width: 100%;
-    background-color: #ffffff;
+    background: var(--header-bg-mobile);
   }
   
   #nnavs {

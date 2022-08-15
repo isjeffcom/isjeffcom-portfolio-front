@@ -190,7 +190,7 @@ export default {
 }
 
 .post-single-author{
-    color: #333;
+    color: var(--text-normal);
     display: flex;
 }
 
@@ -225,7 +225,7 @@ export default {
 .post-single-like-count{
     font-family: fblack;
     font-weight: bold;
-    color:#333;
+    color:var(--text-normal);
     margin-right: 6px;
     font-size:20px;
 }
@@ -239,7 +239,7 @@ export default {
 }
 
 .post-single-content{
-    color: #333;
+    color: var(--text-normal);
     margin-top: 12px;
     margin-bottom: 50px;
     opacity: .85;

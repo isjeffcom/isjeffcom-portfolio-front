@@ -84,7 +84,7 @@ export default {
 }
 
 .navs-single a{
-    color:#333;
+    color:var(--text-normal);
     text-decoration: none;
 }
 

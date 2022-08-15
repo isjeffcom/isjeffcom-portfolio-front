@@ -44,6 +44,13 @@ export function isMobile () {
     return screen.width < 480 ? true : false
 }
 
+export function isDark() {
+    const themeMedia = window.matchMedia("(prefers-color-scheme: light)");
+    if (themeMedia.matches) return false;
+    else return true;
+    
+}
+
 export function parseDiffImg(base, url){
     if(!url || url.length < 1) return null;
     return url.indexOf('cos') != -1 ? 'https://' + url : base + url

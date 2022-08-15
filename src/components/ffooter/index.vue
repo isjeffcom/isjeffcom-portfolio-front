@@ -3,7 +3,7 @@
     <div id="ffooter">
         <div id="f-inner">
             <div id="f-logo" v-on:click="toTop">
-                <img :src="parseTitleImg(bottomLogo)" alt="logo">
+                <img :src="isDarkMode ? parseTitleImg(bottomLogoDark) : parseTitleImg(bottomLogo)" alt="logo">
             </div>
 
             <div id="f-info">
@@ -18,25 +18,24 @@
 <script>
 
 import scrollTo from 'scroll-to'
-import { parseDiffImg } from '../../utils'
+import { isDark, parseDiffImg } from '../../utils'
 //import { EventBus } from '../../bus'
 
 export default {
     name:"ffooter",
     props:{
         bottomLogo: String,
+        bottomLogoDark: String,
         icpNum: String,
         base: String
     },
-    components:{
-
-    },
     data(){
         return{
-
+            isDarkMode: isDark()
         }
     },
     created(){
+        console.log(this.bottomLogoDark)
         //var that = this
     },
     methods:{
@@ -59,7 +58,7 @@ export default {
     position: relative;
     height: 150px;
     width: 100%;
-    background: rgba(255,255,255,1);
+    background: transparent;
     user-select: none;
 }
 
@@ -80,7 +79,7 @@ export default {
 }
 
 #f-info{
-    color: #000000;
+    color: var(--text-normal);
     margin-top: 8px;
     font-size: 14px;
     opacity: .4;
@@ -88,7 +87,7 @@ export default {
 
 #f-info a{
     text-decoration: none;
-    color: #000000;
+    color: var(--text-normal);
 }
 
 @media only screen and (max-device-width: 812px)  { 

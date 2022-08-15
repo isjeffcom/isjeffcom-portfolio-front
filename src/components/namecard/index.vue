@@ -13,7 +13,7 @@
 
       <div id="namecard-profile-name">
         <div id="namecard-profile-name-inner">
-          <img :src="'./assets/img/namecard/name.svg'" alt="name">
+          <img :src="isDarkMode ? './assets/img/namecard/name-dark.svg' : './assets/img/namecard/name.svg'" alt="name">
         </div>
 
         <div id="namecard-profile-motto">
@@ -101,11 +101,17 @@
 </template>
 
 <script>
+import { isDark } from '../../utils'
 import avatar from '../avatar'
 export default {
   name: "namecard",
   components: {
     avatar
+  },
+  data() {
+    return {
+      isDarkMode: isDark()
+    }
   },
   methods:{
     shareNC() {
@@ -123,7 +129,7 @@ export default {
 <style scoped>
 a, span{
   text-decoration: none;
-  color: #454C54;
+  color: var(--bg-card-text);
 }
 #namecard{
   font-family: fblack;
@@ -132,9 +138,9 @@ a, span{
   left: 50px;
   width: 423px;
   height: 694px;
-  background: linear-gradient(195.65deg, #EFF2F3 0%, #FFFFFF 100%);
-  border: 1px solid #D2D5E1;
-  box-shadow: 0px 16px 24px rgba(69, 76, 84, 0.1);
+  background: var(--bg-card);
+  border: var(--border-card);
+  box-shadow: var(--bg-card-shadow);
   border-radius: 8px;
   z-index: 999;
   overflow: hidden;
@@ -195,16 +201,16 @@ a, span{
 #namecard-actions .na-btn{
   width: 36%;
   height: 60px;
-  background: #FFFFFF;
-  border: 0.5px solid #BCC3C8;
-  box-shadow: 0px 4px 8px rgba(69, 76, 84, 0.05);
+  background: var(--bg-card-button);
+  border: var(--border-card-button);
+  box-shadow: var(--bg-card-button-shadow);
   border-radius: 8px;
   transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
   cursor: pointer;
 }
 
 #namecard-actions .na-btn:hover{
-  box-shadow: 0px 12px 18px rgba(69, 76, 84, 0.24);
+  box-shadow: var(--bg-card-button-shadow-hover);
 }
 
 #namecard-actions .na-btn:active{

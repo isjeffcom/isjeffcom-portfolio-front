@@ -3,11 +3,11 @@
     <div id="hheader">
         <div id="hheader-inner">
             <div id="hheader-left" ref="hl" v-on:click="back()">
-                <img :src="parseTitleImg(leftLogo)" alt="Logo">
+                <img :src="darkMode ? parseTitleImg(leftLogoDark) : parseTitleImg(leftLogo)" alt="Logo">
             </div>
 
             <div id="hheader-center" ref="hc">
-                <img id="hheader-center-logo" :src="parseTitleImg(centerLogo)" alt="Name">
+                <img id="hheader-center-logo" :src="darkMode ? parseTitleImg(centerLogoDark) : parseTitleImg(centerLogo)" alt="Name">
                 <img id="hheader-center-upbtn" src="../../assets/sup.png" alt="Name">
             </div>
 
@@ -33,14 +33,16 @@
 <script>
 
 import { EventBus } from '../../bus'
-import { isMobile, parseDiffImg } from '../../utils' 
+import { isDark, isMobile, parseDiffImg } from '../../utils' 
 
 export default {
     name:"hheader",
     props:{
         base: String,
         leftLogo: String,
+        leftLogoDark: String,
         centerLogo: String,
+        centerLogoDark: String,
         socialMedia: Array
     },
     components:{
@@ -52,6 +54,7 @@ export default {
             animating: false,
             lang: 0,
             mobileView: isMobile(),
+            darkMode: isDark(),
             mode: "home"
         }
     },
@@ -59,21 +62,23 @@ export default {
         '$route': 'initial'
     },
     mounted(){
+        console.log(this.centerLogo)
+        console.log(this.centerLogoDark)
         if(this.mobileView){
-            var hc = document.getElementById('hheader-center')
-            var hl = document.getElementById('hheader-left')
-            var hr = document.getElementById('hheader-right')
+            const hc = document.getElementById('hheader-center');
+            const hl = document.getElementById('hheader-left');
+            const hr = document.getElementById('hheader-right');
 
 
             window.addEventListener('scroll', function() {
                 if(window.scrollY > 10){
-                    hc.style.opacity = 1
-                    hl.style.opacity = 0
-                    hr.style.top = "-13px"
+                    hc.style.opacity = 1;
+                    hl.style.opacity = 0;
+                    hr.style.top = "-13px";
                 } else {
-                    hc.style.opacity = 0
-                    hl.style.opacity = 1
-                    hr.style.top = "5px"
+                    hc.style.opacity = 0;
+                    hl.style.opacity = 1;
+                    hr.style.top = "5px";
                 }
             });
 
@@ -83,17 +88,17 @@ export default {
             window.addEventListener("orientationchange", function() {
                 
                 if(screen.orientation.angle == 90 || screen.orientation.angle == -90){
-                    hc.style.top = "-40px"
+                    hc.style.top = "-40px";
                 } else {
-                    hc.style.top = "0px"
+                    hc.style.top = "0px";
                 }
 
             });
 
             if(screen.orientation.angle == 90 || screen.orientation.angle == -90){
-                hc.style.top = "-40px"
+                hc.style.top = "-40px";
             } else {
-                hc.style.top = "0px"
+                hc.style.top = "0px";
             }
 
         }

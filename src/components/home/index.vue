@@ -49,7 +49,8 @@
                     <div class="file-single-inner">
                         <a :href="item.val.val.indexOf('http') != -1 ? item.val.val : base + item.val.val" target="_blank" style="display: flex; margin-left: auto; margin-right: auto;">
                             <div class="file-down-icon">
-                                <img src="../../assets/download.svg" alt="">
+                                <!-- <img src="../../assets/download.svg" alt=""> -->
+                                <svg_icon_download></svg_icon_download>
                             </div>
 
                             <div class="file-down-name">
@@ -70,13 +71,15 @@
 import { EventBus } from '../../bus';
 import { genGet } from '../../request';
 import { isMobile, parseDiffImg } from '../../utils';
-import namecard from '../namecard'
+import namecard from '../namecard';
+import svg_icon_download from '../widgets/icons/download.vue'
 //import iimage from '../widgets/iimage'
 
 export default {
     name: "home",
     components:{
         namecard,
+        svg_icon_download
         // avatar,
         //iimage
     },
@@ -259,7 +262,7 @@ export default {
     height: 90%;
     left: 0px;
     bottom: 0px;
-    background: linear-gradient(90deg, #FFFFFF 20%, rgba(255, 255, 255, 0) 100%);
+    background: var(--bg-cover);
     z-index: 998;
 }
 
@@ -371,10 +374,11 @@ export default {
 }
 
 .file-down-name{
-    color:#000;
+    color:var(--text-normal);
     text-decoration: none;
     margin-left: 14px;
 }
+
 
 @media only screen and (max-width : 812px)  { 
   .post-single{

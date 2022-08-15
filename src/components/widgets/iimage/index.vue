@@ -74,7 +74,7 @@ export default {
     margin-left:0px;
     width:100%;
     height:100%;
-    background-color: #F9F9F9;
+    background-color: var(--bg-caption);
     transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
 
