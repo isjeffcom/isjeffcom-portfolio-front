@@ -5,6 +5,21 @@
             <avatar></avatar>
         </div> -->
 
+        <div id="namecard-trigger" ref="namecardTrigger" v-if="!mobileView">
+            <div id="namecard-cont" ref="namecardContainer">
+                <namecard></namecard>
+            </div>
+        </div>
+        <div
+            v-if="!mobileView"
+            id="namecard-bg"
+            ref="namecardBg"
+            :style="`
+                transform: translateX(${namecardEnabled ? 0 : -500}px);
+                opacity: ${namecardEnabled ? 1 : 0};
+                pointer-events: ${namecardEnabled ? 'auto' : 'none'}`">
+        </div>
+
         <div id="posts">
             <div id="posts-inner">
                 <div class="post-single" v-for="item in postsList" :key="item._id">
@@ -52,14 +67,16 @@
 
 <script>
 // import avatar from '../avatar'
-import { EventBus } from '../../bus'
-import { genGet } from '../../request'
-import { parseDiffImg } from '../../utils'
+import { EventBus } from '../../bus';
+import { genGet } from '../../request';
+import { isMobile, parseDiffImg } from '../../utils';
+import namecard from '../namecard'
 //import iimage from '../widgets/iimage'
 
 export default {
     name: "home",
     components:{
+        namecard,
         // avatar,
         //iimage
     },
@@ -78,12 +95,44 @@ export default {
             postsTotal: 0,
             pagesTotal: 0,
             pageSize: 9,
+            namecardEnabled: false,
+            mobileView: false,
         }
     },
     created(){
-        this.getPosts(this.page)
-        
+        this.getPosts(this.page);
+        this.mobileView = isMobile();
     },
+    mounted() {
+        // When 3d avatar ready
+        EventBus.$on("avatar-ready", () => {
+            this.$refs.namecardTrigger.addEventListener("mouseover", () => {
+                if(this.namecardEnabled) return;
+                this.$refs.namecardContainer.style.transform = "translateX(-452px)";
+            });
+
+            this.$refs.namecardTrigger.addEventListener("mouseleave", () => {
+                if(this.namecardEnabled) return;
+                this.$refs.namecardContainer.style.transform = "translateX(-500px)";
+            });
+
+            this.$refs.namecardTrigger.addEventListener("click", () => {
+                this.namecardEnabled = true;
+                this.$refs.namecardContainer.style.transform = "translateX(0px)";
+            });
+
+            this.$refs.namecardBg.addEventListener("click", () => {
+                this.namecardEnabled = false;
+                this.$refs.namecardContainer.style.transform = "translateX(-500px)";
+            })
+
+        })
+    },
+    watch: {
+        namecardEnabled() {
+            EventBus.$emit("avatar-render", this.namecardEnabled);
+        }
+    },  
     activated(){
         EventBus.$emit("set-meta", {title: "Home", des: this.siteDes})
     },
@@ -139,7 +188,6 @@ export default {
         parseTitleImg(url){
             return parseDiffImg(this.base, url);
         }
-
         
     }
 }
@@ -188,6 +236,31 @@ export default {
 #posts-inner{
     display:flex;
     flex-wrap: wrap;
+}
+
+#namecard-trigger{
+    position: fixed;
+    width: 200px;
+    height: 85%;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(255,0,0,0);
+    z-index: 999;
+}
+
+#namecard-cont{
+    transform: translateX(-500px);
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+#namecard-bg{
+    position: fixed;
+    width: 100%;
+    height: 90%;
+    left: 0px;
+    bottom: 0px;
+    background: linear-gradient(90deg, #FFFFFF 20%, rgba(255, 255, 255, 0) 100%);
+    z-index: 998;
 }
 
 .post-single{

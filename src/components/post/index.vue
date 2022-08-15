@@ -170,7 +170,7 @@ export default {
             
             genGet(this.base + this.api, [{name: "pid", val: this.pid}], (res)=>{
                 if(res.status){
-
+                    
                     that.postData = res.data
                     
                     // Parse and decode data
@@ -178,7 +178,6 @@ export default {
                     that.postData.content = decodeImgSrc(that.postData.content, that.base)
 
                     that.postData.title_img = that.parseTitleImg(that.postData.title_img)
-                    
                     that.postData.ux_likes = parseInt(that.postData.ux_likes)
                     that.postData.date_pub = that.postData.date_pub.substr(0, that.postData.date_pub.length -9 )
                     that.postData.content_sublang = decodeRichText(that.postData.content_sublang)
@@ -208,6 +207,7 @@ export default {
             
             if(!this.like_posted){
                 genUpdate(this.base + this.api_up, {pid: this.pid}, (res)=>{
+                    console.log(res);
                     if(res.status){
                         this.like_posted = true
                     }
@@ -275,7 +275,7 @@ export default {
             }
             
         },
-
+        // Differenlise image from local or COS
         parseTitleImg(url){
             return parseDiffImg(this.base, url);
         }

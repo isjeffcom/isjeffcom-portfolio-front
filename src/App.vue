@@ -7,7 +7,6 @@
       :toppingLogo="theme['Topping-Logo'].val">
     </topping>
     
-
     <hheader
       id="hheader"
       ref="headerRef"
@@ -72,22 +71,22 @@ export default {
   },
   metaInfo() {
       return{
-          title: this.metaTitle,
-          titleTemplate: '%s - ' + this.site.title,
-          meta: [
-              { name: "description", content: this.metaDes },
-          ],
-          htmlAttrs: {
-              lang: 'en',
-              amp: true
-          }
+        title: this.metaTitle,
+        titleTemplate: '%s - ' + this.site.title,
+        meta: [
+          { name: "description", content: this.metaDes },
+        ],
+        htmlAttrs: {
+          lang: 'en',
+          amp: true
+        }
       }
     
   },
   data(){
     return{
-      // api_base: process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000",
-      api_base: "http://api.isjeff.com",
+      api_base: process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000",
+      // api_base: "http://api.isjeff.com",
       api_site: "/front/home/",
       api_track: "/updater/visit/",
       mode: "home",
@@ -238,6 +237,29 @@ export default {
   src: url('./assets/regular.otf');
 }
 
+@keyframes showup {
+  0% {opacity: 0; transform: translateX(70px);}
+  100% {opacity: 1; transform: translateX(0px);}
+}
+
+@keyframes covering {
+  0% {opacity: 0; transform: translateY(-400px);}
+  50% {opacity: 1; transform: translateY(0px);}
+  100% {opacity: 0; transform: translateY(400px);}
+}
+
+@keyframes poping {
+  0% {opacity: 0; transform: scale(0);}
+  25% {opacity: 1; transform: scale(1);}
+  85% {opcity: 1; transform: scale(1);}
+  100% {opacity: 0; transform: scale(0);}
+}
+
+@keyframes blurout {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
 /** Overwrite scroll bar style */
 ::-webkit-scrollbar {
   border: none;
@@ -251,10 +273,10 @@ export default {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 8px;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0,0,0,0.25);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.5);
 }
 
 

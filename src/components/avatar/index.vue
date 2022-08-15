@@ -1,6 +1,44 @@
 <template>
   <div id="avatar">
-    <div id="avatar-rt" ref="renderTarget" :style="`height: ${windowSize.height}px; width: ${windowSize.width/3}px; min-width: 320px;`"></div>
+    <div id="avatar-rt" ref="renderTarget" :style="`height: ${canvasHeight}px; width: ${canvasWidth}px; min-width: 320px;`">
+      <div id="avatar-like">
+        <div id="avatar-like-btn" v-on:click="playDance">👍I love it</div>
+      </div>
+    </div>
+
+    <div
+      id="three-overlay-blur"
+      :style="`
+        display: ${popingAni ? 'block' : 'none'};
+        animationName: ${popingAni ? 'blurout' : 'none'};
+      `">
+    </div>
+
+    <div
+      id="three-overlay-poping"
+      :style="`display: ${popingAni ? 'block' : 'none'};`">
+        <div
+          id="coverAni"
+          :style="`
+            display: ${popingAni ? 'block' : 'none'};
+            animationName: ${popingAni ? 'covering' : 'none'};
+          `">
+          <img :src="'./assets/img/anirain-1.png'" alt="bg" width="100%" height="100%" />
+        </div>
+    </div>
+
+    <div
+      id="three-overlay-poping2"
+      :style="`display: ${popingAni ? 'block' : 'none'}`">
+      <div
+        id="thankAni"
+        :style="`
+          display: ${popingAni ? 'block' : 'none'};
+          animationName: ${popingAni ? 'poping' : 'none'};`">
+        <img :src="'./assets/img/thankyou.png'" alt="bg" width="100%" height="100%" />
+      </div>
+    </div>
+    
   </div>
 </template>
 
@@ -10,6 +48,7 @@ import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import confetti from 'canvas-confetti';
+import { EventBus } from '../../bus';
 
 let renderer,
   camera,
@@ -20,29 +59,36 @@ let renderer,
 let danceAniClip = null;
 let avatarObj = null;
 const Preset_Lights = [
-  { type: "ambient", color: 0xFFFFFF, position: {x: 0, y: 0, z: 0}, helper: false },
+  { type: "ambient", color: 0xFFFFFF, position: {x: 0, y: 0, z: 0} },
   // { type: "directional", color: 0x404040, position: {x: 0, y: 5, z: 0}, helper: true },
-  { type: "spot", color: 0xffffff, position: {x: 0, y: 5, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 5, helper: false },
-  { type: "spot", color: 0xffffff, position: {x: 3, y: 5, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3, helper: false },
-  { type: "spot", color: 0xffffff, position: {x: -3, y: 5, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3, helper: false },
+  { type: "spot", color: 0xffffff, position: {x: 0, y: 5, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 5 },
+  { type: "spot", color: 0xffffff, position: {x: 3, y: 5, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3 },
+  { type: "spot", color: 0xffffff, position: {x: -3, y: 5, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3 },
 ]
 
 export default {
   name: "avatar",
   components:{},
+  props: {
+    canvasHeight: Number,
+    canvasWidth: Number
+  },
   data(){
     return {
       sceneLoaded: false,
       currentStateDance: false,
       popingAni: false,
-      windowSize: {height: 1080, width: 1920}
+      shouldRender: false
     }
   },
   mounted() {
-    if(this.sceneLoaded) return;
 
-    this.windowSize.width = window.innerWidth;
-    this.windowSize.height = window.innerHeight;
+    EventBus.$on("avatar-render", (data) => {
+      console.log("avatar-render: " + data)
+      this.shouldRender = data;
+    })
+
+    if(this.sceneLoaded) return;
 
     if (this.$refs.renderTarget) {
       this.InitRenderer(this.$refs.renderTarget);
@@ -65,8 +111,7 @@ export default {
     },
     InitCamera(targetCanvas) {
       camera = new THREE.PerspectiveCamera( 40, targetCanvas.clientWidth / targetCanvas.clientHeight , 0.1, 1000 );
-      camera.position.z = 2.4;
-      camera.position.y = 0.2;
+      camera.position.z = 1.35;
     },
     InitClock() {
       clock = new THREE.Clock();
@@ -94,13 +139,6 @@ export default {
         if(preset.type === "point") light = new THREE.PointLight( preset.color, 1 ,100 );
         if(preset.type === "spot") light = new THREE.SpotLight( preset.color, preset.intensive || 1, 10 );
 
-        if(preset.helper) {
-          if(preset.type === "ambient") console.warn("Ambient light does not support helper");
-          if(preset.type === "directional") helper = new THREE.DirectionalLightHelper( light, 1 );
-          if(preset.type === "point") helper = new THREE.PointLightHelper( light, 1 );
-          if(preset.type === "spot") helper = new THREE.SpotLightHelper( light, 1);
-        }
-
         // Set position
         if(preset.position && light) {
           light.position.set(preset.position.x, preset.position.y, preset.position.z);
@@ -126,7 +164,7 @@ export default {
       const loader = new GLTFLoader();
       loader.load(
         // resource URL
-        './avatar/jeffAni.glb',
+        'https://isjeffcom-1251089768.cos.ap-hongkong.myqcloud.com/avatars/jeffAni.glb',
         // called when the resource is loaded
         function ( gltf ) {
 
@@ -134,14 +172,15 @@ export default {
           mixer = new THREE.AnimationMixer(gltf.scene)
 
           
-          gltf.scene.position.set(0.02, -1.13, 0);
+          gltf.scene.position.set(0.06, -1.55, 0);
           scene.add( gltf.scene );
           avatarObj = gltf;
           
-          loader.load('./avatar/jeffAniDance.glb', (gltf_dance) => {
+          loader.load('https://isjeffcom-1251089768.cos.ap-hongkong.myqcloud.com/avatars/jeffAniDance.glb', (gltf_dance) => {
             danceAniClip = gltf_dance.animations[0];
             avatarObj.animations.push(danceAniClip);
             that.playNormal();
+            EventBus.$emit("avatar-ready", true);
           })
       
         },
@@ -165,23 +204,23 @@ export default {
     },
     playDance() {
       this.currentStateDance = true;
-      confetti({origin: { x: 0.5, y: 1 }, angle: 90, particleCount: 90});
+      // Play confetti animation
+      confetti({origin: { x: 0.13, y: 0.65 }, angle: 90, particleCount: 90, zIndex: 2000});
       // confetti({origin: { y: 0 }, angle: 120,});
       mixer.clipAction( avatarObj.animations[0] ).stop();
       mixer.clipAction( avatarObj.animations[1] ).play();
       setTimeout(() => {
         this.popingAni = true;
-      }, 4200)
+      }, 3000)
       setTimeout(() => {
-        this.popingAni = true;
+        // this.popingAni = true;
         mixer.clipAction( avatarObj.animations[0] ).play();
         mixer.clipAction( avatarObj.animations[1] ).stop();
         this.currentStateDance = false;
         setTimeout(() => {
           this.popingAni = false;
         },4500)
-
-      }, 6000)
+      }, 4000)
     },
     animate() {
       requestAnimationFrame(this.animate);
@@ -189,8 +228,11 @@ export default {
       const delta = clock.getDelta();
       if ( mixer ) mixer.update( delta );
 
-      controls.update();
-      this.render();
+      if(this.shouldRender){
+        controls.update();
+        this.render();
+      }
+
     },
     render() {
       if (renderer && scene && camera) {
@@ -202,6 +244,66 @@ export default {
 </script>
 
 <style scoped>
+
+/* Animotion for background blur effect */
+#three-overlay-blur{
+  width: 100%;
+  height: 411px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1001;
+  opacity: 0;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(32px);
+  animation-duration: 1s;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}
+
+/* Animotion for emoji rain */
+#coverAni{
+  width: 100%;
+  height: 100%;
+  animation-name: covering;
+  animation-duration: 3s;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+}
+
+/* Animation for thank you */
+#thankAni{
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation-delay: 2.8s;
+  animation-duration: 3s;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}
+
+#three-overlay-poping{
+  width: 100%;
+  height: 411px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1002;
+}
+
+#three-overlay-poping2{
+  width: 100%;
+  height: 411px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1003;
+}
+
 #avatar{
   width: 100%;
   height: 100%;
@@ -211,4 +313,42 @@ export default {
   width: 100%;
   height: 100%;
 }
+
+#avatar-like{
+  position: absolute;
+  width: 100%;
+  top: 315px;
+  opacity: 0;
+  transition: all 0.64s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+#avatar-like:hover{
+  opacity: 1;
+}
+
+#avatar-like-btn{
+  height: 30px;
+  width: 100px;
+  border-radius: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 6px;
+  padding-bottom: 2px;
+  color: #fff;
+  border: 1px solid #777777;
+  transform: scale(1);
+  cursor: pointer;
+  background: rgba(0,0,0,0.76);
+}
+
+#avatar-like-btn:hover{
+  border: 1px solid #888888;
+}
+
+#avatar-like-btn:active{
+  transform: scale(0.9);
+}
+
 </style>
