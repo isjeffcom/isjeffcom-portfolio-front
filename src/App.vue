@@ -89,7 +89,7 @@ export default {
   data(){
     return{
       // api_base: process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000",
-      api_base: "http://api.isjeff.com",
+      api_base: "https://api.isjeff.com",
       api_site: "/front/home/",
       api_track: "/updater/visit/",
       mode: "home",
@@ -318,12 +318,14 @@ a{
   --bg-cover: linear-gradient(90deg, #FFFFFF 20%, rgba(255, 255, 255, 0) 100%);
   --bg-card: linear-gradient(195.65deg, #EFF2F3 0%, #FFFFFF 100%);
   --bg-card-shadow: 0px 16px 24px rgba(69, 76, 84, 0.1);
-  --bg-card-border: 1px solid #D2D5E1;
+  --border-card: 1px solid #D2D5E1;
   --bg-card-text: #454C54;
-  --bg-card-button: rgba(255, 255, 255, 1);
-  --bg-card-button-shadow: 0px 4px 8px rgba(69, 76, 84, 0.05);
-  --bg-card-button-shadow-hover: 0px 12px 18px rgba(69, 76, 84, 0.24);
-  --border-card-button: 0.5px solid #BCC3C8;;
+  --namecard-button: rgba(255, 255, 255, 1);
+  --namecard-button-hover: #F6F6F6;
+  --namecard-button-shadow: 0px 4px 8px rgba(69, 76, 84, 0.05);
+  --namecard-button-shadow-hover: 0px 12px 18px rgba(69, 76, 84, 0.24);
+  --avatar-ani-cover-blur: rgba(255,255,255,0.75);
+  --border-card-button: 0.5px solid #BCC3C8;
   --header-bg: transparent;
   --header-bg-mobile: #ffffff;
   --text-normal: #333333;
@@ -331,16 +333,18 @@ a{
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --body-bg: linear-gradient(252.44deg, rgba(0, 0, 0, 0.84) 0%, #000000 100%);
+    --body-bg: linear-gradient(252.44deg, #282828 0%, #000000 100%);
     --bg-caption: #252525;
     --bg-cover: linear-gradient(90deg, #090909 20%, rgba(25, 25, 25, 0) 100%);
     --bg-card: linear-gradient(214.44deg, #19203A 27.18%, #341222 100%);
     --bg-card-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     --border-card: 1px solid #202020;
     --bg-card-text: #ffffff;
-    --bg-card-button: rgba(255, 255, 255, 0.05);
-    --bg-card-button-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
-    --bg-card-button-shadow-hover: 0px 12px 20px rgba(0, 0, 0, 0.36);
+    --namecard-button: rgba(255, 255, 255, 0.05);
+    --namecard-button-hover: rgba(255, 255, 255, 0.15);;
+    --namecard-button-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    --namecard-button-shadow-hover: 0px 12px 20px rgba(0, 0, 0, 0.36);
+    --avatar-ani-cover-blur: rgba(0,0,0,0.65);
     --border-card-button: 1px solid rgba(255, 255, 255, 0.15);
     --header-bg: transparent;
     --header-bg-mobile: linear-gradient(252.44deg, #282828 0%, #1e1e1e 100%);
@@ -378,8 +382,19 @@ a{
 
 
 
-body{
+html, body{
   background: var(--body-bg);
+}
+
+body{
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+  padding-left: constant(safe-area-inset-left);
+  padding-left: env(safe-area-inset-left);
+  padding-right: constant(safe-area-inset-right);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom:  env(safe-area-inset-bottom);
 }
 
 #app {

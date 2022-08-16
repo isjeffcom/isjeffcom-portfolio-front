@@ -2,7 +2,7 @@
   <div id="avatar">
     <div id="avatar-rt" ref="renderTarget" :style="`height: ${canvasHeight}px; width: ${canvasWidth}px; min-width: 320px;`">
       <div id="avatar-like">
-        <div id="avatar-like-btn" v-on:click="playDance">👍I love it</div>
+        <div id="avatar-like-btn" v-on:click="playDance">👍 I love it</div>
       </div>
     </div>
 
@@ -61,9 +61,9 @@ let avatarObj = null;
 const Preset_Lights = [
   { type: "ambient", color: 0xFFFFFF, position: {x: 0, y: 0, z: 0} },
   // { type: "directional", color: 0x404040, position: {x: 0, y: 5, z: 0}, helper: true },
-  { type: "spot", color: 0xffffff, position: {x: 0, y: 5, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 5 },
-  { type: "spot", color: 0xffffff, position: {x: 3, y: 5, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3 },
-  { type: "spot", color: 0xffffff, position: {x: -3, y: 5, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3 },
+  { type: "spot", color: 0xffffff, position: {x: 0, y: 3, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 5 },
+  { type: "spot", color: 0xffffff, position: {x: 3, y: 4, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3 },
+  { type: "spot", color: 0xffffff, position: {x: -3, y: 4, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3 },
 ]
 
 export default {
@@ -254,7 +254,7 @@ export default {
   left: 0px;
   z-index: 1001;
   opacity: 0;
-  background: rgba(255,255,255,0.75);
+  background: var(--avatar-ani-cover-blur);
   backdrop-filter: blur(32px);
   animation-duration: 1s;
   animation-delay: 0s;

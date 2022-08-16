@@ -62,13 +62,10 @@ export default {
         '$route': 'initial'
     },
     mounted(){
-        console.log(this.centerLogo)
-        console.log(this.centerLogoDark)
         if(this.mobileView){
             const hc = document.getElementById('hheader-center');
             const hl = document.getElementById('hheader-left');
             const hr = document.getElementById('hheader-right');
-
 
             window.addEventListener('scroll', function() {
                 if(window.scrollY > 10){
@@ -82,9 +79,7 @@ export default {
                 }
             });
 
-
             // Orientation 
-
             window.addEventListener("orientationchange", function() {
                 
                 if(screen.orientation.angle == 90 || screen.orientation.angle == -90){

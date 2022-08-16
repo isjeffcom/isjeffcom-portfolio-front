@@ -259,7 +259,7 @@ export default {
 #namecard-bg{
     position: fixed;
     width: 100%;
-    height: 90%;
+    height: 100%;
     left: 0px;
     bottom: 0px;
     background: var(--bg-cover);

@@ -134,7 +134,7 @@ a, span{
 #namecard{
   font-family: fblack;
   position: fixed;
-  top: 70px;
+  top: 30px;
   left: 50px;
   width: 423px;
   height: 694px;
@@ -201,20 +201,20 @@ a, span{
 #namecard-actions .na-btn{
   width: 36%;
   height: 60px;
-  background: var(--bg-card-button);
+  background: var(--namecard-button);
   border: var(--border-card-button);
-  box-shadow: var(--bg-card-button-shadow);
+  box-shadow: var(--namecard-button-shadow);
   border-radius: 8px;
   transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
   cursor: pointer;
 }
 
 #namecard-actions .na-btn:hover{
-  box-shadow: var(--bg-card-button-shadow-hover);
+  box-shadow: var(--namecard-button-shadow-hover);
 }
 
 #namecard-actions .na-btn:active{
-  background: #F6F6F6;
+  background: var(--namecard-button-hover);
 }
 
 #namecard-person{
