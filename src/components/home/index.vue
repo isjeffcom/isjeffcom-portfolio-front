@@ -380,7 +380,7 @@ export default {
 }
 
 
-@media only screen and (max-width : 812px)  { 
+@media only screen and (max-width : 900px)  { 
   .post-single{
     width: 360px;
     height: 280px;

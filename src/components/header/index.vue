@@ -43,7 +43,7 @@ export default {
         leftLogoDark: String,
         centerLogo: String,
         centerLogoDark: String,
-        socialMedia: Array
+        socialMedia: Array,
     },
     components:{
 
@@ -63,19 +63,23 @@ export default {
     },
     mounted(){
         if(this.mobileView){
+            const hh = document.getElementById('hheader');
             const hc = document.getElementById('hheader-center');
             const hl = document.getElementById('hheader-left');
             const hr = document.getElementById('hheader-right');
 
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', () => {
                 if(window.scrollY > 10){
                     hc.style.opacity = 1;
                     hl.style.opacity = 0;
-                    hr.style.top = "-13px";
+                    hr.style.top = "-11px";
+                    hh.style.background = "var(--header-bg-mobile)";
+                    console.log("should changed")
                 } else {
                     hc.style.opacity = 0;
                     hl.style.opacity = 1;
                     hr.style.top = "5px";
+                    hh.style.background = "transparent";
                 }
             });
 
@@ -99,7 +103,12 @@ export default {
         }
     },
     created(){
-        this.initial()
+        this.initial();
+        // Listen color scheme change
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",   e => {
+            this.darkMode = isDark();
+        });
+
     },
     methods:{
         initial () {
@@ -252,7 +261,7 @@ export default {
     cursor: pointer;
 }
 
-@media only screen and (max-device-width : 812px)  { 
+@media only screen and (max-device-width : 900px)  { 
 
     #hheader-left{
         position: absolute;
@@ -262,7 +271,7 @@ export default {
 
     #hheader-center{
         width: 100%;
-        margin-top: 0px;
+        margin-top: 2px;
         position: absolute;
         left: -100px;
     }

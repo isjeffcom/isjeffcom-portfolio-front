@@ -2,8 +2,11 @@
 
     <div id="ffooter">
         <div id="f-inner">
+
+            <div id="f-avatar-ava">Avatar Loading {{avatarLoadingState2}}%</div>
+
             <div id="f-logo" v-on:click="toTop">
-                <img :src="isDarkMode ? parseTitleImg(bottomLogoDark) : parseTitleImg(bottomLogo)" alt="logo">
+                <img :src="darkMode ? parseTitleImg(bottomLogoDark) : parseTitleImg(bottomLogo)" alt="logo">
             </div>
 
             <div id="f-info">
@@ -19,6 +22,7 @@
 
 import scrollTo from 'scroll-to'
 import { isDark, parseDiffImg } from '../../utils'
+import { EventBus } from '../../bus'
 //import { EventBus } from '../../bus'
 
 export default {
@@ -27,16 +31,33 @@ export default {
         bottomLogo: String,
         bottomLogoDark: String,
         icpNum: String,
-        base: String
+        base: String,
     },
     data(){
         return{
-            isDarkMode: isDark()
+            darkMode: isDark(),
+            avatarLoadingState: 0,
+            avatarLoadingState1: 0,
+            avatarLoadingState2: 0
         }
     },
     created(){
-        console.log(this.bottomLogoDark)
-        //var that = this
+        // Listen color scheme change
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",   e => {
+            this.darkMode = isDark();
+        });
+
+        EventBus.$on("avatar-loading-1", (data) => {
+            const state = (data).toFixed(2);
+            this.avatarLoadingState1 = state;
+            this.avatarLoadingState = ((this.avatarLoadingState1 / 70) + (this.avatarLoadingState2 / 30)).toFixed(2);
+        })
+
+        EventBus.$on("avatar-loading-2", (data) => {
+            const state = (data).toFixed(2);
+            this.avatarLoadingState2 = state;
+            this.avatarLoadingState = ((this.avatarLoadingState1 / 70) + (this.avatarLoadingState2 / 30)).toFixed(2);
+        })
     },
     methods:{
         toTop(){
@@ -56,10 +77,21 @@ export default {
 
 #ffooter{
     position: relative;
-    height: 150px;
+    height: 160px;
     width: 100%;
     background: transparent;
     user-select: none;
+}
+
+#f-avatar-ava{
+    margin-bottom: 10px;
+    opacity: 0;
+    font-size: 9px;
+    transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+#f-avatar-ava:hover{
+    opacity: 0.5;
 }
 
 #f-inner{
@@ -90,7 +122,7 @@ export default {
     color: var(--text-normal);
 }
 
-@media only screen and (max-device-width: 812px)  { 
+@media only screen and (max-device-width: 900px)  { 
     #f-inner {
         width: 100%;
         padding-top: 20px;

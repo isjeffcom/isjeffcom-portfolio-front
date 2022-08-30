@@ -1,11 +1,11 @@
 <template>
   <div id="app" v-if="loaded">
 
-    <topping
+    <!-- <topping
       v-show="showTopping"
       :base="api_base"
       :toppingLogo="theme['Topping-Logo'].val">
-    </topping>
+    </topping> -->
     
     <hheader
       id="hheader"
@@ -55,19 +55,17 @@
 </template>
 
 <script>
-import { EventBus } from './bus'
-import { genGet, logVisit } from './request'
-import { decodeRichText, setCookie, getCookie } from './utils'
-import scrollTo from 'scroll-to'
-import hheader from './components/header'
-import topping from './components/topping'
-import ffooter from './components/ffooter'
-import navs from './components/navs'
+import { EventBus } from './bus';
+import { genGet, logVisit } from './request';
+import { decodeRichText, setCookie, getCookie, isDark } from './utils';
+import scrollTo from 'scroll-to';
+import hheader from './components/header';
+import ffooter from './components/ffooter';
+import navs from './components/navs';
 
 export default {
   name: 'app',
   components: {
-    topping,
     hheader,
     navs,
     ffooter
@@ -109,8 +107,7 @@ export default {
       damping: 20,
       dontDisplayAni: false,
       metaTitle: "Welcome",
-      metaDes: "Hello",
-
+      metaDes: "Hello"
     }
   },
 
@@ -121,15 +118,15 @@ export default {
 
     setTimeout(()=>{
       logVisit(this.api_base + this.api_track, 1)
-    }, 1000)
+    }, 1000);
 
     EventBus.$on("set-meta", function(data){
         that.setMeta(data)
-    })
+    });
 
     EventBus.$on("show-footer", function(data){
         that.showFot(data)
-    })
+    });
   },
   methods:{
 
@@ -137,16 +134,16 @@ export default {
       this.animating = true;
       const that = this;
       const time = this.delay;
-      setTimeout(()=>{
-        if(that.loaded){
-          scrollTo(0, that.headerY, {
-            ease: 'inOutQuart',
-            duration: 500
-          })
-        } else {
-          that.showTopping = false
-        }
-      }, time)
+      // setTimeout(()=>{
+      //   if(that.loaded){
+      //     scrollTo(0, that.headerY, {
+      //       ease: 'inOutQuart',
+      //       duration: 500
+      //     })
+      //   } else {
+      //     that.showTopping = false
+      //   }
+      // }, time)
 
       setTimeout(()=>{
         that.showTopping = false
@@ -216,8 +213,8 @@ export default {
 
           // Get header render X value
           that.$nextTick(()=>{
-            that.headerY = that.$refs.headerRef.$el.offsetTop
-            that.setMeta({title: "Home", des: this.site.desText})
+            // that.headerY = that.$refs.headerRef.$el.offsetTop
+            if(this.site.desText) that.setMeta({title: "Home", des: this.site.desText})
           })
           
         }
@@ -283,35 +280,6 @@ export default {
   background: rgba(0,0,0,0.5);
 }
 
-
-*{
-  margin:0;
-  padding:0;
-}
-
-a{
-    text-decoration: none !important;
-}
-
-.fade-enter-active{
-  animation: router-main .42s forwards;
-}
-
-.fade-leave-active{
-  animation: router-main .42s reverse;
-}
-
-@keyframes router-main {
-  0% {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0px);
-  }
-}
-
 :root {
   --body-bg: #ffffff;
   --bg-caption: #F9F9F9;
@@ -333,7 +301,7 @@ a{
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --body-bg: linear-gradient(252.44deg, #282828 0%, #000000 100%);
+    --body-bg: linear-gradient(241deg, #282828 0%, #000000 82%);
     --bg-caption: #252525;
     --bg-cover: linear-gradient(90deg, #090909 20%, rgba(25, 25, 25, 0) 100%);
     --bg-card: linear-gradient(214.44deg, #19203A 27.18%, #341222 100%);
@@ -347,7 +315,7 @@ a{
     --avatar-ani-cover-blur: rgba(0,0,0,0.65);
     --border-card-button: 1px solid rgba(255, 255, 255, 0.15);
     --header-bg: transparent;
-    --header-bg-mobile: linear-gradient(252.44deg, #282828 0%, #1e1e1e 100%);
+    --header-bg-mobile: linear-gradient(241deg, #282828 0%, #1e1e1e 82%);
     --text-normal: #ffffff;
   }
 
@@ -381,21 +349,52 @@ a{
 }
 
 
+*{
+  margin:0;
+  padding:0;
+}
 
-html, body{
+html{
   background: var(--body-bg);
 }
 
 body{
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
-  padding-left: constant(safe-area-inset-left);
-  padding-left: env(safe-area-inset-left);
-  padding-right: constant(safe-area-inset-right);
-  padding-right: env(safe-area-inset-right);
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom:  env(safe-area-inset-bottom);
+  /* background: var(--body-bg); */
+  padding: 0;
+  margin: 0;
 }
+
+/* body{
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom:  env(safe-area-inset-bottom);
+} */
+
+a{
+  text-decoration: none !important;
+}
+
+.fade-enter-active{
+  animation: router-main .42s forwards;
+}
+
+.fade-leave-active{
+  animation: router-main .42s reverse;
+}
+
+@keyframes router-main {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+
 
 #app {
   height:auto;
@@ -413,7 +412,7 @@ body{
 
 #hheader{
   position: relative;
-  background: var(--header-bg);
+  /* background: var(--header-bg); */
   height:100px;
   transition: all 0.42s cubic-bezier(.25,.8,.25,1);
 }
@@ -443,7 +442,7 @@ body{
   fill: var(--text-normal);
 }
 
-@media only screen and (max-device-width : 812px)  { 
+@media only screen and (max-device-width : 900px)  { 
 
   #hheader{
     position: fixed;
@@ -451,13 +450,14 @@ body{
     z-index: 80;
     height: 64px;
     width: 100%;
-    background: var(--header-bg-mobile);
+    /* background: var(--header-bg-mobile); */
   }
   
   #nnavs {
     width: 100%;
     height: 28px;
-    margin-top: 100px;
+    padding-top: 46px;
+    margin-top: 64px;
     margin-bottom: 16px;
   }
 
@@ -472,5 +472,9 @@ body{
   }
 
   
+}
+
+.ct__content{
+  opacity: 0;
 }
 </style>

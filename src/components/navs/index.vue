@@ -88,7 +88,7 @@ export default {
     text-decoration: none;
 }
 
-@media only screen and (max-device-width : 812px)  { 
+@media only screen and (max-device-width : 900px)  { 
     #navs-inner {
         width: 100%;
     }

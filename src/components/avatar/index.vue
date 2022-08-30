@@ -78,7 +78,9 @@ export default {
       sceneLoaded: false,
       currentStateDance: false,
       popingAni: false,
-      shouldRender: false
+      shouldRender: false,
+      avatarLoadingState_1: 0,
+      avatarLoadingState_2: 0,
     }
   },
   mounted() {
@@ -164,7 +166,7 @@ export default {
       const loader = new GLTFLoader();
       loader.load(
         // resource URL
-        'https://isjeffcom-1251089768.cos.ap-hongkong.myqcloud.com/avatars/jeffAni.glb',
+        'https://isjeffcom-1251089768.cos.accelerate.myqcloud.com/avatars/jeffAniC.glb',
         // called when the resource is loaded
         function ( gltf ) {
 
@@ -176,18 +178,24 @@ export default {
           scene.add( gltf.scene );
           avatarObj = gltf;
           
-          loader.load('https://isjeffcom-1251089768.cos.ap-hongkong.myqcloud.com/avatars/jeffAniDance.glb', (gltf_dance) => {
+          loader.load('https://isjeffcom-1251089768.cos.accelerate.myqcloud.com/avatars/jeffAniDance2.glb', (gltf_dance) => {
             danceAniClip = gltf_dance.animations[0];
             avatarObj.animations.push(danceAniClip);
             that.playNormal();
             EventBus.$emit("avatar-ready", true);
+          }, (xhr) => {
+            const state = ( xhr.loaded / xhr.total * 100 ); // state in %
+            console.log('2 - ' + state + '% loaded' );
+            EventBus.$emit("avatar-loading-2", parseFloat(state));
           })
       
         },
         // called while loading is progressing
         function ( xhr ) {
       
-          console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+          const state = ( xhr.loaded / xhr.total * 100 ); // state in %
+          console.log('1 - ' + state + '% loaded' );
+          EventBus.$emit("avatar-loading-1", parseFloat(state));
       
         },
         // called when loading has errors
@@ -293,6 +301,7 @@ export default {
   top: 0;
   left: 0;
   z-index: 1002;
+  overflow: hidden;
 }
 
 #three-overlay-poping2{

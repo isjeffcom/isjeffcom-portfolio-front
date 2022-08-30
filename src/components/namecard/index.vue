@@ -13,7 +13,7 @@
 
       <div id="namecard-profile-name">
         <div id="namecard-profile-name-inner">
-          <img :src="isDarkMode ? './assets/img/namecard/name-dark.svg' : './assets/img/namecard/name.svg'" alt="name">
+          <img :src="darkMode ? './assets/img/namecard/name-dark.svg' : './assets/img/namecard/name.svg'" alt="name">
         </div>
 
         <div id="namecard-profile-motto">
@@ -110,8 +110,14 @@ export default {
   },
   data() {
     return {
-      isDarkMode: isDark()
+      darkMode: isDark()
     }
+  },
+  created() {
+    // Listen color scheme change
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",   e => {
+      this.darkMode = isDark();
+    });
   },
   methods:{
     shareNC() {
@@ -146,6 +152,10 @@ a, span{
   overflow: hidden;
 }
 
+#namecard-avatar-cont{
+  z-index: 1;
+}
+
 #namecard-info-cont{
   height: 142px;
   width: 300px;
@@ -156,6 +166,7 @@ a, span{
   justify-content: flex-start;
   align-items: center;
   margin-top: -50px;
+  z-index: 2;
 }
 
 #namecard-profile-motto{

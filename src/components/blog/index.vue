@@ -94,7 +94,7 @@ export default {
     created(){
         // Hard Fix, attention needed!!!!!
         if(!this.$route.query.cate){
-            this.$router.push({ query: { cate: 3 } });
+            this.$router.push({ query: { cate: "62d581d423bbc91225ed338e" } });
         }
 
         this.getData(this.page);
@@ -284,7 +284,7 @@ export default {
 
 
 
-@media only screen and (max-device-width : 812px)  { 
+@media only screen and (max-device-width : 900px)  { 
 
 
 

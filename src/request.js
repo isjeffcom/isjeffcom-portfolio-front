@@ -40,7 +40,7 @@ export function logVisit (api, expDay) {
     if(utils.getCookie('isjeffcom')){
         return
     } else {
-        var tmpUid = parseInt(Math.ceil(Math.random()*1000) * Date.parse( new Date()) / 10000000)
+        const tmpUid = parseInt(Math.ceil(Math.random()*1000) * Date.parse( new Date()) / 10000000);
         utils.setCookie('isjeffcom', tmpUid, expDay, false)
     }
 
@@ -52,6 +52,7 @@ export function logVisit (api, expDay) {
     }
 
     genUpdate(api, postData, (res)=>{
+        console.log(res)
         if(res.status){
             const result = res.data;
             // var result = res.data.split(",");

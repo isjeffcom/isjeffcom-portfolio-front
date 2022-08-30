@@ -17,8 +17,11 @@
         </div>
 
         <div id="post-contents">
-            <Editor v-if="lang === 0" editorId="1" :text="postData.content" ref="editor_1"></Editor>
-            <Editor v-if="lang === 1" editorId="2" :text="postData.content_sublang" ref="editor_2"></Editor>
+            <div v-if="contentOpen">
+                <Editor v-if="lang == 0" editorId="1" :text="postData.content" ref="editor_1"></Editor>
+                <Editor v-if="lang == 1" editorId="2" :text="postData.content_sublang" ref="editor_2"></Editor>
+            </div>
+
             <!-- <div id="posts-contents-cont" v-html="lang === 0 ? postData.content : postData.content_sublang"></div> -->
             <div id="posts-content-end">
                 <div id="posts-content-end-inner">
@@ -92,6 +95,7 @@ export default {
             liked: false,
             like_posted: false,
             showImgViewer: false,
+            contentOpen: true,
             lang:0,
             like_rotate: 15,
             postData: {},
@@ -102,6 +106,15 @@ export default {
             popup_info: "",
             popup_action: ""
 
+        }
+    },
+
+    watch:{
+        lang() {
+            // Refresh Container
+            this.$nextTick(()=>{
+                this.updateContentCont();
+            })
         }
     },
 
@@ -171,17 +184,17 @@ export default {
             genGet(this.base + this.api, [{name: "pid", val: this.pid}], (res)=>{
                 if(res.status){
                     
-                    that.postData = res.data
+                    that.postData = res.data;
                     
                     // Parse and decode data
-                    that.postData.content = decodeRichText(that.postData.content)
-                    that.postData.content = decodeImgSrc(that.postData.content, that.base)
+                    that.postData.content = decodeRichText(that.postData.content);
+                    that.postData.content = decodeImgSrc(that.postData.content, that.base);
 
-                    that.postData.title_img = that.parseTitleImg(that.postData.title_img)
-                    that.postData.ux_likes = parseInt(that.postData.ux_likes)
-                    that.postData.date_pub = that.postData.date_pub.substr(0, that.postData.date_pub.length -9 )
-                    that.postData.content_sublang = decodeRichText(that.postData.content_sublang)
-                    that.postData.content_sublang = decodeImgSrc(that.postData.content_sublang, that.base)
+                    that.postData.title_img = that.parseTitleImg(that.postData.title_img);
+                    that.postData.ux_likes = parseInt(that.postData.ux_likes);
+                    that.postData.date_pub = that.postData.date_pub.substr(0, that.postData.date_pub.length -9 );
+                    that.postData.content_sublang = decodeRichText(that.postData.content_sublang);
+                    that.postData.content_sublang = decodeImgSrc(that.postData.content_sublang, that.base);
 
                     that.$nextTick(()=>{
                         // Tell everyone we are ready
@@ -191,94 +204,101 @@ export default {
                     })
                     
                 }
-                EventBus.$emit("show-footer", true)
+                EventBus.$emit("show-footer", true);
             })
 
             // Log View
-            logView(this.base + this.api_view, this.pid)
+            logView(this.base + this.api_view, this.pid);
         },
 
         like () {
 
-            this.liked = true
+            this.liked = true;
             
-            this.postData.ux_likes = this.postData.ux_likes + 1
-            this.like_rotate = this.like_rotate == 360 ? 0 : this.like_rotate + 15
+            this.postData.ux_likes = this.postData.ux_likes + 1;
+            this.like_rotate = this.like_rotate == 360 ? 0 : this.like_rotate + 15;
             
             if(!this.like_posted){
                 genUpdate(this.base + this.api_up, {pid: this.pid}, (res)=>{
-                    console.log(res);
                     if(res.status){
-                        this.like_posted = true
+                        this.like_posted = true;
                     }
                 })
             }
         },
 
         showPopup (info, action, delay) {
-            this.popup = true
-            this.popup_info = info
-            this.popup_action = action
+            this.popup = true;
+            this.popup_info = info;
+            this.popup_action = action;
             setTimeout(()=>{
-                this.popup = false
+                this.popup = false;
             }, delay*1000)
         },
 
         popupAct (){
-            this.switchLang(0, true)
-            this.popup = false
-            setCookie("v_region", 0, 0, true)
+            this.switchLang(0, true);
+            this.popup = false;
+            setCookie("v_region", 0, 0, true);
         },
 
         alertLang () {
             this.showPopup(
-                "您可能在中国大陆地区，已切换为中文 You might visit from Mainland China, switch to Chinese.",
+                "您可能在中国大陆，已切换中文 You might from Mainland China, switch to Chinese.",
                 "BACK",
                 10
-            )
+            );
         },
 
         switchLang (data) {
-            this.lang = data
-            this.setMeta()
-            this.setUrlParam()
+            console.log("Language Switch: " + data);
+            this.lang = data;
+            this.setMeta();
+            this.setUrlParam();
             
         },
 
         handleImgViewer (data, width, height, bol) {
 
-            this.showImgViewer = bol
+            this.showImgViewer = bol;
 
             if(bol){
-                this.viewingImg = data
-                this.viewingImgWidth = width
-                this.viewingImgHeight = height
+                this.viewingImg = data;
+                this.viewingImgWidth = width;
+                this.viewingImgHeight = height;
             } else {
-                this.viewingImg = ""
-                this.viewingImgWidth = 0
-                this.viewingImgHeight = 0
+                this.viewingImg = "";
+                this.viewingImgWidth = 0;
+                this.viewingImgHeight = 0;
             }
 
         },
 
         // Set page meta for share
         setMeta () {
-            const title = this.lang == 0 ? this.postData.title : this.postData.title_sublang
-            const des = this.lang == 0 ? this.postData.brief : this.postData.brief_sublang
-            EventBus.$emit("set-meta", {title: title, des: des})
+            const title = this.lang == 0 ? this.postData.title : this.postData.title_sublang;
+            const des = this.lang == 0 ? this.postData.brief : this.postData.brief_sublang;
+            EventBus.$emit("set-meta", {title: title, des: des});
         },
 
         // Save language settings when user share a post
         setUrlParam () {
             if(!this.$route.query.lang || this.$route.query.lang != parseInt(this.lang)){
-                this.$router.push({ query: Object.assign({}, this.$route.query, { lang: this.lang }) })
+                this.$router.push({ query: Object.assign({}, this.$route.query, { lang: this.lang }) });
             }
             
         },
         // Differenlise image from local or COS
         parseTitleImg(url){
             return parseDiffImg(this.base, url);
-        }
+        },
+
+        updateContentCont(){
+            this.contentOpen = false;
+            this.$nextTick(() => {
+                this.contentOpen = true;
+            });
+        },
     }
 }
 </script>
@@ -366,6 +386,7 @@ export default {
 }
 
 #post-title-info{
+    font-family: fregular;
     margin-top:15px;
     opacity: 0.5;
 }
@@ -490,7 +511,7 @@ export default {
     margin-top: 24px;
 }
 
-@media only screen and (max-device-width : 812px)  { 
+@media only screen and (max-device-width : 900px)  { 
 
     #post{ 
         margin-top: 70px;
@@ -540,5 +561,11 @@ export default {
         line-height: 30px;
     }
 }
+
+/* @media (orientation: landscape) {
+  #contents {
+    flex-direction: row;
+  }
+} */
 
 </style>
