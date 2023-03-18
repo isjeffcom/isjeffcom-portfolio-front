@@ -68,6 +68,7 @@ export default {
     display: flex;
     margin-left:auto;
     margin-right:auto;
+    user-select: none;
 }
 
 .navs-single{

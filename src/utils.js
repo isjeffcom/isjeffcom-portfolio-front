@@ -48,7 +48,6 @@ export function isDark() {
     const themeMedia = window.matchMedia("(prefers-color-scheme: light)");
     if (themeMedia.matches) return false;
     else return true;
-    
 }
 
 export function parseDiffImg(base, url){

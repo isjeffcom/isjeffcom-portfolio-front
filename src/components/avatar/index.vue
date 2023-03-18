@@ -86,7 +86,7 @@ export default {
   mounted() {
 
     EventBus.$on("avatar-render", (data) => {
-      console.log("avatar-render: " + data)
+      // console.log("avatar-render: " + data)
       this.shouldRender = data;
     })
 

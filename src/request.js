@@ -52,7 +52,7 @@ export function logVisit (api, expDay) {
     }
 
     genUpdate(api, postData, (res)=>{
-        console.log(res)
+        // console.log(res)
         if(res.status){
             const result = res.data;
             // var result = res.data.split(",");

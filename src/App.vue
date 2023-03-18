@@ -58,7 +58,7 @@
 import { EventBus } from './bus';
 import { genGet, logVisit } from './request';
 import { decodeRichText, setCookie, getCookie, isDark } from './utils';
-import scrollTo from 'scroll-to';
+// import scrollTo from 'scroll-to';
 import hheader from './components/header';
 import ffooter from './components/ffooter';
 import navs from './components/navs';
@@ -184,7 +184,7 @@ export default {
 
           // Parse theme data
           that.theme = JSON.parse(decodeRichText(siteData.data_struct));
-          console.log(that.theme);
+          // console.log(that.theme);
 
           // Merge theme data into site data
           siteData.data_struct = ""
