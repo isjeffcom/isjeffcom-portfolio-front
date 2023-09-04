@@ -13,6 +13,7 @@ import List from '@editorjs/list';
 // import CheckList from '@editorjs/checklist';
 import ImageTool from '@editorjs/image';
 // import Quote from '@editorjs/quote';
+import Embed from '@editorjs/embed';
 
 export default ({
   name: "editor",
@@ -32,6 +33,7 @@ export default ({
     this.InitEditor();
   },
   methods: {
+    /* eslint-disable */
     InitEditor() {
       this.editor = null;
       this.editor = new EditorJS({ 
@@ -40,7 +42,37 @@ export default ({
         tools: { 
           header: Header, 
           list: List,
-          imageTool: ImageTool
+          imageTool: ImageTool,
+          embed: {
+            class: Embed,
+            inlineToolbar: true,
+            config: {
+              services: {
+                youtube: true,
+                codepen: true,
+                facebook: true,
+                instagram: true,
+                twitter: true,
+                pinterest: true,
+                miro: true,
+                vimeo: true,
+                qqvideo: {
+                  regex: /https?:\/\/v.qq.com\/x\/page\/([^\/\?\&]*)/,
+                  embedUrl: 'https://v.qq.com/txp/iframe/player.html?vid=<%= remote_id %>',
+                  html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
+                  height: 300,
+                  width: 600,
+                  id: (groups) => {
+                    if(!groups && !groups[0]) return "a0165qlzxbt";
+                    // Will return a value with <id>.html
+                    const readyId = groups[0];
+                    const id = readyId.replace(".html", "");
+                    return id
+                  }
+                }
+              }
+            },
+          },
         },
         onReady: async () => {
           if(!this.text && this.text.length < 1) return; 
