@@ -67,7 +67,7 @@
 import { genGet } from '../../request';
 import { EventBus } from '../../bus';
 import iimage from '../widgets/iimage';
-import { parseDiffImg } from '../../utils';
+import { cosUseAccelerate, parseDiffImg } from '../../utils';
 
 //import { isMobile } from '../../utils'
 
@@ -154,7 +154,7 @@ export default {
         },
 
         parseTitleImg(url){
-            return parseDiffImg(this.base, url);
+            return parseDiffImg(this.base, cosUseAccelerate(url));
         }
 
         

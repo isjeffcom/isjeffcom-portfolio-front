@@ -8,7 +8,7 @@ export function decodeRichText (val) {
 }
 
 export function decodeImgSrc (val, base){
-    val = replaceall('[%base%]', base, val)
+    val = replaceall('[%base%]', base, cosUseAccelerate(val))
     return val
 }
 
@@ -53,4 +53,8 @@ export function isDark() {
 export function parseDiffImg(base, url){
     if(!url || url.length < 1) return null;
     return url.indexOf('cos') != -1 ? 'https://' + url : base + url
+}
+
+export function cosUseAccelerate(url) {
+    return url.replace(/ap-hongkong/g, "accelerate");
 }

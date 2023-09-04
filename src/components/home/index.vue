@@ -93,7 +93,7 @@
 // import avatar from '../avatar'
 import { EventBus } from "../../bus";
 import { genGet } from "../../request";
-import { isMobile, parseDiffImg } from "../../utils";
+import { cosUseAccelerate, isMobile, parseDiffImg } from "../../utils";
 import namecard from "../namecard";
 import svg_icon_download from "../widgets/icons/download.vue";
 //import iimage from '../widgets/iimage'
@@ -217,7 +217,7 @@ export default {
     },
 
     parseTitleImg(url) {
-      return parseDiffImg(this.base, url);
+      return parseDiffImg(this.base, cosUseAccelerate(url));
     },
   },
 };
