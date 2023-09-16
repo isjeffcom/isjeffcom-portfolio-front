@@ -56,11 +56,7 @@
         <div class="file-single" v-for="(item, key) in files" :key="key">
           <div class="file-single-inner">
             <a
-              :href="
-                item.val.val.indexOf('http') != -1
-                  ? item.val.val
-                  : base + item.val.val
-              "
+              :href="parseFileDownloadLink(item.val.val)"
               target="_blank"
               style="display: flex; margin-left: auto; margin-right: auto"
             >
@@ -219,6 +215,12 @@ export default {
     parseTitleImg(url) {
       return parseDiffImg(this.base, cosUseAccelerate(url));
     },
+
+    parseFileDownloadLink (url) {
+      return url.indexOf('http') != -1
+        ? cosUseAccelerate(url)
+        : cosUseAccelerate(this.base + url)
+    }
   },
 };
 </script>
