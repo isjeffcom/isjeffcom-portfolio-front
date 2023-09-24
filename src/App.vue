@@ -48,6 +48,8 @@
       :bottomLogoDark="theme['Footer-Logo-Dark'].val"
       :icpNum="theme['China-ICP-License'].val">
     </ffooter>
+
+    <linker></linker>
     
     
   </div>
@@ -62,13 +64,15 @@ import { decodeRichText, setCookie, getCookie, isDark } from './utils';
 import hheader from './components/header';
 import ffooter from './components/ffooter';
 import navs from './components/navs';
+import linker from './components/linker';
 
 export default {
   name: 'app',
   components: {
     hheader,
     navs,
-    ffooter
+    ffooter,
+    linker
   },
   metaInfo() {
       return{
