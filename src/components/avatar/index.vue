@@ -185,7 +185,7 @@ export default {
             EventBus.$emit("avatar-ready", true);
           }, (xhr) => {
             const state = ( xhr.loaded / xhr.total * 100 ); // state in %
-            console.log('2 - ' + state + '% loaded' );
+            // console.log('2 - ' + state + '% loaded' );
             EventBus.$emit("avatar-loading-2", parseFloat(state));
           })
       
@@ -194,7 +194,7 @@ export default {
         function ( xhr ) {
       
           const state = ( xhr.loaded / xhr.total * 100 ); // state in %
-          console.log('1 - ' + state + '% loaded' );
+          // console.log('1 - ' + state + '% loaded' );
           EventBus.$emit("avatar-loading-1", parseFloat(state));
       
         },

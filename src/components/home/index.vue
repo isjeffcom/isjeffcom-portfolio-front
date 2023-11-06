@@ -189,7 +189,9 @@ export default {
         if (res.status) {
           that.postsTotal = res.total;
           that.postsList = res.data;
-          // that.pagesTotal = Math.ceil(that.postsList.length / that.pageSize);
+          
+          that.pagesTotal = Math.floor(this.postsTotal / that.pageSize);
+          console.log(that.pagesTotal)
         }
       });
 
