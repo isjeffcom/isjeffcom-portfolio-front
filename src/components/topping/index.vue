@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { parseDiffImg } from '../../utils'
+import { parseDiffImg, cosUseAccelerate } from '../../utils'
 export default {
     name: "topping",
     props:{
@@ -17,7 +17,7 @@ export default {
     },
     methods: {
         parseTitleImg(url) {
-            return parseDiffImg(this.base, url);
+            return parseDiffImg(this.base, cosUseAccelerate(url));
         }
     }
 }
