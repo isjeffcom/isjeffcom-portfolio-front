@@ -40,12 +40,12 @@
       <div id="p-nav">
         <div
           class="p-single arrow-left"
-          :style="page === 1 ? 'opacity: .1' : 'opacity: 1'"
+          :style="page === 1 ? 'opacity: .1' : 'opacity: .7'"
           v-on:click="sPage(0)"
         ></div>
         <div
           class="p-single arrow-right"
-          :style="page === pagesTotal ? 'opacity: .1' : 'opacity: 1'"
+          :style="page === pagesTotal ? 'opacity: .2' : 'opacity: 1'"
           v-on:click="sPage(1)"
         ></div>
       </div>
@@ -166,6 +166,7 @@ export default {
   },
   methods: {
     getPosts(page) {
+      console.log(page)
       const that = this;
       const ls = this.pageToLimit(page);
       const param = page
@@ -188,7 +189,7 @@ export default {
         if (res.status) {
           that.postsTotal = res.total;
           that.postsList = res.data;
-          that.pagesTotal = Math.ceil(that.postsList.length / that.pageSize);
+          // that.pagesTotal = Math.ceil(that.postsList.length / that.pageSize);
         }
       });
 
@@ -236,7 +237,7 @@ export default {
   height: 0;
   border-top: 14px solid transparent;
   border-bottom: 14px solid transparent;
-  border-left: 18px solid #333333;
+  border-left: 18px solid var(--text-normal);
 }
 
 .arrow-left {
@@ -244,7 +245,7 @@ export default {
   height: 0;
   border-top: 14px solid transparent;
   border-bottom: 14px solid transparent;
-  border-right: 18px solid #333333;
+  border-right: 18px solid var(--text-normal);
 }
 
 #all {
