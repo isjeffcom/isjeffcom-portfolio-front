@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div id="files">
+    <!-- <div id="files">
       <div class="files-cont">
         <div class="file-single" v-for="(item, key) in files" :key="key">
           <div class="file-single-inner">
@@ -71,7 +71,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div
       id="avatar-indicator-vfx"
