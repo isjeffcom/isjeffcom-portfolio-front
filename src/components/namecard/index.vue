@@ -17,7 +17,7 @@
         </div>
 
         <div id="namecard-profile-motto">
-          <span>Designer X Coder</span>
+          <span>{{ isZHCN ? "设计 X 开发" : "Designer X Coder" }}</span>
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@
     <div id="namecard-action-area">
       <div id="namecard-actions">
 
-        <div class="na-btn">
+        <!-- <div class="na-btn">
           <a href="Mailto:hello@isjeff.com">
             <div class="na-btn-icon na-svg">
               <img :src="'./assets/img/namecard/namecard-icon-mail-light.svg'" alt="email me">
@@ -34,11 +34,11 @@
 
           <a href="Mailto:hello@isjeff.com">
             <div class="na-btn-label">
-              <span>Contact</span>
+              <span>{{ isZHCN ? "联系" : "Contact" }}</span>
             </div>
           </a>
           
-        </div>
+        </div> -->
 
         <div class="na-btn" v-on:click="shareNC">
           <div class="na-btn-icon na-svg">
@@ -46,7 +46,7 @@
           </div>
 
           <div class="na-btn-label">
-            <span>Share</span>
+            <span>{{ isZHCN ? "分享" : "Share" }}</span>
           </div>
         </div>
 
@@ -60,7 +60,7 @@
           <img :src="'./assets/img/namecard/namecard-icon-vr-light.svg'" alt="">
         </div>
         <div class="nc-person-des">
-          <span>XR Researcher</span>
+          <span>{{ isZHCN ? "XR研究专家" : "XR Researcher" }}</span>
         </div>
       </div>
 
@@ -69,7 +69,7 @@
           <img :src="'./assets/img/namecard/namecard-icon-dev-light.svg'" alt="">
         </div>
         <div class="nc-person-des">
-          <span>Full-Stack Designer</span>
+          <span>{{ isZHCN ? "全栈开发" : "Full-Stack Developer" }}</span>
         </div>
       </div>
 
@@ -78,7 +78,7 @@
           <img :src="'./assets/img/namecard/namecard-icon-game-light.svg'" alt="">
         </div>
         <div class="nc-person-des">
-          <span>Technical Artist</span>
+          <span>{{ isZHCN ? "技术美术" : "Technical Artist" }}</span>
         </div>
       </div>
 
@@ -87,7 +87,7 @@
           <img :src="'./assets/img/namecard/namecard-icon-code-light.svg'" alt="">
         </div>
         <div class="nc-person-des">
-          <span>Rapid Prototyper</span>
+          <span>{{ isZHCN ? "快速原型" : "Rapid Prototyper" }}</span>
         </div>
       </div>
 
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { isDark } from '../../utils'
+import { isDark, isNativeZHCN } from '../../utils'
 import avatar from '../avatar'
 export default {
   name: "namecard",
@@ -110,10 +110,12 @@ export default {
   },
   data() {
     return {
-      darkMode: isDark()
+      darkMode: isDark(),
+      isZHCN: false,
     }
   },
   created() {
+    this.isZHCN = isNativeZHCN();
     // Listen color scheme change
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",   e => {
       this.darkMode = isDark();
@@ -210,7 +212,7 @@ a, span{
 }
 
 #namecard-actions .na-btn{
-  width: 36%;
+  width: 90%;
   height: 60px;
   background: var(--namecard-button);
   border: var(--border-card-button);

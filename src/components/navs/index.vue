@@ -3,7 +3,7 @@
         <div id="navs" v-show="show">
             <div id="navs-inner">
                 <div class="navs-single" v-for="item in navs" :key="item.id">
-                    <a :href="item.url">{{item.name}}</a>
+                    <a :href="item.url">{{ isZHCN ? item.name_sublang :item.name }}</a>
                 </div>
             </div>
         </div>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { isNativeZHCN } from '../../utils';
+
 export default {
     name: "navs",
     props:{
@@ -18,7 +20,8 @@ export default {
     },
     data(){
         return{
-            show: true
+            show: true,
+            isZHCN: false,
         }
     }, 
     watch:{
@@ -26,7 +29,8 @@ export default {
     },
 
     created(){
-        this.initial()
+        this.initial();
+        this.isZHCN = isNativeZHCN();
     },
     methods:{
         initial(){

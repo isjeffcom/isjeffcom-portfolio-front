@@ -6,7 +6,7 @@
             </div>
 
             <div id="post-title-info">
-                <span>{{postData.name}} | {{postData.date_pub}} | {{postData.ux_visit}} Views</span>
+                <span>{{postData.name}} | {{postData.date_pub}} | {{postData.ux_visit}} {{ isZHCN ? "次查看" : "Views" }}</span>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
             <!-- <div id="posts-contents-cont" v-html="lang === 0 ? postData.content : postData.content_sublang"></div> -->
             <div id="posts-content-end">
                 <div id="posts-content-end-inner">
-                    <span> - END - </span>
+                    <span> - {{ isZHCN ? "结束" : "END" }} - </span>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
                     <img src="../../assets/like.png" alt="Like">
                 </div>
                 <div id="post-like-count">
-                    <span><span style="font-weight: bold;">{{postData.ux_likes}}</span> Likes</span>
+                    <span><span style="font-weight: bold;">{{postData.ux_likes}}</span> {{ isZHCN ? "点赞" : "Likes" }}</span>
                 </div>
             </div>
         </div>

@@ -179,8 +179,6 @@ export default {
           const socialMedia = finalRes.sm
           const navs = finalRes.nav
 
-          console.log(finalRes.nav)
-
           // Parse site data
           siteData.title = decodeRichText(siteData.title);
           siteData.subtitle = decodeRichText(siteData.subtitle);
