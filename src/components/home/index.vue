@@ -26,7 +26,7 @@
             :to="{ path: '/post', query: { pid: item._id, from: 'home' } }"
           >
             <div class="post-single-title">
-              <span>{{ item.title }}</span>
+              <span>{{ isZHCN ? item.title_sublang : item.title }}</span>
             </div>
             <div class="post-single-filter"></div>
 
@@ -89,16 +89,16 @@
 // import avatar from '../avatar'
 import { EventBus } from "../../bus";
 import { genGet } from "../../request";
-import { cosUseAccelerate, isMobile, parseDiffImg } from "../../utils";
+import { cosUseAccelerate, isMobile, parseDiffImg, isNativeZHCN } from "../../utils";
 import namecard from "../namecard";
-import svg_icon_download from "../widgets/icons/download.vue";
+// import svg_icon_download from "../widgets/icons/download.vue";
 //import iimage from '../widgets/iimage'
 
 export default {
   name: "home",
   components: {
     namecard,
-    svg_icon_download,
+    // svg_icon_download,
     // avatar,
     //iimage
   },
@@ -124,11 +124,13 @@ export default {
       // If avatar is ready
       avatarReady: false,
       mobileView: false,
+      isZHCN: false,
     };
   },
   created() {
     this.getPosts(this.page);
     this.mobileView = isMobile();
+    this.isZHCN = isNativeZHCN();
   },
   mounted() {
     // When 3d avatar ready
@@ -166,7 +168,6 @@ export default {
   },
   methods: {
     getPosts(page) {
-      console.log(page)
       const that = this;
       const ls = this.pageToLimit(page);
       const param = page
@@ -189,9 +190,10 @@ export default {
         if (res.status) {
           that.postsTotal = res.total;
           that.postsList = res.data;
+
+          console.log(that.postsList)
           
           that.pagesTotal = Math.floor(this.postsTotal / that.pageSize);
-          console.log(that.pagesTotal)
         }
       });
 

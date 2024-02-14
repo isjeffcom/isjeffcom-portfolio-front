@@ -66,7 +66,7 @@
 <script>
 import { genGet, genUpdate, logView } from '../../request'
 
-import { decodeRichText, decodeImgSrc, getCookie, setCookie, parseDiffImg } from '../../utils'
+import { decodeRichText, decodeImgSrc, getCookie, setCookie, parseDiffImg, isNativeZHCN } from '../../utils'
 import { EventBus } from '../../bus'
 
 import iimage from '../../components/widgets/iimage'
@@ -104,8 +104,8 @@ export default {
             viewingImgHeight: 0,
             popup: false,
             popup_info: "",
-            popup_action: ""
-
+            popup_action: "",
+            isZHCN: false,
         }
     },
 
@@ -129,22 +129,31 @@ export default {
     created(){
         const that = this
 
+        this.isZHCN = isNativeZHCN();
+
         EventBus.$emit("show-footer", false);
 
         this.pid = this.$route.query.pid;
         this.getData();
 
         // If user share link with lang
-        if(this.$route.query.lang == 1){
+        console.log(this.$route.query.lang)
+        if(this.$route.query.lang === 1){
             this.lang = parseInt(this.$route.query.lang);
             this.switchLang(1, true);
         }
         
+        // // If user from China mainland
+        // else if(getCookie("v_region") == "CN"){
+        //     this.switchLang(1, true);
+        //     this.alertLang();
+        // } 
+
         // If user from China mainland
-        else if(getCookie("v_region") == "CN"){
+        else if(this.isZHCN){
             this.switchLang(1, true);
-            this.alertLang();
-        } 
+            // this.alertLang();
+        }
         
         // If no lang param than set up one
         else {

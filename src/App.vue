@@ -51,7 +51,6 @@
 
     <linker></linker>
     
-    
   </div>
   
 </template>
@@ -120,9 +119,9 @@ export default {
     this.dontDisplayAni = getCookie('topping') == "true" ? true : false
     this.getSiteData()
 
-    setTimeout(()=>{
-      logVisit(this.api_base + this.api_track, 1)
-    }, 1000);
+    // setTimeout(()=>{
+    //   logVisit(this.api_base + this.api_track, 1)
+    // }, 1000);
 
     EventBus.$on("set-meta", function(data){
         that.setMeta(data)
@@ -179,6 +178,8 @@ export default {
           const siteData = finalRes.site
           const socialMedia = finalRes.sm
           const navs = finalRes.nav
+
+          console.log(finalRes.nav)
 
           // Parse site data
           siteData.title = decodeRichText(siteData.title);

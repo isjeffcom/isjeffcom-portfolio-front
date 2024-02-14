@@ -45,11 +45,11 @@
                     
                         <div class="post-single-content">
                             <div class="post-single-content-title">
-                                <span>{{item.title}}</span>
+                                <span>{{ isZHCN ? item.title_sublang : item.title}}</span>
                             </div>
 
                             <div class="post-single-content-brief">
-                                <span>{{item.brief}}</span>
+                                <span>{{isZHCN ? item.brief_sublang : item.brief }}</span>
                             </div>
                         </div>
                     
@@ -67,7 +67,7 @@
 import { genGet } from '../../request';
 import { EventBus } from '../../bus';
 import iimage from '../widgets/iimage';
-import { cosUseAccelerate, parseDiffImg } from '../../utils';
+import { cosUseAccelerate, parseDiffImg, isNativeZHCN } from '../../utils';
 
 //import { isMobile } from '../../utils'
 
@@ -88,7 +88,7 @@ export default {
             postsTotal: 0,
             pagesTotal: 0,
             pageSize: 10,
-
+            isZHCN: false
         }
     },
     created(){
@@ -98,6 +98,9 @@ export default {
         }
 
         this.getData(this.page);
+        
+        this.isZHCN = isNativeZHCN();
+        console.log(this.isZHCN);
     },
 
     activated(){

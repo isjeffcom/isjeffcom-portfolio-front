@@ -58,3 +58,19 @@ export function parseDiffImg(base, url){
 export function cosUseAccelerate(url) {
     return url.replace(/ap-hongkong/g, "accelerate");
 }
+
+export function isNativeZHCN() {
+    const language = navigator.language || navigator.userLanguage; // navigator.userLanguage 是旧的API，为了兼容性考虑
+  
+    // 判断是否为简体中文，zh-CN 代表简体中文
+    if (language === 'zh-CN') {
+      return true;
+    }
+  
+    // 可以进一步检查 navigator.languages 中是否包含简体中文
+    if (navigator.languages && navigator.languages.includes('zh-CN')) {
+      return true;
+    }
+  
+    return false;
+  }
