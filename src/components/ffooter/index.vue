@@ -10,12 +10,13 @@
             </div>
 
             <div id="f-info">
-                <div style="display: flex; gap: 4px;">
-                    <div>Design by JIANFENG WU | Powered by POSTER</div>
-                    <div v-if="isZHCN"><a href="https://beian.miit.gov.cn/">{{icpNum.length>0 ? "|&nbsp;" + icpNum : ""}}</a> | </div>
-                    <div>
-                        <div>
-                            <img src="/icon/cnpolice.png" alt="">
+                <div style="display: flex; gap: 4px; width: 100%; justify-content: center; align-items: center;">
+                    <div style="">Design by JIANFENG WU | Powered by POSTER</div>
+                    <div v-if="isZHCN"><a href="https://beian.miit.gov.cn/">{{icpNum.length>0 ? "|&nbsp;" + icpNum : ""}}</a></div>
+                    <div style="display: flex; gap: 4px; justify-content: center; align-items: center;">
+                        <div> | </div>
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <img src="/assets/icon/cnpolice.png" alt="" width="14px">
                         </div> 
                         <div>
                             <a v-if="isZHCN" href="https://beian.mps.gov.cn/#/query/webSearch?code=44030002002492\" rel="noreferrer" target="_blank">粤公网安备44030002002492</a>
@@ -111,7 +112,7 @@ export default {
 
 #f-inner{
     text-align: center;
-    width: 500px;
+    width: 800px;
     padding-top: 40px;
     margin-left: auto;
     margin-right: auto;
