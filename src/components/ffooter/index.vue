@@ -10,7 +10,11 @@
             </div>
 
             <div id="f-info">
-                <span>Design by JIANFENG WU | Powered by POSTER <a href="https://beian.miit.gov.cn/">{{icpNum.length>0 ? "|&nbsp;" + icpNum : ""}}</a></span>
+                <span>
+                    Design by JIANFENG WU | Powered by POSTER 
+                    <a v-if="isZHCN" href="https://beian.miit.gov.cn/">{{icpNum.length>0 ? "|&nbsp;" + icpNum : ""}}</a> | 
+                    <a v-if="isZHCN" href="https://beian.mps.gov.cn/#/query/webSearch?code=44030002002492\" rel="noreferrer" target="_blank">粤公网安备44030002002492</a>
+                </span>
             </div>
         </div>
         
@@ -21,7 +25,7 @@
 <script>
 
 import scrollTo from 'scroll-to'
-import { isDark, parseDiffImg } from '../../utils'
+import { isDark, parseDiffImg, isNativeZHCN } from '../../utils'
 import { EventBus } from '../../bus'
 //import { EventBus } from '../../bus'
 
@@ -38,10 +42,14 @@ export default {
             darkMode: isDark(),
             avatarLoadingState: 0,
             avatarLoadingState1: 0,
-            avatarLoadingState2: 0
+            avatarLoadingState2: 0,
+            isZHCN: false,
         }
     },
     created(){
+
+        this.isZHCN = isNativeZHCN();
+
         // Listen color scheme change
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",   e => {
             this.darkMode = isDark();
