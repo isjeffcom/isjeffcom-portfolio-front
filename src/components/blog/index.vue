@@ -104,7 +104,7 @@ export default {
     },
 
     activated(){
-        EventBus.$emit("set-meta", {title: "Blog", des: this.siteDes});
+        EventBus.emit("set-meta", {title: "Blog", des: this.siteDes});
     },
     methods:{
         getData(page){
@@ -133,8 +133,8 @@ export default {
                 }
             })
 
-            EventBus.$emit("show-footer", true);
-            EventBus.$emit("set-meta", {title: "Blog", des: this.siteDes});
+            EventBus.emit("show-footer", true);
+            EventBus.emit("set-meta", {title: "Blog", des: this.siteDes});
         },
 
         sPage (mode) {

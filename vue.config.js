@@ -1,1 +1,6 @@
-module.exports = { publicPath: "./" }
+module.exports = { 
+  publicPath: "./",
+  devServer: {
+    historyApiFallback: true
+  }
+}

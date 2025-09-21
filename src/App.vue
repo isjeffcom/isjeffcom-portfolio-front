@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import { ref, reactive, computed, onMounted, getCurrentInstance } from 'vue'
+import { useHead } from '@unhead/vue'
 import { EventBus } from './bus';
 import { genGet, logVisit } from './request';
 import { decodeRichText, setCookie, getCookie, isDark } from './utils';
@@ -73,111 +75,76 @@ export default {
     ffooter,
     linker
   },
-  metaInfo() {
-      return{
-        title: this.metaTitle,
-        titleTemplate: '%s - ' + this.site.title,
-        meta: [
-          { name: "description", content: this.metaDes },
-        ],
-        htmlAttrs: {
-          lang: 'en',
-          amp: true
-        }
-      }
+  setup() {
+    const { proxy } = getCurrentInstance()
     
-  },
-  data(){
-    return{
-      // api_base: process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000",
-      api_base: "https://api.isjeff.com",
-      api_site: "/front/home/",
-      api_track: "/updater/visit/",
-      mode: "home",
-      pid: "1",
-      loaded: false,
-      site: {},
-      theme: {},
-      navs: [],
-      social_media: [],
-      files: [],
-      headerY: 0,
-      showTopping: false,
-      showFooter: false,
-      animating: false,
-      currentPosi: 0,
-      delay: 3000,
-      damping: 20,
-      dontDisplayAni: false,
-      metaTitle: "Welcome",
-      metaDes: "Hello"
-    }
-  },
-
-  created(){
-    const that = this;
-    this.dontDisplayAni = getCookie('topping') == "true" ? true : false
-    this.getSiteData()
-
-    // setTimeout(()=>{
-    //   logVisit(this.api_base + this.api_track, 1)
-    // }, 1000);
-
-    EventBus.$on("set-meta", function(data){
-        that.setMeta(data)
-    });
-
-    EventBus.$on("show-footer", function(data){
-        that.showFot(data)
-    });
-  },
-  methods:{
-
-    scrollToMain () {
-      this.animating = true;
-      const that = this;
-      const time = this.delay;
-      // setTimeout(()=>{
-      //   if(that.loaded){
-      //     scrollTo(0, that.headerY, {
-      //       ease: 'inOutQuart',
-      //       duration: 500
-      //     })
-      //   } else {
-      //     that.showTopping = false
-      //   }
-      // }, time)
-
+    // 响应式数据
+    const loaded = ref(false)
+    const site = reactive({})
+    const theme = reactive({})
+    const navs = ref([])
+    const social_media = ref([])
+    const files = ref([])
+    const headerY = ref(0)
+    const showTopping = ref(false)
+    const showFooter = ref(false)
+    const animating = ref(false)
+    const currentPosi = ref(0)
+    const delay = ref(3000)
+    const damping = ref(20)
+    const dontDisplayAni = ref(false)
+    const metaTitle = ref("Welcome")
+    const metaDes = ref("Hello")
+    
+    // const api_base = process.env.NODE_ENV === "production" ? "https://api.isjeff.com" : "http://localhost:3000"
+    const api_base = "https://api.isjeff.com"
+    const api_site = "/front/home/"
+    const api_track = "/updater/visit/"
+    const mode = "home"
+    const pid = "1"
+    
+    // 配置meta信息
+    useHead({
+      title: computed(() => metaTitle.value),
+      titleTemplate: computed(() => '%s - ' + site.title),
+      meta: [
+        { name: "description", content: computed(() => metaDes.value) },
+      ],
+      htmlAttrs: {
+        lang: 'en',
+        amp: true
+      }
+    })
+    // 方法定义
+    const scrollToMain = () => {
+      animating.value = true;
+      const time = delay.value;
+      
       setTimeout(()=>{
-        that.showTopping = false
-        that.animating = false
-        that.currentPosi = 1
+        showTopping.value = false
+        animating.value = false
+        currentPosi.value = 1
       }, time+550)
 
-
       setCookie("topping", true, 3, false)
-    },
+    }
 
-    showFot (d) {
-      this.showFooter = d
-    },
+    const showFot = (d) => {
+      showFooter.value = d
+    }
 
-    setMeta (data) {
-      this.metaTitle = data.title
-      this.metaDes = data.des
-    },
+    const setMeta = (data) => {
+      metaTitle.value = data.title
+      metaDes.value = data.des
+    }
 
-    getSiteData (){
-
-      const that = this
-
-      genGet(this.api_base + this.api_site, [], (res)=>{
+    const getSiteData = () => {
+      genGet(api_base + api_site, [], (res)=>{
         if(res.status){
-
           const finalRes = res.data
           const siteData = finalRes.site
           const socialMedia = finalRes.sm
-          const navs = finalRes.nav
+          const navsData = finalRes.nav
 
           // Parse site data
           siteData.title = decodeRichText(siteData.title);
@@ -186,46 +153,76 @@ export default {
           siteData.seoTitle = decodeRichText(siteData.seoTitle);
 
           // Parse theme data
-          that.theme = JSON.parse(decodeRichText(siteData.data_struct));
-          // console.log(that.theme);
+          Object.assign(theme, JSON.parse(decodeRichText(siteData.data_struct)));
 
           // Merge theme data into site data
           siteData.data_struct = ""
           // Put in datas
-          that.site = siteData
-          that.social_media = socialMedia
-          that.navs = navs
+          Object.assign(site, siteData)
+          social_media.value = socialMedia
+          navs.value = navsData
 
-          that.files = [
-            {name: 'PDF-Portfolio', val: that.theme['PDF-Portfolio'] }, 
-            {name: 'CV-English', val:that.theme['CV-English']},
-            {name: 'CV-Chinese', val:that.theme['CV-Chinese']}
+          files.value = [
+            {name: 'PDF-Portfolio', val: theme['PDF-Portfolio'] }, 
+            {name: 'CV-English', val: theme['CV-English']},
+            {name: 'CV-Chinese', val: theme['CV-Chinese']}
           ]
 
           // Loaded
-         
-          that.loaded = true
-          this.showTopping = false;
-
-          // if(this.dontDisplayAni){
-          //   this.showTopping = false;
-          // } else {
-          //   // this.scrollToMain()
-          // }
-          
+          loaded.value = true
+          showTopping.value = false;
 
           // Get header render X value
-          that.$nextTick(()=>{
-            // that.headerY = that.$refs.headerRef.$el.offsetTop
-            if(this.site.desText) that.setMeta({title: "Home", des: this.site.desText})
+          proxy.$nextTick(()=>{
+            if(site.desText) setMeta({title: "Home", des: site.desText})
           })
-          
         }
-
       })
-
     }
-  }
+
+    // 生命周期
+    onMounted(() => {
+      dontDisplayAni.value = getCookie('topping') == "true" ? true : false
+      getSiteData()
+
+      EventBus.on("set-meta", function(data){
+          setMeta(data)
+      });
+
+      EventBus.on("show-footer", function(data){
+          showFot(data)
+      });
+    })
+
+    // 返回模板需要的数据和方法
+    return {
+      loaded,
+      site,
+      theme,
+      navs,
+      social_media,
+      files,
+      headerY,
+      showTopping,
+      showFooter,
+      animating,
+      currentPosi,
+      delay,
+      damping,
+      dontDisplayAni,
+      metaTitle,
+      metaDes,
+      api_base,
+      api_site,
+      api_track,
+      mode,
+      pid,
+      scrollToMain,
+      showFot,
+      setMeta,
+      getSiteData
+    }
+  },
 }
 </script>
 

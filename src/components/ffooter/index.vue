@@ -63,13 +63,13 @@ export default {
             this.darkMode = isDark();
         });
 
-        EventBus.$on("avatar-loading-1", (data) => {
+        EventBus.on("avatar-loading-1", (data) => {
             const state = (data).toFixed(2);
             this.avatarLoadingState1 = state;
             this.avatarLoadingState = ((this.avatarLoadingState1 / 70) + (this.avatarLoadingState2 / 30)).toFixed(2);
         })
 
-        EventBus.$on("avatar-loading-2", (data) => {
+        EventBus.on("avatar-loading-2", (data) => {
             const state = (data).toFixed(2);
             this.avatarLoadingState2 = state;
             this.avatarLoadingState = ((this.avatarLoadingState1 / 70) + (this.avatarLoadingState2 / 30)).toFixed(2);

@@ -131,7 +131,7 @@ export default {
 
         this.isZHCN = isNativeZHCN();
 
-        EventBus.$emit("show-footer", false);
+        EventBus.emit("show-footer", false);
 
         this.pid = this.$route.query.pid;
         this.getData();
@@ -169,12 +169,12 @@ export default {
         }, 3000)
 
         // If switch lang from navigation bar
-        EventBus.$on("switchLang", function(data){
+        EventBus.on("switchLang", function(data){
             that.switchLang(data, false);
         })
 
         // If image viewer closed
-        EventBus.$on("img-viewer-close", function(){
+        EventBus.on("img-viewer-close", function(){
             that.handleImgViewer('', 0, 0, false);
         })
 
@@ -213,7 +213,7 @@ export default {
                     })
                     
                 }
-                EventBus.$emit("show-footer", true);
+                EventBus.emit("show-footer", true);
             })
 
             // Log View
@@ -287,7 +287,7 @@ export default {
         setMeta () {
             const title = this.lang == 0 ? this.postData.title : this.postData.title_sublang;
             const des = this.lang == 0 ? this.postData.brief : this.postData.brief_sublang;
-            EventBus.$emit("set-meta", {title: title, des: des});
+            EventBus.emit("set-meta", {title: title, des: des});
         },
 
         // Save language settings when user share a post

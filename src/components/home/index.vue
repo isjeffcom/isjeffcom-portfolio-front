@@ -134,7 +134,7 @@ export default {
   },
   mounted() {
     // When 3d avatar ready
-    EventBus.$on("avatar-ready", () => {
+    EventBus.on("avatar-ready", () => {
       this.avatarReady = true;
       this.$refs.namecardTrigger.addEventListener("mouseover", () => {
         if (this.namecardEnabled) return;
@@ -159,12 +159,12 @@ export default {
   },
   watch: {
     namecardEnabled() {
-      EventBus.$emit("avatar-render", this.namecardEnabled);
+      EventBus.emit("avatar-render", this.namecardEnabled);
       this.namecardHistory = true;
     },
   },
   activated() {
-    EventBus.$emit("set-meta", { title: "Home", des: this.siteDes });
+    EventBus.emit("set-meta", { title: "Home", des: this.siteDes });
   },
   methods: {
     getPosts(page) {
@@ -197,8 +197,8 @@ export default {
         }
       });
 
-      EventBus.$emit("show-footer", true);
-      EventBus.$emit("set-meta", { title: "Home", des: this.siteDes });
+      EventBus.emit("show-footer", true);
+      EventBus.emit("set-meta", { title: "Home", des: this.siteDes });
     },
 
     sPage(mode) {

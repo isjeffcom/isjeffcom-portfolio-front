@@ -85,7 +85,7 @@ export default {
   },
   mounted() {
 
-    EventBus.$on("avatar-render", (data) => {
+    EventBus.on("avatar-render", (data) => {
       // console.log("avatar-render: " + data)
       this.shouldRender = data;
     })
@@ -182,11 +182,11 @@ export default {
             danceAniClip = gltf_dance.animations[0];
             avatarObj.animations.push(danceAniClip);
             that.playNormal();
-            EventBus.$emit("avatar-ready", true);
+            EventBus.emit("avatar-ready", true);
           }, (xhr) => {
             const state = ( xhr.loaded / xhr.total * 100 ); // state in %
             // console.log('2 - ' + state + '% loaded' );
-            EventBus.$emit("avatar-loading-2", parseFloat(state));
+            EventBus.emit("avatar-loading-2", parseFloat(state));
           })
       
         },
@@ -195,7 +195,7 @@ export default {
       
           const state = ( xhr.loaded / xhr.total * 100 ); // state in %
           // console.log('1 - ' + state + '% loaded' );
-          EventBus.$emit("avatar-loading-1", parseFloat(state));
+          EventBus.emit("avatar-loading-1", parseFloat(state));
       
         },
         // called when loading has errors

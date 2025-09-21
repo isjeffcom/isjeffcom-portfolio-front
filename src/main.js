@@ -1,21 +1,23 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 
 import router from './router.js'
 
 import axios from 'axios'
-import VueAxios from 'vue-axios'
-import VueMeta from 'vue-meta'
+import { createHead } from '@unhead/vue'
  
-Vue.use(VueAxios, axios)
+const app = createApp(App)
 
-Vue.use(VueMeta, {
-  refreshOnceOnNavigation: true
-})
+// 配置axios
+app.config.globalProperties.$http = axios
+app.config.globalProperties.$axios = axios
 
-Vue.config.productionTip = false
+// 配置meta管理
+const head = createHead()
+app.use(head)
 
-new Vue({
-  render: h => h(App),
-  router
-}).$mount('#app')
+// 配置路由
+app.use(router)
+
+// 挂载应用
+app.mount('#app')

@@ -24,7 +24,7 @@ export default {
 
     methods:{
         close () {
-            EventBus.$emit("img-viewer-close", true)
+            EventBus.emit("img-viewer-close", true)
         }
     }
 }

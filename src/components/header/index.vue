@@ -137,7 +137,7 @@ export default {
         switchLang(data, sync) {
             this.lang = data
             if(!sync){
-                EventBus.$emit('switchLang', data)
+                EventBus.emit('switchLang', data)
             }
         },
 
