@@ -59,11 +59,11 @@ let renderer,
 let danceAniClip = null;
 let avatarObj = null;
 const Preset_Lights = [
-  { type: "ambient", color: 0xFFFFFF, position: {x: 0, y: 0, z: 0} },
+  { type: "ambient", color: 0xFFFFFF, position: {x: 0, y: 0, z: 0}, intensive: 30 },
   // { type: "directional", color: 0x404040, position: {x: 0, y: 5, z: 0}, helper: true },
-  { type: "spot", color: 0xffffff, position: {x: 0, y: 3, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 5 },
-  { type: "spot", color: 0xffffff, position: {x: 3, y: 4, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3 },
-  { type: "spot", color: 0xffffff, position: {x: -3, y: 4, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 3 },
+  { type: "spot", color: 0xffffff, position: {x: 0, y: 4, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 145 },
+  { type: "spot", color: 0xffffff, position: {x: 4, y: 4, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 75 },
+  { type: "spot", color: 0xffffff, position: {x: -4, y: 4, z: 0}, rotation: {x: 0, y: 45, z: 0}, intensive: 75 },
 ]
 
 export default {
@@ -136,7 +136,7 @@ export default {
         let light = null;
         let helper = null;
         
-        if(preset.type === "ambient") light = new THREE.AmbientLight( preset.color, 1 );
+        if(preset.type === "ambient") light = new THREE.AmbientLight( preset.color, 3 );
         if(preset.type === "directional") light = new THREE.DirectionalLight( preset.color );
         if(preset.type === "point") light = new THREE.PointLight( preset.color, 1 ,100 );
         if(preset.type === "spot") light = new THREE.SpotLight( preset.color, preset.intensive || 1, 10 );
