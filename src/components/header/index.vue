@@ -180,6 +180,7 @@ export default {
 #hheader{
     z-index: 5;
     user-select: none;
+    padding-top: 4px;
 }
 
 #hheader-inner{
