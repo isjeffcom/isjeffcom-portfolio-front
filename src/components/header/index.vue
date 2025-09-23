@@ -72,7 +72,7 @@ export default {
                 if(window.scrollY > 10){
                     hc.style.opacity = 1;
                     hl.style.opacity = 0;
-                    hr.style.top = "-11px";
+                    hr.style.top = "-6px";
                     hh.style.background = "var(--header-bg-mobile)";
                     console.log("should changed")
                 } else {
@@ -89,7 +89,7 @@ export default {
                 if(screen.orientation.angle == 90 || screen.orientation.angle == -90){
                     hc.style.top = "-40px";
                 } else {
-                    hc.style.top = "0px";
+                    hc.style.top = "4px";
                 }
 
             });
@@ -97,7 +97,7 @@ export default {
             if(screen.orientation.angle == 90 || screen.orientation.angle == -90){
                 hc.style.top = "-40px";
             } else {
-                hc.style.top = "0px";
+                hc.style.top = "4px";
             }
 
         }
@@ -180,7 +180,6 @@ export default {
 #hheader{
     z-index: 5;
     user-select: none;
-    padding-top: 4px;
 }
 
 #hheader-inner{
