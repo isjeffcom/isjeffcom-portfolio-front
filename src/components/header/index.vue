@@ -72,7 +72,7 @@ export default {
                 if(window.scrollY > 10){
                     hc.style.opacity = 1;
                     hl.style.opacity = 0;
-                    hr.style.top = "-6px";
+                    hr.style.top = "-7px";
                     hh.style.background = "var(--header-bg-mobile)";
                     console.log("should changed")
                 } else {
