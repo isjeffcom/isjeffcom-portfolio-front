@@ -154,6 +154,13 @@ a, span{
   overflow: hidden;
 }
 
+/* 当浏览器高度小于1000px时，调整top为-70px */
+@media (max-height: 999px) {
+  #namecard {
+    top: -70px;
+  }
+}
+
 #namecard-avatar-cont{
   z-index: 1;
 }
